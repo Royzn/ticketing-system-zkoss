@@ -1,13 +1,15 @@
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul" ?>
 <zk>
-    <window self="@define(content)" viewModel="@id('vm') @init('latihan.controller.TicketController')">
+    <window self="@define(content)"
+            apply="latihan.controller.TicketController">
         <vlayout spacing="20px" style="padding:20px;">
-            <label value="🎫 Ticket List" style="font-weight:bold; font-size:22px; color:#2c3e50;"/>
+            <label value="🎫 Ticket List"
+                   style="font-weight:bold; font-size:22px; color:#2c3e50;"/>
 
             <!-- Filter -->
             <hlayout spacing="15px">
                 <label value="Filter by Status:" style="font-weight:bold;"/>
-                <combobox width="120px">
+                <combobox id="statusFilter" width="120px">
                     <comboitem label="All"/>
                     <comboitem label="Open"/>
                     <comboitem label="In Progress"/>
@@ -15,19 +17,20 @@
                 </combobox>
 
                 <label value="Filter by Priority:" style="font-weight:bold;"/>
-                <combobox width="120px">
+                <combobox id="priorityFilter" width="120px">
                     <comboitem label="All"/>
                     <comboitem label="Low"/>
                     <comboitem label="Medium"/>
                     <comboitem label="High"/>
                 </combobox>
-                <button label="🔍 Search" style="background:#3498db; color:white; border-radius:6px;"/>
+                <button id="btnSearch" label="🔍 Search"
+                        style="background:#3498db; color:white; border-radius:6px;"/>
             </hlayout>
 
-            <!-- Tabel Tickets -->
+            <!-- Table Tickets -->
             <groupbox mold="3d" width="100%" style="background:#ffffff; border-radius:10px;">
                 <caption label="📌 All Tickets" style="font-weight:bold; color:#2c3e50;"/>
-                <listbox model="@bind(vm.tickets)" selectedItem="@bind(vm.selected)" mold="paging" pageSize="5" width="800px">
+                <listbox id="ticketList" mold="paging" pageSize="5" width="800px">
                     <listhead>
                         <listheader label="ID" width="50px"/>
                         <listheader label="Title"/>
@@ -36,26 +39,12 @@
                         <listheader label="Assigned To"/>
                         <listheader label="Action" width="100px"/>
                     </listhead>
-                    <template name="model" var="t">
-                        <listitem>
-                            <listcell label="@load(t.id)"/>
-                            <listcell label="@load(t.title)"/>
-                            <listcell label="@load(t.status)"/>
-                            <listcell label="@load(t.priority)"/>
-                            <listcell label="@load(t.assignedTo)"/>
-                            <listcell>
-                                <button label="View"
-                                        href="ticket_detail.zul?id=${t.id}"
-                                        style="background:#3498db; color:white; border-radius:6px;"/>
-                            </listcell>
-                        </listitem>
-                    </template>
                 </listbox>
             </groupbox>
 
-            <button label="➕ Create New Ticket" href="ticket_form.zul"
+            <button id="btnCreate" label="➕ Create New Ticket"
+                    href="ticket_form.zul"
                     style="background:#2ecc71; color:white; border-radius:6px; width:200px;"/>
         </vlayout>
     </window>
 </zk>
-
