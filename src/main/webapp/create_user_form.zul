@@ -7,7 +7,7 @@
             <!-- Header -->
             <label value="Create User Form"
                    style="font-weight:bold; font-size:22px; color:#2c3e50;"/>
-            <label value="Fill in the ticket information below"
+            <label value="Fill in the user information below"
                    style="color:#7f8c8d; font-size:14px; margin-bottom:10px;"/>
 
             <!-- Form Field -->
