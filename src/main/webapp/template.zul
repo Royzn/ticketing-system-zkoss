@@ -1,20 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <zk>
-    <borderlayout width="100%" height="100%">
-        <!-- Sidebar Menu -->
-        <west size="200px" border="normal" collapsible="true">
-            <vlayout spacing="10px" style="padding:15px;">
-                <label value="Menu" style="font-weight:bold; font-size:16px;"/>
-                <a href="dashboard.zul">Dashboard</a>
-                <a href="tickets.zul">Tickets</a>
-                <a href="ticket_form.zul">Create Ticket</a>
-                <a href="ticket_detail.zul">Ticket Detail</a>
-                <a href="users.zul">Users</a>
-            </vlayout>
-        </west>
+    <style>
+        .menu-link {
+        display: block;
+        padding: 10px 15px;
+        margin-bottom: 5px;
+        color: #333;
+        text-decoration: none;
+        font-weight: 500;
+        border-radius: 5px;
+        }
 
-        <!-- Main Content -->
-        <center border="normal">
-            <div style="height:100%; overflow:auto; padding:15px;" self="@insert(content)"></div>
-        </center>
-    </borderlayout>
+        .menu-link:hover {
+        background-color: #e2e6ea;
+        }
+
+        .menu-link.active {
+        background-color: #007bff;
+        color: white;
+        }
+
+        .sidebar {
+        background-color: #f8f9fa;
+        height: 100%;
+        padding: 20px;
+        }
+
+        .content {
+        padding: 25px;
+        background: #ffffff;
+        height: 100%;
+        overflow: auto;
+        }
+    </style>
+
+    <window apply="org.zkoss.bind.BindComposer"
+            viewModel="@id('tvm')@init('latihan.TemplateViewModel')"
+            border="none"
+            width="100%" height="100%">
+
+        <borderlayout width="100%" height="100%">
+
+            <!-- Sidebar -->
+            <west border="none" collapsible="true" splittable="true">
+                <vlayout sclass="sidebar" spacing="10px">
+                    <label value="📋 Menu" style="font-size:18px; font-weight:bold;" />
+
+                    <a href="dashboard.zul" sclass="@load(tvm.dashboardClass)">🏠 Dashboard</a>
+                    <a href="tickets.zul" sclass="@load(tvm.ticketsClass)">🎫 Tickets</a>
+                    <a href="ticket_form.zul" sclass="@load(tvm.formClass)">📝 Create Ticket</a>
+                    <a href="ticket_detail.zul" sclass="@load(tvm.detailClass)">🔍 Ticket Detail</a>
+                    <a href="users.zul" sclass="@load(tvm.usersClass)">👥 Users</a>
+                </vlayout>
+            </west>
+
+            <!-- Main Content -->
+            <center border="none">
+                <div sclass="content" self="@insert(content)">
+                    <!-- Page content loads here -->
+                </div>
+            </center>
+
+        </borderlayout>
+    </window>
 </zk>

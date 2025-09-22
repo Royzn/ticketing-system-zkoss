@@ -4,28 +4,28 @@
             style="border-radius:10px; background:#fdfdfd;" self="@define(content)">
         <vlayout spacing="15px" style="padding:20px;">
             <hbox>
-                <label value="Title:" width="120px" style="font-weight:bold;"/>
-                <textbox width="300px" placeholder="Enter ticket title"/>
+                <label value="Title:" style="font-weight:bold;"/>
+                <textbox placeholder="Enter ticket title"/>
             </hbox>
             <hbox>
-                <label value="Description:" width="120px" style="font-weight:bold;"/>
-                <textbox multiline="true" rows="4" width="300px" placeholder="Describe the issue"/>
+                <label value="Description:" style="font-weight:bold;"/>
+                <textbox multiline="true" rows="4" placeholder="Describe the issue"/>
             </hbox>
             <hbox>
-                <label value="Priority:" width="120px" style="font-weight:bold;"/>
-                <combobox width="150px">
+                <label value="Priority:" style="font-weight:bold;"/>
+                <combobox>
                     <comboitem label="Low"/>
                     <comboitem label="Medium"/>
                     <comboitem label="High"/>
                 </combobox>
             </hbox>
             <hbox>
-                <label value="Assign To:" width="120px" style="font-weight:bold;"/>
-                <textbox width="300px" placeholder="Support agent name"/>
+                <label value="Assign To:" style="font-weight:bold;"/>
+                <textbox placeholder="Support agent name"/>
             </hbox>
             <hbox>
-                <label value="Status:" width="120px" style="font-weight:bold;"/>
-                <combobox width="150px">
+                <label value="Status:" style="font-weight:bold;"/>
+                <combobox>
                     <comboitem label="Open"/>
                     <comboitem label="In Progress"/>
                     <comboitem label="Closed"/>
