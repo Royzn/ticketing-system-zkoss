@@ -23,9 +23,7 @@ public class TicketFormController extends SelectorComposer<Component> {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
 
-        if (saveBtn != null) {
-            saveBtn.addEventListener(Events.ON_CLICK, e -> saveTicket());
-        }
+        saveBtn.addEventListener(Events.ON_CLICK, e -> saveTicket());
     }
 
     private void saveTicket() {
@@ -35,8 +33,7 @@ public class TicketFormController extends SelectorComposer<Component> {
                 statusBox.getValue(),
                 priorityBox.getValue(),
                 assignedToBox.getValue(),
-                (requesterBox.getValue() == null || requesterBox.getValue().isEmpty())
-                        ? "Guest" : requesterBox.getValue()
+                requesterBox.getValue().isEmpty() ? "Guest" : requesterBox.getValue()
         );
 
         Executions.sendRedirect("tickets.zul");
