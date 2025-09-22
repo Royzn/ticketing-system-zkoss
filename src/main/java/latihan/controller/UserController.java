@@ -42,9 +42,9 @@ public class UserController extends SelectorComposer<Component> {
 
             Button viewBtn = new Button("View");
             viewBtn.setStyle("background:#3498db; color:white; border-radius:6px;");
-//            viewBtn.addEventListener(Events.ON_CLICK, ev ->
-//                    Executions.sendRedirect("ticket_detail.zul?id=" + t.getId())
-//            );
+            viewBtn.addEventListener(Events.ON_CLICK, ev ->
+                    Executions.sendRedirect("user_detail.zul?id=" + u.getId())
+            );
 
             Listcell actionCell = new Listcell();
             actionCell.appendChild(viewBtn);

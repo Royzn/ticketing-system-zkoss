@@ -1,0 +1,47 @@
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul" ?>
+
+<zk>
+    <window self="@define(content)" border="none" apply="latihan.controller.UserDetailController">
+        <div style="height:100%; overflow:auto; padding:20px;">
+            <vlayout spacing="20px">
+                <!-- Judul -->
+                <label value="User Detail"
+                       style="font-weight:bold; font-size:22px; color:#2c3e50;"/>
+
+                <!-- Info Ticket -->
+                <groupbox mold="3d" width="100%" style="background:#ffffff; border-radius:10px;">
+                    <caption label="User Information" style="font-weight:bold; color:#2c3e50;"/>
+                    <grid width="700px" style="padding:15px;">
+                        <rows>
+                            <row>
+                                <label value="User ID:" style="font-weight:bold; width:150px;"/>
+                                <label id="userId"/>
+                            </row>
+                            <row>
+                                <label value="Name:" style="font-weight:bold;"/>
+                                <label id="name"/>
+                            </row>
+                            <row>
+                                <label value="Role:" style="font-weight:bold;"/>
+                                <label id="role"/>
+                            </row>
+                            <row>
+                                <label value="Created Date:" style="font-weight:bold;"/>
+                                <label id="createdAt"/>
+                            </row>
+                        </rows>
+                    </grid>
+                </groupbox>
+
+                <!-- Action Buttons -->
+                <hlayout spacing="10px">
+                    <button label="✏ Edit" href="ticket_form.zul"
+                            style="background:#f39c12; color:white; border-radius:6px;"/>
+                    <button label="🗑 Delete"
+                            style="background:#e74c3c; color:white; border-radius:6px;"/>
+                </hlayout>
+
+            </vlayout>
+        </div>
+    </window>
+</zk>
