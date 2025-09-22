@@ -1,15 +1,15 @@
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul" ?>
 <zk>
     <window self="@define(content)"
-            apply="latihan.controller.TicketController">
+            apply="latihan.controller.TicketListController">
         <vlayout spacing="20px" style="padding:20px;">
             <label value="🎫 Ticket List"
                    style="font-weight:bold; font-size:22px; color:#2c3e50;"/>
 
-            <!-- Filter -->
+            <!-- 🔎 Filter -->
             <hlayout spacing="15px">
                 <label value="Filter by Status:" style="font-weight:bold;"/>
-                <combobox id="statusFilter" width="120px">
+                <combobox id="statusFilter" width="150px" placeholder="Select status">
                     <comboitem label="All"/>
                     <comboitem label="Open"/>
                     <comboitem label="In Progress"/>
@@ -17,33 +17,33 @@
                 </combobox>
 
                 <label value="Filter by Priority:" style="font-weight:bold;"/>
-                <combobox id="priorityFilter" width="120px">
+                <combobox id="priorityFilter" width="150px" placeholder="Select priority">
                     <comboitem label="All"/>
                     <comboitem label="Low"/>
                     <comboitem label="Medium"/>
                     <comboitem label="High"/>
                 </combobox>
-                <button id="btnSearch" label="🔍 Search"
-                        style="background:#3498db; color:white; border-radius:6px;"/>
+
+                <button id="btnReset" label="♻ Reset"
+                        style="background:#95a5a6; color:white; border-radius:6px;"/>
             </hlayout>
 
-            <!-- Table Tickets -->
+            <!-- 📋 Table Tickets -->
             <groupbox mold="3d" width="100%" style="background:#ffffff; border-radius:10px;">
                 <caption label="📌 All Tickets" style="font-weight:bold; color:#2c3e50;"/>
-                <listbox id="ticketList" mold="paging" pageSize="5" width="800px">
+                <listbox id="ticketList" mold="paging" pageSize="5" width="100%">
                     <listhead>
                         <listheader label="ID" width="50px"/>
                         <listheader label="Title"/>
                         <listheader label="Status"/>
                         <listheader label="Priority"/>
                         <listheader label="Assigned To"/>
-                        <listheader label="Action" width="100px"/>
+                        <listheader label="Action" width="120px"/>
                     </listhead>
                 </listbox>
             </groupbox>
 
-            <button id="btnCreate" label="➕ Create New Ticket"
-                    href="ticket_form.zul"
+            <button id="btnCreate" label="➕ Create New Ticket" href="ticket_form.zul"
                     style="background:#2ecc71; color:white; border-radius:6px; width:200px;"/>
         </vlayout>
     </window>
