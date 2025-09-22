@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class TicketService {
-    private final TicketRepository repository = new TicketRepository();
+    private final TicketRepository repository = TicketRepository.getInstance();
 
     public List<Ticket> getAllTickets() {
         return repository.findAll();
