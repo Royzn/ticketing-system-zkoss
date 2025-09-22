@@ -29,7 +29,9 @@
             </groupbox>
 
             <button label="➕ Add User"
-                    style="background:#2ecc71; color:white; border-radius:6px; width:150px;"/>
+                    style="background:#2ecc71; color:white; border-radius:6px; width:150px;"
+                    href="create_user_form.zul"
+            />
         </vlayout>
     </window>
 </zk>
