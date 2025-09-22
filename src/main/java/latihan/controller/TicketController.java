@@ -29,16 +29,6 @@ public class TicketController extends SelectorComposer<Component> {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
 
-        System.out.println("Controller running (MVC)");
-
-        // Load dummy kalau kosong
-        if (service.getAllTickets().isEmpty()) {
-            service.createTicket("Email not working", "Cannot send or receive emails",
-                    "Open", "High", "Admin1", "UserA");
-            service.createTicket("VPN issue", "Cannot connect to VPN",
-                    "In Progress", "Medium", "Admin2", "UserB");
-        }
-
         loadTickets();
 
         if (saveBtn != null) {
