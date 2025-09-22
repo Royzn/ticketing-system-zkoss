@@ -1,7 +1,7 @@
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul" ?>
 
 <zk>
-    <window self="@define(content)" width="550px">
+    <window self="@define(content)" width="550px" apply="latihan.controller.UserFormController">
         <vlayout spacing="25px" style="padding:5px;">
 
             <!-- Header -->
@@ -19,11 +19,11 @@
                 <rows>
                     <row>
                         <label value="Name:" style="font-weight:bold; text-align:right;" width="120px"/>
-                        <textbox width="325px" placeholder="Enter User Name"/>
+                        <textbox id="nameBox" width="325px" placeholder="Enter User Name"/>
                     </row>
                     <row>
                         <label value="Role:" style="font-weight:bold; text-align:right;" width="120px"/>
-                        <combobox width="325px" placeholder="Select User Role">
+                        <combobox id="roleBox" width="325px" placeholder="Select User Role">
                             <comboitem label="Agent"/>
                             <comboitem label="User"/>
                         </combobox>
@@ -34,6 +34,7 @@
             <!-- Action Buttons -->
             <hlayout spacing="15px" style="margin-top:15px; justify-content:center;">
                 <button label="💾 Save"
+                        id="saveBtn"
                         style="background:#2ecc71; color:white; font-weight:bold; border:none;
                                padding:8px 20px; border-radius:6px;"/>
                 <button label="❌ Cancel" href="users.zul"
