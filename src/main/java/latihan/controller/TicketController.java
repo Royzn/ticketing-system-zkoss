@@ -17,6 +17,14 @@ public class TicketController {
     public void init() {
         System.out.println("running");
         tickets = service.getAllTickets();
+
+        if (tickets.isEmpty()) {
+            service.createTicket("Email not working", "Cannot send or receive emails",
+                    "Open", "High", "Admin1", "UserA");
+            service.createTicket("VPN issue", "Cannot connect to VPN",
+                    "In Progress", "Medium", "Admin2", "UserB");
+            tickets = service.getAllTickets();
+        }
     }
 
     @Command @NotifyChange("tickets")

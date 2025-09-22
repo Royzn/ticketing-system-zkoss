@@ -8,12 +8,20 @@ import java.util.List;
 import java.util.Optional;
 
 public class TicketRepository {
+    private static TicketRepository instance;
     private final List<Ticket> tickets = new ArrayList<>();
     private Long sequence = 1L;
 
     public TicketRepository(){
         tickets.add(new Ticket(sequence++,"Email not working", "Cannot send or receive emails", "Open", "High", "Admin1", "UserA", LocalDateTime.now()));
         tickets.add(new Ticket(sequence++, "VPN issue", "Cannot connect to VPN", "In Progress", "Medium", "Admin2", "UserB", LocalDateTime.now()));
+    }
+
+    public static TicketRepository getInstance() {
+        if (instance == null) {
+            instance = new TicketRepository();
+        }
+        return instance;
     }
 
     public List<Ticket> findAll() {
