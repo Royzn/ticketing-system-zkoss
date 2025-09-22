@@ -6,6 +6,7 @@ import latihan.entity.User;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ public class UserRepository {
         return users.stream().filter(t -> t.getId().equals(id)).findFirst();
     }
 
-    public User save(User user) {
+    public void save(User user) {
         if (user.getId() == null) {
             user.setId(sequence++);
             users.add(user);
@@ -42,7 +43,7 @@ public class UserRepository {
             users.removeIf(t -> t.getId().equals(user.getId()));
             users.add(user);
         }
-        return user;
+        users.sort(Comparator.comparing(User::getId));
     }
 
     public void delete(Long id) {

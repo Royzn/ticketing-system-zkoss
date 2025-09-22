@@ -1,0 +1,10 @@
+<window id="confirmWin" title="Confirm Delete" border="normal" width="350px"
+        closable="true" mode="modal" apply="latihan.controller.ConfirmModalController">
+    <vlayout spacing="10px" style="padding: 15px;">
+        <label id="confirmMsg" value="Are you sure you want to delete this data?" />
+        <hlayout spacing="10px" style="align:center;">
+            <button id="btnYes" label="Yes" style="background:#e74c3c; color:white; border-radius:6px;" />
+            <button id="btnNo" label="Cancel" />
+        </hlayout>
+    </vlayout>
+</window>

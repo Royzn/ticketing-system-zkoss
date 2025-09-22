@@ -18,16 +18,19 @@ public class UserService {
         return repository.findById(id).orElse(null);
     }
 
-    public User createUser(String name, String role) {
+    public void createUser(String name, String role) {
         User u = new User(null, name, Role.valueOf(role.toUpperCase()), LocalDateTime.now());
-        return repository.save(u);
+        repository.save(u);
     }
 
-    public User updateTicket(User user) {
-        return repository.save(user);
+    public void updateUser(User user, String name, String role) {
+        user.setRole(Role.valueOf(role));
+        user.setName(name);
+        user.setUpdatedDate(LocalDateTime.now());
+        repository.save(user);
     }
 
-    public void deleteTicket(Long id) {
+    public void deleteUser(Long id) {
         repository.delete(id);
     }
 }

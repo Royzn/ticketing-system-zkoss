@@ -35,12 +35,16 @@
 
                 <!-- Action Buttons -->
                 <hlayout spacing="10px">
-                    <button label="✏ Edit" href="ticket_form.zul"
+                    <button label="⬅ Back"
+                            href="users.zul"
+                            tooltiptext="Go back to user list"
+                            style="background-color:#007bff; color:white; border-radius:6px;"/>
+                    <button label="✏ Edit" id="editBtn"
+                            tooltiptext="Update user data"
                             style="background:#f39c12; color:white; border-radius:6px;"/>
-                    <button label="🗑 Delete"
-                            style="background:#e74c3c; color:white; border-radius:6px;"/>
+                    <button label="🗑 Delete" id="deleteBtn"
+                            style="background:#e74c3c; color:white; border-radius:6px;" />
                 </hlayout>
-
             </vlayout>
         </div>
     </window>

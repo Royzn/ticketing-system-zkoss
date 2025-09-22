@@ -5,7 +5,7 @@
         <vlayout spacing="25px" style="padding:5px;">
 
             <!-- Header -->
-            <label value="Create User Form"
+            <label value="Update User Form"
                    style="font-weight:bold; font-size:22px; color:#2c3e50;"/>
             <label value="Fill in the ticket information below"
                    style="color:#7f8c8d; font-size:14px; margin-bottom:10px;"/>
@@ -35,11 +35,11 @@
 
             <!-- Action Buttons -->
             <hlayout spacing="15px" style="margin-top:15px; justify-content:center;">
-                <button label="💾 Save"
-                        id="saveBtn"
+                <button label="💾 Update"
+                        id="updateBtn"
                         style="background:#2ecc71; color:white; font-weight:bold; border:none;
                                padding:8px 20px; border-radius:6px;"/>
-                <button label="❌ Cancel" href="users.zul"
+                <button label="❌ Cancel" id="cancelBtn"
                         style="background:#e74c3c; color:white; font-weight:bold; border:none;
                                padding:8px 20px; border-radius:6px;"/>
             </hlayout>
