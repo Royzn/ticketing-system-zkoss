@@ -49,7 +49,6 @@
                     <a href="dashboard.zul" sclass="@load(tvm.dashboardClass)">🏠 Dashboard</a>
                     <a href="tickets.zul" sclass="@load(tvm.ticketsClass)">🎫 Tickets</a>
                     <a href="ticket_form.zul" sclass="@load(tvm.formClass)">📝 Create Ticket</a>
-                    <a href="ticket_detail.zul" sclass="@load(tvm.detailClass)">🔍 Ticket Detail</a>
                     <a href="users.zul" sclass="@load(tvm.usersClass)">👥 Users</a>
                 </vlayout>
             </west>

@@ -18,7 +18,7 @@ public class TicketListController extends SelectorComposer<Component> {
     @Wire
     private Combobox statusFilter, priorityFilter;
     @Wire
-    private Button btnSearch;
+    private Button btnSearch, btnReset;
 
     private final TicketService service = new TicketService();
 
@@ -32,16 +32,22 @@ public class TicketListController extends SelectorComposer<Component> {
                     "Open", "High", "Admin1", "UserA");
             service.createTicket("VPN issue", "Cannot connect to VPN",
                     "In Progress", "Medium", "Admin2", "UserB");
+            service.createTicket("Keyboard broken", "Keys not working",
+                    "Closed", "Low", "Admin3", "UserC");
         }
 
-        loadTickets();
+        loadTickets(service.getAllTickets());
 
-        btnSearch.addEventListener(Events.ON_CLICK, e -> filterTickets());
+        // 🔥 Real-time filter: saat user pilih status/priority
+        statusFilter.addEventListener(Events.ON_CHANGE, e -> filterTickets());
+        priorityFilter.addEventListener(Events.ON_CHANGE, e -> filterTickets());
+
+        btnReset.addEventListener(Events.ON_CLICK, e -> resetFilter());
     }
 
-    private void loadTickets() {
+    private void loadTickets(List<Ticket> tickets) {
         ticketList.getItems().clear();
-        for (Ticket t : service.getAllTickets()) {
+        for (Ticket t : tickets) {
             ticketList.appendChild(buildListitem(t));
         }
     }
@@ -50,12 +56,25 @@ public class TicketListController extends SelectorComposer<Component> {
         String status = statusFilter.getValue();
         String priority = priorityFilter.getValue();
 
-        ticketList.getItems().clear();
-        for (Ticket t : service.getAllTickets()) {
-            if (!"All".equalsIgnoreCase(status) && !t.getStatus().equalsIgnoreCase(status)) continue;
-            if (!"All".equalsIgnoreCase(priority) && !t.getPriority().equalsIgnoreCase(priority)) continue;
-            ticketList.appendChild(buildListitem(t));
-        }
+        List<Ticket> tickets = service.getAllTickets()
+                .stream()
+                .filter(t -> {
+                    boolean matchStatus = "All".equalsIgnoreCase(status) || status == null || status.isEmpty()
+                            || t.getStatus().equalsIgnoreCase(status);
+                    boolean matchPriority = "All".equalsIgnoreCase(priority) || priority == null || priority.isEmpty()
+                            || t.getPriority().equalsIgnoreCase(priority);
+                    return matchStatus && matchPriority;
+                })
+                .toList(); // Java 16+ (kalau Java 8, pakai collect(Collectors.toList()))
+
+        loadTickets(tickets);
+    }
+
+
+    private void resetFilter() {
+        statusFilter.setValue("All");
+        priorityFilter.setValue("All");
+        loadTickets(service.getAllTickets());
     }
 
     private Listitem buildListitem(Ticket t) {
