@@ -1,6 +1,6 @@
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul" ?>
 <zk>
-    <window self="@define(content)">
+    <window self="@define(content)" viewModel="@id('vm') @init('latihan.controller.TicketController')">
         <vlayout spacing="20px" style="padding:20px;">
             <label value="🎫 Ticket List" style="font-weight:bold; font-size:22px; color:#2c3e50;"/>
 
@@ -27,7 +27,7 @@
             <!-- Tabel Tickets -->
             <groupbox mold="3d" width="100%" style="background:#ffffff; border-radius:10px;">
                 <caption label="📌 All Tickets" style="font-weight:bold; color:#2c3e50;"/>
-                <listbox mold="paging" pageSize="5" width="800px">
+                <listbox model="@bind(vm.tickets)" selectedItem="@bind(vm.selected)" mold="paging" pageSize="5" width="800px">
                     <listhead>
                         <listheader label="ID" width="50px"/>
                         <listheader label="Title"/>
@@ -36,16 +36,20 @@
                         <listheader label="Assigned To"/>
                         <listheader label="Action" width="100px"/>
                     </listhead>
-                    <listitem>
-                        <listcell label="1"/>
-                        <listcell label="Email not working"/>
-                        <listcell label="Open"/>
-                        <listcell label="High"/>
-                        <listcell label="Admin1"/>
-                        <listcell>
-                            <button label="View" href="ticket_detail.zul?id=2"/>
-                        </listcell>
-                    </listitem>
+                    <template name="model" var="t">
+                        <listitem>
+                            <listcell label="@load(t.id)"/>
+                            <listcell label="@load(t.title)"/>
+                            <listcell label="@load(t.status)"/>
+                            <listcell label="@load(t.priority)"/>
+                            <listcell label="@load(t.assignedTo)"/>
+                            <listcell>
+                                <button label="View"
+                                        href="ticket_detail.zul?id=${t.id}"
+                                        style="background:#3498db; color:white; border-radius:6px;"/>
+                            </listcell>
+                        </listitem>
+                    </template>
                 </listbox>
             </groupbox>
 
