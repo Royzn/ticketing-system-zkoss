@@ -1,0 +1,42 @@
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul" ?>
+<zk>
+    <window title="📝 Create / Edit Ticket" border="normal" width="500px"
+            style="border-radius:10px; background:#fdfdfd;" self="@define(content)">
+        <vlayout spacing="15px" style="padding:20px;">
+            <hbox>
+                <label value="Title:" width="120px" style="font-weight:bold;"/>
+                <textbox width="300px" placeholder="Enter ticket title"/>
+            </hbox>
+            <hbox>
+                <label value="Description:" width="120px" style="font-weight:bold;"/>
+                <textbox multiline="true" rows="4" width="300px" placeholder="Describe the issue"/>
+            </hbox>
+            <hbox>
+                <label value="Priority:" width="120px" style="font-weight:bold;"/>
+                <combobox width="150px">
+                    <comboitem label="Low"/>
+                    <comboitem label="Medium"/>
+                    <comboitem label="High"/>
+                </combobox>
+            </hbox>
+            <hbox>
+                <label value="Assign To:" width="120px" style="font-weight:bold;"/>
+                <textbox width="300px" placeholder="Support agent name"/>
+            </hbox>
+            <hbox>
+                <label value="Status:" width="120px" style="font-weight:bold;"/>
+                <combobox width="150px">
+                    <comboitem label="Open"/>
+                    <comboitem label="In Progress"/>
+                    <comboitem label="Closed"/>
+                </combobox>
+            </hbox>
+
+            <hlayout spacing="15px" style="margin-top:10px;">
+                <button label="💾 Save" style="background:#2ecc71; color:white; border-radius:6px;"/>
+                <button label="❌ Cancel" href="tickets.zul"
+                        style="background:#e74c3c; color:white; border-radius:6px;"/>
+            </hlayout>
+        </vlayout>
+    </window>
+</zk>

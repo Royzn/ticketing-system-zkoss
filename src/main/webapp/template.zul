@@ -1,0 +1,20 @@
+<zk>
+    <borderlayout width="100%" height="100%">
+        <!-- Sidebar Menu -->
+        <west size="200px" border="normal" collapsible="true">
+            <vlayout spacing="10px" style="padding:15px;">
+                <label value="Menu" style="font-weight:bold; font-size:16px;"/>
+                <a href="dashboard.zul">Dashboard</a>
+                <a href="tickets.zul">Tickets</a>
+                <a href="ticket_form.zul">Create Ticket</a>
+                <a href="ticket_detail.zul">Ticket Detail</a>
+                <a href="users.zul">Users</a>
+            </vlayout>
+        </west>
+
+        <!-- Main Content -->
+        <center border="normal">
+            <div style="height:100%; overflow:auto; padding:15px;" self="@insert(content)"></div>
+        </center>
+    </borderlayout>
+</zk>

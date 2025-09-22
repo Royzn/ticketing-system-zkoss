@@ -1,0 +1,66 @@
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul" ?>
+
+<zk>
+    <window self="@define(content)">
+        <vlayout spacing="20px" style="padding:20px;">
+
+            <!-- Judul -->
+            <label value="📊 Dashboard Ticketing System"
+                   style="font-weight:bold; font-size:22px; color:#2c3e50;"/>
+
+            <!-- Statistik Atas -->
+            <hlayout spacing="20px">
+                <groupbox mold="3d" width="200px" style="background:#f9f9f9; border-radius:10px;">
+                    <caption label="Tickets by Status" style="font-weight:bold; color:#34495e;"/>
+                    <vlayout style="padding:10px;">
+                        <label value="🟢 Open: 5" style="color:green; font-weight:bold;"/>
+                        <label value="🟡 In Progress: 3" style="color:orange; font-weight:bold;"/>
+                        <label value="🔴 Closed: 7" style="color:red; font-weight:bold;"/>
+                    </vlayout>
+                </groupbox>
+
+                <groupbox mold="3d" width="200px" style="background:#f9f9f9; border-radius:10px;">
+                    <caption label="Tickets by Priority" style="font-weight:bold; color:#34495e;"/>
+                    <vlayout style="padding:10px;">
+                        <label value="🟢 Low: 4" style="color:#27ae60; font-weight:bold;"/>
+                        <label value="🟡 Medium: 6" style="color:#f39c12; font-weight:bold;"/>
+                        <label value="🔴 High: 5" style="color:#c0392b; font-weight:bold;"/>
+                    </vlayout>
+                </groupbox>
+            </hlayout>
+
+            <!-- Tabel Recent Tickets -->
+            <groupbox mold="3d" width="100%" style="background:#ffffff; border-radius:10px;">
+                <caption label="📌 Recent Tickets" style="font-weight:bold; color:#2c3e50;"/>
+                <listbox mold="paging" pageSize="5" width="600px">
+                    <listhead>
+                        <listheader label="ID" width="50px"/>
+                        <listheader label="Title"/>
+                        <listheader label="Status"/>
+                        <listheader label="Priority"/>
+                    </listhead>
+                    <listitem>
+                        <listcell label="1"/>
+                        <listcell label="Email not working"/>
+                        <listcell label="Open"/>
+                        <listcell label="High"/>
+                    </listitem>
+                    <listitem>
+                        <listcell label="2"/>
+                        <listcell label="Cannot login VPN"/>
+                        <listcell label="In Progress"/>
+                        <listcell label="Medium"/>
+                    </listitem>
+                    <listitem>
+                        <listcell label="3"/>
+                        <listcell label="Broken keyboard"/>
+                        <listcell label="Closed"/>
+                        <listcell label="Low"/>
+                    </listitem>
+                </listbox>
+            </groupbox>
+
+        </vlayout>
+    </window>
+
+</zk>

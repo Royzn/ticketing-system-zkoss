@@ -1,0 +1,35 @@
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul" ?>
+<zk>
+    <window self="@define(content)">
+        <vlayout spacing="20px" style="padding:20px;">
+            <label value="👥 User Management"
+                   style="font-weight:bold; font-size:22px; color:#2c3e50;"/>
+
+            <groupbox mold="3d" width="100%" style="background:#ffffff; border-radius:10px;">
+                <caption label="All Users" style="font-weight:bold; color:#2c3e50;"/>
+                <listbox mold="paging" pageSize="5" width="700px">
+                    <listhead>
+                        <listheader label="ID" width="50px"/>
+                        <listheader label="Username"/>
+                        <listheader label="Role"/>
+                        <listheader label="Action" width="120px"/>
+                    </listhead>
+                    <listitem>
+                        <listcell label="1"/>
+                        <listcell label="admin1"/>
+                        <listcell label="Support Agent"/>
+                        <listcell>
+                            <hlayout spacing="5px">
+                                <button label="✏ Edit" style="background:#f39c12; color:white; border-radius:6px;"/>
+                                <button label="🗑 Delete" style="background:#e74c3c; color:white; border-radius:6px;"/>
+                            </hlayout>
+                        </listcell>
+                    </listitem>
+                </listbox>
+            </groupbox>
+
+            <button label="➕ Add User"
+                    style="background:#2ecc71; color:white; border-radius:6px; width:150px;"/>
+        </vlayout>
+    </window>
+</zk>
