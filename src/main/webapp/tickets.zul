@@ -10,14 +10,22 @@
             <!-- 🔎 Filter -->
             <hlayout spacing="15px">
                 <label value="Filter by Status:" style="font-weight:bold;"/>
-                <combobox value="@bind(vm.selectedStatus) @save(vm.selectedStatus, before='onChange')"
-                          width="150px" readonly="true"
-                          model="@bind(vm.statusOptions)"/>
+                <combobox model="@load(vm.statusOptions)"
+                          selectedItem="@bind(vm.selectedStatus)"
+                          autodrop="true" readonly="true">
+                    <template name="model" var="role">
+                        <comboitem label="@load(role.label)" value="@load(role.value)" />
+                    </template>
+                </combobox>
 
                 <label value="Filter by Priority:" style="font-weight:bold;"/>
-                <combobox value="@bind(vm.selectedPriority) @save(vm.selectedPriority, before='onChange')"
-                          width="150px" readonly="true"
-                          model="@bind(vm.priorityOptions)"/>
+                <combobox model="@load(vm.priorityOptions)"
+                          selectedItem="@bind(vm.selectedPriority)"
+                          autodrop="true" readonly="true">
+                    <template name="model" var="role">
+                        <comboitem label="@load(role.label)" value="@load(role.value)" />
+                    </template>
+                </combobox>
 
                 <button label="♻ Reset"
                         onClick="@command('resetFilter')"
@@ -42,8 +50,8 @@
                         <listitem>
                             <listcell label="@load(t.id)"/>
                             <listcell label="@load(t.title)"/>
-                            <listcell label="@load(t.status)"/>
-                            <listcell label="@load(t.priority)"/>
+                            <listcell label="@load(vm.getStatusLabel(t.status))"/>
+                            <listcell label="@load(vm.getPriorityLabel(t.priority))"/>
                             <listcell label="@load(t.assignedTo)"/>
                             <listcell>
                                 <button label="🔍 View"

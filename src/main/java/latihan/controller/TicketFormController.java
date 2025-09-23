@@ -1,9 +1,6 @@
 package latihan.controller; // <-- DIUBAH DI SINI
 
-import latihan.entity.Priority;
-import latihan.entity.Status;
-import latihan.entity.StatusLabel;
-import latihan.entity.Ticket;
+import latihan.entity.*;
 import latihan.service.TicketService;
 import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
@@ -36,6 +33,12 @@ public class TicketFormController {
         if (status == null) return "";
         StatusLabel sl = StatusLabel.fromStatus(status);
         return sl != null ? sl.getLabel() : status.name();
+    }
+
+    public String getPriorityLabelText(Priority priority){
+        if(priority == null) return "";
+        PriorityLabel pl = PriorityLabel.fromPriority(priority);
+        return pl != null ? pl.getLabel() : priority.name();
     }
 
     @Command

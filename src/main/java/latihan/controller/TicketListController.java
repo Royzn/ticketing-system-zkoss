@@ -1,12 +1,12 @@
 package latihan.controller;
 
-import latihan.entity.PriorityLabel;
-import latihan.entity.StatusLabel;
-import latihan.entity.Ticket;
+import latihan.entity.*;
 import latihan.service.TicketService;
+import latihan.viewmodel.UserFormViewModel;
 import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,59 +17,95 @@ public class TicketListController {
     private List<Ticket> tickets;
 
     // --- Perubahan Tipe Data ---
-    private List<StatusLabel> statusOptions;
-    private List<PriorityLabel> priorityOptions;
+    private List<Option> statusOptions;
+    private List<Option> priorityOptions;
 
     // Pilihan "All" sekarang direpresentasikan dengan nilai null
-    private StatusLabel selectedStatus;
-    private PriorityLabel selectedPriority;
+    private Option selectedStatus;
+    private Option selectedPriority;
 
     @Init
     public void init() {
         tickets = service.getAllTickets();
 
         // --- Mengisi opsi langsung dari Enum ---
-        statusOptions = Arrays.asList(StatusLabel.values());
-        priorityOptions = Arrays.asList(PriorityLabel.values());
+        loadStatusOptions();
+        loadPriorityOptions();
 
         // Nilai awal filter adalah null (artinya "All")
-        selectedStatus = null;
-        selectedPriority = null;
+        selectedStatus = statusOptions.get(0);
+        selectedPriority = priorityOptions.get(0);
+    }
+
+    private void loadStatusOptions() {
+        statusOptions = new ArrayList<>();
+        statusOptions.add(new TicketListController.Option("All", "All"));
+        for (Status s : Status.values()) {
+            StatusLabel statusLabel = StatusLabel.fromStatus(s);
+            statusOptions.add(new TicketListController.Option(s.name(), statusLabel.getLabel()));
+        }
+    }
+
+    private void loadPriorityOptions() {
+        priorityOptions = new ArrayList<>();
+        priorityOptions.add(new TicketListController.Option("All", "All"));
+        for (Priority p : Priority.values()) {
+            PriorityLabel priorityLabel = PriorityLabel.fromPriority(p);
+            priorityOptions.add(new TicketListController.Option(p.name(), priorityLabel.getLabel()));
+        }
+    }
+
+    public static class Option {
+        private final String value;
+        private final String label;
+
+        public Option(String value, String label) {
+            this.value = value;
+            this.label = label;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public String getLabel() {
+            return label;
+        }
     }
 
     public List<Ticket> getFilteredTickets() {
         return tickets.stream()
-                .filter(t -> selectedStatus == null // Jika null, berarti "All", loloskan semua
-                        || t.getStatus() == selectedStatus.getStatus()) // Bandingkan enum Status
-                .filter(t -> selectedPriority == null // Jika null, berarti "All", loloskan semua
-                        || t.getPriority() == selectedPriority.getPriority()) // Bandingkan enum Priority
+                .filter(t -> selectedStatus.getValue().equals("All") // Jika null, berarti "All", loloskan semua
+                        || t.getStatus().toString().equals(selectedStatus.getValue()) ) // Bandingkan enum Status
+                .filter(t -> selectedPriority.getValue().equals("All") // Jika null, berarti "All", loloskan semua
+                        || t.getPriority().toString().equals(selectedPriority.getValue())) // Bandingkan enum Priority
                 .collect(Collectors.toList());
     }
 
     // --- Getter dan Setter yang diperbarui ---
-    public List<StatusLabel> getStatusOptions() {
+    public List<Option> getStatusOptions() {
         return statusOptions;
     }
 
-    public List<PriorityLabel> getPriorityOptions() {
+    public List<Option> getPriorityOptions() {
         return priorityOptions;
     }
 
-    public StatusLabel getSelectedStatus() {
+    public Option getSelectedStatus() {
         return selectedStatus;
     }
 
     @NotifyChange("filteredTickets") // Tambahkan notifikasi saat setter dipanggil
-    public void setSelectedStatus(StatusLabel selectedStatus) {
+    public void setSelectedStatus(Option selectedStatus) {
         this.selectedStatus = selectedStatus;
     }
 
-    public PriorityLabel getSelectedPriority() {
+    public Option getSelectedPriority() {
         return selectedPriority;
     }
 
     @NotifyChange("filteredTickets") // Tambahkan notifikasi saat setter dipanggil
-    public void setSelectedPriority(PriorityLabel selectedPriority) {
+    public void setSelectedPriority(Option selectedPriority) {
         this.selectedPriority = selectedPriority;
     }
 
@@ -77,12 +113,20 @@ public class TicketListController {
     @Command
     @NotifyChange({"filteredTickets", "selectedStatus", "selectedPriority"}) // Notifikasi semua yang berubah
     public void resetFilter() {
-        selectedStatus = null;
-        selectedPriority = null;
+        selectedStatus = statusOptions.get(0);
+        selectedPriority = priorityOptions.get(0);
     }
 
     @Command
     public void viewTicket(@BindingParam("id") Long id) {
         Executions.sendRedirect("ticket_detail.zul?id=" + id);
+    }
+
+    public String getStatusLabel(String status) {
+        return StatusLabel.fromStatus(Status.valueOf(status)).getLabel();
+    }
+
+    public String getPriorityLabel(String priority) {
+        return PriorityLabel.fromPriority(Priority.valueOf(priority)).getLabel();
     }
 }
