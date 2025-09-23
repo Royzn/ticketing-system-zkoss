@@ -1,6 +1,6 @@
 package latihan.controller;
 
-import latihan.entity.Ticket;
+import latihan.entity.*;
 import latihan.service.TicketService;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -26,21 +26,40 @@ public class TicketListController extends SelectorComposer<Component> {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
 
-        // dummy data kalau kosong
-        if (service.getAllTickets().isEmpty()) {
-            service.createTicket("Email not working", "Cannot send/receive emails",
-                    "Open", "High", "Admin1", "UserA");
-            service.createTicket("VPN issue", "Cannot connect to VPN",
-                    "In Progress", "Medium", "Admin2", "UserB");
-            service.createTicket("Keyboard broken", "Keys not working",
-                    "Closed", "Low", "Admin3", "UserC");
-        }
-
         loadTickets(service.getAllTickets());
 
+        if(statusFilter != null){
+            Comboitem i = new Comboitem();
+            i.setLabel("All");
+            i.setValue("All");
+            i.setParent(statusFilter);
+            for (Status s : Status.values()) {
+                StatusLabel statusLabel = StatusLabel.fromStatus(s);
+                if (statusLabel != null) {
+                    Comboitem item = new Comboitem();
+                    item.setLabel(statusLabel.getLabel());
+                    item.setValue(s.name()); // the enum value
+                    item.setParent(statusFilter);
+                }
+            }
+        }
+
+        if(priorityFilter != null){
+            Comboitem i = new Comboitem();
+            i.setLabel("All");
+            i.setValue("All");
+            i.setParent(priorityFilter);
+            for (Priority p : Priority.values()) {
+                Comboitem item = new Comboitem();
+                item.setLabel(p.name());
+                item.setValue(p);
+                item.setParent(priorityFilter);
+            }
+        }
+
         // 🔥 Real-time filter: saat user pilih status/priority
-        statusFilter.addEventListener(Events.ON_CHANGE, e -> filterTickets());
-        priorityFilter.addEventListener(Events.ON_CHANGE, e -> filterTickets());
+        if(statusFilter!= null) statusFilter.addEventListener(Events.ON_CHANGE, e -> filterTickets());
+        if(priorityFilter!=null) priorityFilter.addEventListener(Events.ON_CHANGE, e -> filterTickets());
 
         btnReset.addEventListener(Events.ON_CLICK, e -> resetFilter());
     }
@@ -53,19 +72,27 @@ public class TicketListController extends SelectorComposer<Component> {
     }
 
     private void filterTickets() {
-        String status = statusFilter.getValue();
+        //buat ambil value
+        Comboitem selectedStatusFilter = statusFilter.getSelectedItem();
+        String status;
+        if (selectedStatusFilter != null) {
+            status = (String) selectedStatusFilter.getValue();
+        } else {
+            status = "";
+        }
+
         String priority = priorityFilter.getValue();
 
         List<Ticket> tickets = service.getAllTickets()
                 .stream()
                 .filter(t -> {
                     boolean matchStatus = "All".equalsIgnoreCase(status) || status == null || status.isEmpty()
-                            || t.getStatus().equalsIgnoreCase(status);
+                            || t.getStatus().toString().equals(status);
                     boolean matchPriority = "All".equalsIgnoreCase(priority) || priority == null || priority.isEmpty()
-                            || t.getPriority().equalsIgnoreCase(priority);
+                            || t.getPriority().toString().equals(priority);
                     return matchStatus && matchPriority;
                 })
-                .toList(); // Java 16+ (kalau Java 8, pakai collect(Collectors.toList()))
+                .toList();
 
         loadTickets(tickets);
     }
@@ -81,8 +108,8 @@ public class TicketListController extends SelectorComposer<Component> {
         Listitem item = new Listitem();
         item.appendChild(new Listcell(String.valueOf(t.getId())));
         item.appendChild(new Listcell(t.getTitle()));
-        item.appendChild(new Listcell(t.getStatus()));
-        item.appendChild(new Listcell(t.getPriority()));
+        item.appendChild(new Listcell(StatusLabel.fromStatus(t.getStatus()).getLabel()));
+        item.appendChild(new Listcell(t.getPriority().toString()));
         item.appendChild(new Listcell(t.getAssignedTo()));
 
         Button btnView = new Button("View");

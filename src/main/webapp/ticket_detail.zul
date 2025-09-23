@@ -60,18 +60,6 @@
                             style="background:#e74c3c; color:white; border-radius:6px;"/>
                 </hlayout>
 
-
-                <!-- Comments Section -->
-                <!--                <include src="comments.zul" />-->
-                <!--                <groupbox mold="3d" width="100%" style="margin-top:20px; background:#ffffff; border-radius:10px;">-->
-                <!--                    -->
-                <!--                    &lt;!&ndash; Tambah Komentar &ndash;&gt;-->
-                <!--                    <hlayout spacing="10px" style="margin-top:10px; padding:10px;">-->
-                <!--                        <textbox width="500px" placeholder="Write a comment..."/>-->
-                <!--                        <button label="➡ Send"-->
-                <!--                                style="background:#2ecc71; color:white; border-radius:6px;"/>-->
-                <!--                    </hlayout>-->
-                <!--                </groupbox>-->
             </vlayout>
         </div>
     </window>

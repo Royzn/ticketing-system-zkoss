@@ -1,5 +1,6 @@
 package latihan.controller;
 
+import latihan.entity.StatusLabel;
 import latihan.entity.Ticket;
 import latihan.service.TicketService;
 import org.zkoss.zk.ui.Component;
@@ -30,14 +31,14 @@ public class DashboardController extends SelectorComposer<Component> {
         List<Ticket> tickets = service.getAllTickets();
 
         // hitung status
-        long openCount = tickets.stream().filter(t -> "Open".equalsIgnoreCase(t.getStatus())).count();
-        long inProgressCount = tickets.stream().filter(t -> "In Progress".equalsIgnoreCase(t.getStatus())).count();
-        long closedCount = tickets.stream().filter(t -> "Closed".equalsIgnoreCase(t.getStatus())).count();
+        long openCount = tickets.stream().filter(t -> "OPEN".equalsIgnoreCase(t.getStatus().toString())).count();
+        long inProgressCount = tickets.stream().filter(t -> "IN_PROGRESS".equalsIgnoreCase(t.getStatus().toString())).count();
+        long closedCount = tickets.stream().filter(t -> "CLOSED".equalsIgnoreCase(t.getStatus().toString())).count();
 
         // hitung priority
-        long lowCount = tickets.stream().filter(t -> "Low".equalsIgnoreCase(t.getPriority())).count();
-        long mediumCount = tickets.stream().filter(t -> "Medium".equalsIgnoreCase(t.getPriority())).count();
-        long highCount = tickets.stream().filter(t -> "High".equalsIgnoreCase(t.getPriority())).count();
+        long lowCount = tickets.stream().filter(t -> "LOW".equalsIgnoreCase(t.getPriority().toString())).count();
+        long mediumCount = tickets.stream().filter(t -> "MEDIUM".equalsIgnoreCase(t.getPriority().toString())).count();
+        long highCount = tickets.stream().filter(t -> "HIGH".equalsIgnoreCase(t.getPriority().toString())).count();
 
         // update label
         lblOpen.setValue("Open: " + openCount);
@@ -57,8 +58,8 @@ public class DashboardController extends SelectorComposer<Component> {
                     Row row = new Row();
                     row.appendChild(new Label(String.valueOf(t.getId())));
                     row.appendChild(new Label(t.getTitle()));
-                    row.appendChild(new Label(t.getStatus()));
-                    row.appendChild(new Label(t.getPriority()));
+                    row.appendChild(new Label(StatusLabel.fromStatus(t.getStatus()).getLabel()));
+                    row.appendChild(new Label(t.getPriority().toString()));
                     recentRows.appendChild(row);
                 });
         System.out.println("Tickets size: " + tickets.size());
