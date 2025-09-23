@@ -1,5 +1,6 @@
 package latihan.controller;
 
+import latihan.entity.RoleLabel;
 import latihan.entity.Ticket;
 import latihan.entity.User;
 import latihan.service.UserService;
@@ -25,7 +26,6 @@ public class UserController extends SelectorComposer<Component> {
     public void doAfterCompose(Component comp) throws Exception{
         super.doAfterCompose(comp);
         loadUsers();
-
     }
 
     private void loadUsers() {
@@ -38,7 +38,7 @@ public class UserController extends SelectorComposer<Component> {
             Listitem item = new Listitem();
             item.appendChild(new Listcell(String.valueOf(u.getId())));
             item.appendChild(new Listcell(u.getName()));
-            item.appendChild(new Listcell(u.getRole().toString()));
+            item.appendChild(new Listcell(RoleLabel.fromStatus(u.getRole()).getLabel()));
 
             Button viewBtn = new Button("View");
             viewBtn.setStyle("background:#3498db; color:white; border-radius:6px;");

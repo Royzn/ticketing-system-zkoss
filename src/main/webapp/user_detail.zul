@@ -1,7 +1,8 @@
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul" ?>
 
 <zk>
-    <window self="@define(content)" border="none" apply="latihan.controller.UserDetailController">
+    <window self="@define(content)" border="none" apply="org.zkoss.bind.BindComposer"
+            viewModel="@id('vm') @init('latihan.viewmodel.UserDetailViewModel')">
         <div style="height:100%; overflow:auto; padding:20px;">
             <vlayout spacing="20px">
                 <!-- Judul -->
@@ -15,19 +16,19 @@
                         <rows>
                             <row>
                                 <label value="User ID:" style="font-weight:bold; width:150px;"/>
-                                <label id="userId"/>
+                                <label value="@load(vm.userId)"/>
                             </row>
                             <row>
                                 <label value="Name:" style="font-weight:bold;"/>
-                                <label id="name"/>
+                                <label value="@load(vm.name)"/>
                             </row>
                             <row>
                                 <label value="Role:" style="font-weight:bold;"/>
-                                <label id="role"/>
+                                <label value="@load(vm.role)"/>
                             </row>
                             <row>
                                 <label value="Created Date:" style="font-weight:bold;"/>
-                                <label id="createdAt"/>
+                                <label value="@load(vm.createdAt)"/>
                             </row>
                         </rows>
                     </grid>
@@ -39,10 +40,10 @@
                             href="users.zul"
                             tooltiptext="Go back to user list"
                             style="background-color:#007bff; color:white; border-radius:6px;"/>
-                    <button label="✏ Edit" id="editBtn"
+                    <button label="✏ Edit" onClick="@command('edit')"
                             tooltiptext="Update user data"
                             style="background:#f39c12; color:white; border-radius:6px;"/>
-                    <button label="🗑 Delete" id="deleteBtn"
+                    <button label="🗑 Delete" onClick="@command('delete')"
                             style="background:#e74c3c; color:white; border-radius:6px;" />
                 </hlayout>
             </vlayout>

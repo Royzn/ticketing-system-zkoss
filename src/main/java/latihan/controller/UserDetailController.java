@@ -1,5 +1,6 @@
 package latihan.controller;
 
+import latihan.entity.RoleLabel;
 import latihan.entity.User;
 import latihan.service.UserService;
 import org.zkoss.zk.ui.Component;
@@ -54,19 +55,19 @@ public class UserDetailController extends SelectorComposer<Component> {
         if (deleteBtn != null) {
             deleteBtn.addEventListener(Events.ON_CLICK, e -> {
                 // Load confirmation modal dynamically
-                Window confirmWin = (Window) Executions.createComponents(
-                        "/confirm_win.zul", null, null);
-
-                // Get the modal's controller and configure it
-                ConfirmModalController modalCtrl = (ConfirmModalController) confirmWin.getAttribute("controller");
-                if(modalCtrl != null){
-                    modalCtrl.setConfirmMessage("Are you sure you want to delete user \"" + name.getValue() + "\"?");
-                    modalCtrl.setOnConfirm(() -> {
-                        userService.deleteUser(id);
-                        Executions.sendRedirect("users.zul");
-                    });
-                }
-                confirmWin.doModal();
+//                Window confirmWin = (Window) Executions.createComponents(
+//                        "/confirm_win.zul", null, null);
+//
+//                // Get the modal's controller and configure it
+//                ConfirmModalController modalCtrl = (ConfirmModalController) confirmWin.getAttribute("controller");
+//                if(modalCtrl != null){
+//                    modalCtrl.setConfirmMessage("Are you sure you want to delete user \"" + name.getValue() + "\"?");
+//                    modalCtrl.setOnConfirm(() -> {
+//                        userService.deleteUser(id);
+//                        Executions.sendRedirect("users.zul");
+//                    });
+//                }
+//                confirmWin.doModal();
             });
         }
 
@@ -78,7 +79,7 @@ public class UserDetailController extends SelectorComposer<Component> {
         if(u != null){
             userId.setValue(u.getId().toString());
             name.setValue(u.getName());
-            role.setValue(u.getRole().toString());
+            role.setValue(RoleLabel.fromStatus(u.getRole()).getLabel());
             LocalDateTime createdDate = u.getCreatedDate(); // e.g., LocalDateTime
             DateTimeFormatter formatter = DateTimeFormatter
                     .ofPattern("dd MMM yyyy, HH:mm", Locale.getDefault());

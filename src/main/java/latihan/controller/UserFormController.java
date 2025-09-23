@@ -1,7 +1,6 @@
 package latihan.controller;
 
-import latihan.entity.Role;
-import latihan.entity.User;
+import latihan.entity.*;
 import latihan.service.UserService;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -38,6 +37,18 @@ public class UserFormController extends SelectorComposer<Component> {
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
 
+        if(roleBox != null){
+            for (Role r : Role.values()) {
+                RoleLabel roleLabel = RoleLabel.fromStatus(r);
+                if (roleLabel != null) {
+                    Comboitem item = new Comboitem();
+                    item.setLabel(roleLabel.getLabel());
+                    item.setValue(r.name()); // the enum value
+                    item.setParent(roleBox);
+                }
+            }
+        }
+
         String idParam = Executions.getCurrent().getParameter("id");
 
         if (idParam != null) {
@@ -63,15 +74,6 @@ public class UserFormController extends SelectorComposer<Component> {
                 Executions.sendRedirect(targetUrl);
             });
         }
-
-        if(roleBox != null){
-            for (Role role : Role.values()) {
-                Comboitem item = new Comboitem();
-                item.setLabel(role.name());
-                item.setValue(role);
-                item.setParent(roleBox);
-            }
-        }
     }
 
     public void getUserData(){
@@ -81,11 +83,20 @@ public class UserFormController extends SelectorComposer<Component> {
         if(u != null){
             nameBox.setValue(u.getName());
             for (Comboitem item : roleBox.getItems()) {
-                if (u.getRole().toString().equals(item.getLabel())) {
+                if (u.getRole().toString().equals(item.getValue())) {
                     roleBox.setSelectedItem(item);
                     break;
                 }
             }
+        }
+    }
+
+    private String getUserRole(){
+        Comboitem selectedStatus = roleBox.getSelectedItem();
+        if (selectedStatus != null) {
+            return (String) selectedStatus.getValue();
+        } else {
+            return  "";
         }
     }
 
@@ -104,7 +115,7 @@ public class UserFormController extends SelectorComposer<Component> {
 
         service.createUser(
                 nameBox.getValue().trim(),
-                roleBox.getValue()
+                getUserRole()
         );
 
         Executions.sendRedirect("users.zul");
@@ -123,7 +134,7 @@ public class UserFormController extends SelectorComposer<Component> {
             return;
         }
 
-        service.updateUser(user, nameBox.getValue(), roleBox.getValue());
+        service.updateUser(user, nameBox.getValue(), getUserRole());
 
         Executions.sendRedirect("users.zul");
     }
