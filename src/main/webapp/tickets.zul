@@ -9,19 +9,11 @@
             <!-- 🔎 Filter -->
             <hlayout spacing="15px">
                 <label value="Filter by Status:" style="font-weight:bold;"/>
-                <combobox id="statusFilter" width="150px" placeholder="Select status">
-                    <comboitem label="All"/>
-                    <comboitem label="Open"/>
-                    <comboitem label="In Progress"/>
-                    <comboitem label="Closed"/>
+                <combobox id="statusFilter" width="150px" placeholder="Select status" readonly="true">
                 </combobox>
 
                 <label value="Filter by Priority:" style="font-weight:bold;"/>
-                <combobox id="priorityFilter" width="150px" placeholder="Select priority">
-                    <comboitem label="All"/>
-                    <comboitem label="Low"/>
-                    <comboitem label="Medium"/>
-                    <comboitem label="High"/>
+                <combobox id="priorityFilter" width="150px" placeholder="Select priority" readonly="true">
                 </combobox>
 
                 <button id="btnReset" label="♻ Reset"

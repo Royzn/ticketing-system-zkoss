@@ -1,5 +1,6 @@
 package latihan.controller;
 
+import latihan.entity.StatusLabel;
 import latihan.entity.Ticket;
 import latihan.service.TicketService;
 import org.zkoss.zk.ui.Component;
@@ -35,8 +36,8 @@ public class TicketDetailController extends SelectorComposer<Component> {
                 lblId.setValue(ticket.getId().toString());
                 lblTitle.setValue(ticket.getTitle());
                 lblDescription.setValue(ticket.getDescription());
-                lblStatus.setValue(ticket.getStatus());
-                lblPriority.setValue(ticket.getPriority());
+                lblStatus.setValue(StatusLabel.fromStatus(ticket.getStatus()).getLabel());
+                lblPriority.setValue(ticket.getPriority().toString());
                 lblAssignedTo.setValue(ticket.getAssignedTo());
                 lblRequester.setValue(ticket.getRequester());
                 lblCreatedDate.setValue(ticket.getCreatedDate().toString());

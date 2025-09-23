@@ -1,5 +1,6 @@
 package latihan.controller;
 
+import latihan.entity.StatusLabel;
 import latihan.entity.Ticket;
 import latihan.service.TicketService;
 import org.zkoss.bind.annotation.Command;
@@ -46,8 +47,8 @@ public class TicketController extends SelectorComposer<Component> {
             Listitem item = new Listitem();
             item.appendChild(new Listcell(String.valueOf(t.getId())));
             item.appendChild(new Listcell(t.getTitle()));
-            item.appendChild(new Listcell(t.getStatus()));
-            item.appendChild(new Listcell(t.getPriority()));
+            item.appendChild(new Listcell(StatusLabel.fromStatus(t.getStatus()).getLabel()));
+            item.appendChild(new Listcell(t.getPriority().toString()));
             item.appendChild(new Listcell(t.getAssignedTo()));
 
             Button viewBtn = new Button("View");
@@ -64,7 +65,6 @@ public class TicketController extends SelectorComposer<Component> {
         }
     }
 
-    @Command
     private void saveTicket() {
         String title = titleBox.getValue();
         String desc = descBox.getValue();

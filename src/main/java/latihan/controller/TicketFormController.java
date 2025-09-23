@@ -1,5 +1,8 @@
 package latihan.controller;
 
+import latihan.entity.Priority;
+import latihan.entity.Status;
+import latihan.entity.StatusLabel;
 import latihan.entity.Ticket;
 import latihan.service.TicketService;
 import org.zkoss.zk.ui.Component;
@@ -30,41 +33,64 @@ public class TicketFormController extends SelectorComposer<Component> {
             editingTicket = service.getTicket(id);
 
             if (editingTicket != null) {
-                // Prefill form dengan data tiket
                 titleBox.setValue(editingTicket.getTitle());
                 descBox.setValue(editingTicket.getDescription());
-                priorityBox.setValue(editingTicket.getPriority());
+                priorityBox.setValue(editingTicket.getPriority().toString());
                 assignedToBox.setValue(editingTicket.getAssignedTo());
-                statusBox.setValue(editingTicket.getStatus());
+                statusBox.setValue(editingTicket.getStatus().toString());
                 requesterBox.setValue(editingTicket.getRequester());
+            }
+        }
+
+        if(statusBox !=null) {
+            for (Status s : Status.values()) {
+                StatusLabel statusLabel = StatusLabel.fromStatus(s);
+                if (statusLabel != null) {
+                    Comboitem item = new Comboitem();
+                    item.setLabel(statusLabel.getLabel());
+                    item.setValue(s.name()); // the enum value
+                    item.setParent(statusBox);
+                }
+            }
+        }
+
+        if(priorityBox!=null){
+            for (Priority p : Priority.values()) {
+                Comboitem item = new Comboitem();
+                item.setLabel(p.name());
+                item.setValue(p);
+                item.setParent(priorityBox);
             }
         }
 
         // Action tombol save
         saveBtn.addEventListener("onClick", e -> {
-            if (editingTicket == null) {
-                // Mode Create
-                service.createTicket(
-                        titleBox.getValue(),
-                        descBox.getValue(),
-                        statusBox.getValue(),
-                        priorityBox.getValue(),
-                        assignedToBox.getValue(),
-                        requesterBox.getValue()
-                );
-            } else {
-                // Mode Update
-                editingTicket.setTitle(titleBox.getValue());
-                editingTicket.setDescription(descBox.getValue());
-                editingTicket.setStatus(statusBox.getValue());
-                editingTicket.setPriority(priorityBox.getValue());
-                editingTicket.setAssignedTo(assignedToBox.getValue());
-                editingTicket.setRequester(requesterBox.getValue());
-
-                service.updateTicket(editingTicket); // 🔑 pastikan ada di service
-            }
-
-            Executions.sendRedirect("tickets.zul");
+            updateTicket();
         });
+    }
+
+    public void updateTicket(){
+        Comboitem selectedStatus = statusBox.getSelectedItem();
+        String status;
+        if (selectedStatus != null) {
+            status = (String) selectedStatus.getValue();
+        } else {
+            status = "";
+        }
+
+        if (editingTicket == null) {
+            service.createTicket(
+                    titleBox.getValue(),
+                    descBox.getValue(),
+                    status,
+                    priorityBox.getValue(),
+                    assignedToBox.getValue(),
+                    requesterBox.getValue()
+            );
+        } else {
+            service.updateTicket(editingTicket, titleBox.getValue(), descBox.getValue(), statusBox.getValue(), priorityBox.getValue(), assignedToBox.getValue(), requesterBox.getValue()); // 🔑 pastikan ada di service
+        }
+
+        Executions.sendRedirect("tickets.zul");
     }
 }
