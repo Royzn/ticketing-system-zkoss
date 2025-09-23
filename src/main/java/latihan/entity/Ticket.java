@@ -1,14 +1,28 @@
 package latihan.entity;
 
+import javax.persistence.*;
+
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "tickets")
 public class Ticket {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "title")
     private String title;
+    @Column(name = "description")
     private String description;
+    @Column(name = "status")
     private String status;
+    @Column(name = "priority")
     private String priority;
+    @ManyToOne
+    @JoinColumn(name = "assigned_to_id")
     private User assignedTo;
+    @Column(name = "requester")
     private String requester;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
