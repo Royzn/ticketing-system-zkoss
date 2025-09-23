@@ -37,7 +37,7 @@
                             </row>
                             <row>
                                 <label value="Assigned To:" style="font-weight:bold;"/>
-                                <label value="@load(vm.ticket.assignedTo)"/>
+                                <label value="@load(vm.getAssignedToName(vm.ticket.assignedTo))"/>
                             </row>
                             <row>
                                 <label value="Requester:" style="font-weight:bold;"/>
@@ -60,6 +60,10 @@
                 </div>
 
                 <hlayout spacing="10px">
+                    <button label="⬅ Back"
+                            href="tickets.zul"
+                            tooltiptext="Go back to user list"
+                            style="background-color:#007bff; color:white; border-radius:6px;"/>
                     <button label="✏ Edit" onClick="@command('editTicket')"
                             style="background:#f39c12; color:white; border-radius:6px;"/>
                     <button label="🔄 Change Status" onClick="@command('changeStatus')"

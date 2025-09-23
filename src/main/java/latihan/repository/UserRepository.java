@@ -34,6 +34,12 @@ public class UserRepository {
         }).toList();
     }
 
+    public List<UserListDto> getAgent() {
+        return users.stream().filter(e-> e.getRole().equals(Role.AGENT)).map(e->{
+            return new UserListDto(e.getId(), e.getName(), e.getRole());
+        }).toList();
+    }
+
     public Optional<User> findById(Long id) {
         return users.stream().filter(t -> t.getId().equals(id)).findFirst();
     }

@@ -15,8 +15,8 @@ public class TicketRepository {
     private Long sequence = 1L;
 
     public TicketRepository(){
-        tickets.add(new Ticket(sequence++,"Email not working", "Cannot send or receive emails", Status.OPEN, Priority.HIGH, "Admin1", "UserA", LocalDateTime.now()));
-        tickets.add(new Ticket(sequence++, "VPN issue", "Cannot connect to VPN", Status.IN_PROGRESS, Priority.MEDIUM, "Admin2", "UserB", LocalDateTime.now()));
+//        tickets.add(new Ticket(sequence++,"Email not working", "Cannot send or receive emails", Status.OPEN, Priority.HIGH, 1L, "UserA", LocalDateTime.now()));
+//        tickets.add(new Ticket(sequence++, "VPN issue", "Cannot connect to VPN", Status.IN_PROGRESS, Priority.MEDIUM, 2L, "UserB", LocalDateTime.now()));
     }
 
     public static TicketRepository getInstance() {
