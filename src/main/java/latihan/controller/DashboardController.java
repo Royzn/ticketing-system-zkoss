@@ -1,68 +1,87 @@
 package latihan.controller;
 
+import latihan.entity.Priority;
+import latihan.entity.PriorityLabel;
+import latihan.entity.Status;
 import latihan.entity.StatusLabel;
 import latihan.entity.Ticket;
 import latihan.service.TicketService;
-import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.select.SelectorComposer;
-import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zul.*;
+import org.zkoss.bind.annotation.Init;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class DashboardController extends SelectorComposer<Component> {
-
-    @Wire
-    private Label lblOpen, lblInProgress, lblClosed;
-    @Wire
-    private Label lblLow, lblMedium, lblHigh;
-    @Wire
-    private Rows recentRows;
+public class DashboardController {
 
     private final TicketService service = new TicketService();
 
-    @Override
-    public void doAfterCompose(Component comp) throws Exception {
-        super.doAfterCompose(comp);
-        updateDashboard();
+    // Properti untuk menyimpan hasil perhitungan
+    private long openCount;
+    private long inProgressCount;
+    private long closedCount;
+    private long lowCount;
+    private long mediumCount;
+    private long highCount;
+
+    // Properti untuk menyimpan daftar tiket terbaru
+    private List<Ticket> recentTickets;
+
+    @Init
+    public void init() {
+        // Panggil metode untuk memuat dan memproses semua data
+        loadDashboardData();
     }
 
-    private void updateDashboard() {
+    private void loadDashboardData() {
         List<Ticket> tickets = service.getAllTickets();
+        if (tickets == null || tickets.isEmpty()) {
+            recentTickets = Collections.emptyList();
+            return;
+        }
 
-        // hitung status
-        long openCount = tickets.stream().filter(t -> "OPEN".equalsIgnoreCase(t.getStatus().toString())).count();
-        long inProgressCount = tickets.stream().filter(t -> "IN_PROGRESS".equalsIgnoreCase(t.getStatus().toString())).count();
-        long closedCount = tickets.stream().filter(t -> "CLOSED".equalsIgnoreCase(t.getStatus().toString())).count();
+        // 1. Hitung jumlah tiket berdasarkan Status
+        openCount = tickets.stream().filter(t -> t.getStatus() == Status.OPEN).count();
+        inProgressCount = tickets.stream().filter(t -> t.getStatus() == Status.IN_PROGRESS).count();
+        closedCount = tickets.stream().filter(t -> t.getStatus() == Status.CLOSED).count();
 
-        // hitung priority
-        long lowCount = tickets.stream().filter(t -> "LOW".equalsIgnoreCase(t.getPriority().toString())).count();
-        long mediumCount = tickets.stream().filter(t -> "MEDIUM".equalsIgnoreCase(t.getPriority().toString())).count();
-        long highCount = tickets.stream().filter(t -> "HIGH".equalsIgnoreCase(t.getPriority().toString())).count();
+        // 2. Hitung jumlah tiket berdasarkan Prioritas
+        lowCount = tickets.stream().filter(t -> t.getPriority() == Priority.LOW).count();
+        mediumCount = tickets.stream().filter(t -> t.getPriority() == Priority.MEDIUM).count();
+        highCount = tickets.stream().filter(t -> t.getPriority() == Priority.HIGH).count();
 
-        // update label
-        lblOpen.setValue("Open: " + openCount);
-        lblInProgress.setValue("In Progress: " + inProgressCount);
-        lblClosed.setValue("Closed: " + closedCount);
+        // 3. Ambil 5 tiket terbaru untuk ditampilkan di grid
+        recentTickets = tickets.stream()
+                .sorted((t1, t2) -> t2.getCreatedDate().compareTo(t1.getCreatedDate())) // Urutkan berdasarkan tanggal terbaru
+                .limit(5) // Ambil 5 tiket teratas
+                .collect(Collectors.toList());
+    }
 
-        lblLow.setValue("Low: " + lowCount);
-        lblMedium.setValue("Medium: " + mediumCount);
-        lblHigh.setValue("High: " + highCount);
+    // --- Getters untuk Label Teks (Computed Properties) ---
+    // Cara ini lebih bersih daripada menggabungkan String di file ZUL.
 
-        // isi tabel recent tickets (3 terakhir)
-        recentRows.getChildren().clear(); // clear old rows
-        tickets.stream()
-                .sorted((a, b) -> Long.compare(b.getId(), a.getId())) // urutkan desc by id
-                .limit(3)
-                .forEach(t -> {
-                    Row row = new Row();
-                    row.appendChild(new Label(String.valueOf(t.getId())));
-                    row.appendChild(new Label(t.getTitle()));
-                    row.appendChild(new Label(StatusLabel.fromStatus(t.getStatus()).getLabel()));
-                    row.appendChild(new Label(t.getPriority().toString()));
-                    recentRows.appendChild(row);
-                });
-        System.out.println("Tickets size: " + tickets.size());
+    public String getOpenCountLabel() { return "Open: " + openCount; }
+    public String getInProgressCountLabel() { return "In Progress: " + inProgressCount; }
+    public String getClosedCountLabel() { return "Closed: " + closedCount; }
+    public String getLowCountLabel() { return "Low: " + lowCount; }
+    public String getMediumCountLabel() { return "Medium: " + mediumCount; }
+    public String getHighCountLabel() { return "High: " + highCount; }
 
+    // --- Getter untuk daftar tiket terbaru ---
+    public List<Ticket> getRecentTickets() {
+        return recentTickets;
+    }
+
+    // --- Helper Methods untuk mendapatkan label yang bagus (digunakan di ZUL) ---
+    public String getStatusLabelText(Status status) {
+        if (status == null) return "N/A";
+        StatusLabel sl = StatusLabel.fromStatus(status);
+        return sl != null ? sl.getLabel() : status.name();
+    }
+
+    public String getPriorityLabelText(Priority priority) {
+        if (priority == null) return "N/A";
+        PriorityLabel pl = PriorityLabel.fromPriority(priority);
+        return pl != null ? pl.getLabel() : priority.name();
     }
 }

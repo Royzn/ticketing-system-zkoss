@@ -1,46 +1,50 @@
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul" ?>
 <zk>
     <window self="@define(content)"
-            apply="latihan.controller.DashboardController">
+            apply="org.zkoss.bind.BindComposer"
+            viewModel="@id('vm') @init('latihan.controller.DashboardController')">
         <vlayout spacing="20px" style="padding:20px;">
 
-            <!-- Header -->
             <label value="📊 Dashboard Ticketing System"
                    style="font-weight:bold; font-size:22px; color:#2c3e50;"/>
 
             <hbox spacing="20px">
-                <!-- Status Card -->
                 <groupbox title="Tickets by Status" width="250px" mold="3d"
                           style="background:#ffffff; border-radius:10px;">
                     <vlayout spacing="5px" style="padding:10px;">
-                        <label id="lblOpen" style="color:green; font-weight:bold;" value="Open: 0"/>
-                        <label id="lblInProgress" style="color:orange; font-weight:bold;" value="In Progress: 0"/>
-                        <label id="lblClosed" style="color:red; font-weight:bold;" value="Closed: 0"/>
+                        <label style="color:green; font-weight:bold;" value="@load(vm.openCountLabel)"/>
+                        <label style="color:orange; font-weight:bold;" value="@load(vm.inProgressCountLabel)"/>
+                        <label style="color:red; font-weight:bold;" value="@load(vm.closedCountLabel)"/>
                     </vlayout>
                 </groupbox>
 
-                <!-- Priority Card -->
                 <groupbox title="Tickets by Priority" width="250px" mold="3d"
                           style="background:#ffffff; border-radius:10px;">
                     <vlayout spacing="5px" style="padding:10px;">
-                        <label id="lblLow" style="color:green; font-weight:bold;" value="Low: 0"/>
-                        <label id="lblMedium" style="color:orange; font-weight:bold;" value="Medium: 0"/>
-                        <label id="lblHigh" style="color:#c0392b; font-weight:bold;" value="High: 0"/>
+                        <label style="color:green; font-weight:bold;" value="@load(vm.lowCountLabel)"/>
+                        <label style="color:orange; font-weight:bold;" value="@load(vm.mediumCountLabel)"/>
+                        <label style="color:#c0392b; font-weight:bold;" value="@load(vm.highCountLabel)"/>
                     </vlayout>
                 </groupbox>
             </hbox>
 
-            <!-- Recent Tickets -->
             <groupbox title="📌 Recent Tickets" mold="3d" width="100%"
                       style="background:#ffffff; border-radius:10px;">
-                <grid id="recentGrid" width="100%">
+                <grid model="@load(vm.recentTickets)" emptyMessage="No recent tickets found.">
                     <columns>
                         <column label="ID" width="50px" style="background:#3498db; color:white; font-weight:bold;"/>
                         <column label="Title" style="background:#3498db; color:white; font-weight:bold;"/>
                         <column label="Status" style="background:#3498db; color:white; font-weight:bold;"/>
                         <column label="Priority" style="background:#3498db; color:white; font-weight:bold;"/>
                     </columns>
-                    <rows id="recentRows"/>
+                    <template name="model">
+                        <row>
+                            <label value="@load(each.id)"/>
+                            <label value="@load(each.title)"/>
+                            <label value="@load(vm.getStatusLabelText(each.status))"/>
+                            <label value="@load(vm.getPriorityLabelText(each.priority))"/>
+                        </row>
+                    </template>
                 </grid>
             </groupbox>
         </vlayout>

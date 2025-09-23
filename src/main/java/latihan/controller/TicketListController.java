@@ -1,127 +1,88 @@
 package latihan.controller;
 
-import latihan.entity.*;
+import latihan.entity.PriorityLabel;
+import latihan.entity.StatusLabel;
+import latihan.entity.Ticket;
 import latihan.service.TicketService;
-import org.zkoss.zk.ui.Component;
+import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
-import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zk.ui.select.SelectorComposer;
-import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zul.*;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class TicketListController extends SelectorComposer<Component> {
+public class TicketListController {
 
-    @Wire
-    private Listbox ticketList;
-    @Wire
-    private Combobox statusFilter, priorityFilter;
-    @Wire
-    private Button btnSearch, btnReset;
+    private TicketService service = new TicketService();
+    private List<Ticket> tickets;
 
-    private final TicketService service = new TicketService();
+    // --- Perubahan Tipe Data ---
+    private List<StatusLabel> statusOptions;
+    private List<PriorityLabel> priorityOptions;
 
-    @Override
-    public void doAfterCompose(Component comp) throws Exception {
-        super.doAfterCompose(comp);
+    // Pilihan "All" sekarang direpresentasikan dengan nilai null
+    private StatusLabel selectedStatus;
+    private PriorityLabel selectedPriority;
 
-        loadTickets(service.getAllTickets());
+    @Init
+    public void init() {
+        tickets = service.getAllTickets();
 
-        if(statusFilter != null){
-            Comboitem i = new Comboitem();
-            i.setLabel("All");
-            i.setValue("All");
-            i.setParent(statusFilter);
-            for (Status s : Status.values()) {
-                StatusLabel statusLabel = StatusLabel.fromStatus(s);
-                if (statusLabel != null) {
-                    Comboitem item = new Comboitem();
-                    item.setLabel(statusLabel.getLabel());
-                    item.setValue(s.name()); // the enum value
-                    item.setParent(statusFilter);
-                }
-            }
-        }
+        // --- Mengisi opsi langsung dari Enum ---
+        statusOptions = Arrays.asList(StatusLabel.values());
+        priorityOptions = Arrays.asList(PriorityLabel.values());
 
-        if(priorityFilter != null){
-            Comboitem i = new Comboitem();
-            i.setLabel("All");
-            i.setValue("All");
-            i.setParent(priorityFilter);
-            for (Priority p : Priority.values()) {
-                Comboitem item = new Comboitem();
-                item.setLabel(p.name());
-                item.setValue(p);
-                item.setParent(priorityFilter);
-            }
-        }
-
-        // 🔥 Real-time filter: saat user pilih status/priority
-        if(statusFilter!= null) statusFilter.addEventListener(Events.ON_CHANGE, e -> filterTickets());
-        if(priorityFilter!=null) priorityFilter.addEventListener(Events.ON_CHANGE, e -> filterTickets());
-
-        btnReset.addEventListener(Events.ON_CLICK, e -> resetFilter());
+        // Nilai awal filter adalah null (artinya "All")
+        selectedStatus = null;
+        selectedPriority = null;
     }
 
-    private void loadTickets(List<Ticket> tickets) {
-        ticketList.getItems().clear();
-        for (Ticket t : tickets) {
-            ticketList.appendChild(buildListitem(t));
-        }
+    public List<Ticket> getFilteredTickets() {
+        return tickets.stream()
+                .filter(t -> selectedStatus == null // Jika null, berarti "All", loloskan semua
+                        || t.getStatus() == selectedStatus.getStatus()) // Bandingkan enum Status
+                .filter(t -> selectedPriority == null // Jika null, berarti "All", loloskan semua
+                        || t.getPriority() == selectedPriority.getPriority()) // Bandingkan enum Priority
+                .collect(Collectors.toList());
     }
 
-    private void filterTickets() {
-        //buat ambil value
-        Comboitem selectedStatusFilter = statusFilter.getSelectedItem();
-        String status;
-        if (selectedStatusFilter != null) {
-            status = (String) selectedStatusFilter.getValue();
-        } else {
-            status = "";
-        }
+    // --- Getter dan Setter yang diperbarui ---
+    public List<StatusLabel> getStatusOptions() {
+        return statusOptions;
+    }
 
-        String priority = priorityFilter.getValue();
+    public List<PriorityLabel> getPriorityOptions() {
+        return priorityOptions;
+    }
 
-        List<Ticket> tickets = service.getAllTickets()
-                .stream()
-                .filter(t -> {
-                    boolean matchStatus = "All".equalsIgnoreCase(status) || status == null || status.isEmpty()
-                            || t.getStatus().toString().equals(status);
-                    boolean matchPriority = "All".equalsIgnoreCase(priority) || priority == null || priority.isEmpty()
-                            || t.getPriority().toString().equals(priority);
-                    return matchStatus && matchPriority;
-                })
-                .toList();
+    public StatusLabel getSelectedStatus() {
+        return selectedStatus;
+    }
 
-        loadTickets(tickets);
+    @NotifyChange("filteredTickets") // Tambahkan notifikasi saat setter dipanggil
+    public void setSelectedStatus(StatusLabel selectedStatus) {
+        this.selectedStatus = selectedStatus;
+    }
+
+    public PriorityLabel getSelectedPriority() {
+        return selectedPriority;
+    }
+
+    @NotifyChange("filteredTickets") // Tambahkan notifikasi saat setter dipanggil
+    public void setSelectedPriority(PriorityLabel selectedPriority) {
+        this.selectedPriority = selectedPriority;
     }
 
 
-    private void resetFilter() {
-        statusFilter.setValue("All");
-        priorityFilter.setValue("All");
-        loadTickets(service.getAllTickets());
+    @Command
+    @NotifyChange({"filteredTickets", "selectedStatus", "selectedPriority"}) // Notifikasi semua yang berubah
+    public void resetFilter() {
+        selectedStatus = null;
+        selectedPriority = null;
     }
 
-    private Listitem buildListitem(Ticket t) {
-        Listitem item = new Listitem();
-        item.appendChild(new Listcell(String.valueOf(t.getId())));
-        item.appendChild(new Listcell(t.getTitle()));
-        item.appendChild(new Listcell(StatusLabel.fromStatus(t.getStatus()).getLabel()));
-        item.appendChild(new Listcell(t.getPriority().toString()));
-        item.appendChild(new Listcell(t.getAssignedTo()));
-
-        Button btnView = new Button("View");
-        btnView.setStyle("background:#3498db; color:white; border-radius:6px;");
-        btnView.addEventListener(Events.ON_CLICK, e ->
-                Executions.sendRedirect("ticket_detail.zul?id=" + t.getId())
-        );
-
-        Listcell actionCell = new Listcell();
-        actionCell.appendChild(btnView);
-        item.appendChild(actionCell);
-
-        return item;
+    @Command
+    public void viewTicket(@BindingParam("id") Long id) {
+        Executions.sendRedirect("ticket_detail.zul?id=" + id);
     }
 }
