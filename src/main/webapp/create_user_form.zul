@@ -24,8 +24,6 @@
                     <row>
                         <label value="Role:" style="font-weight:bold; text-align:right;" width="120px"/>
                         <combobox id="roleBox" width="325px" placeholder="Select User Role" readonly="true">
-                            <comboitem label="AGENT"/>
-                            <comboitem label="USER"/>
                         </combobox>
                     </row>
                 </rows>
