@@ -1,21 +1,21 @@
-<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
-             version="2.1">
-    <persistence-unit name="myPU" transaction-type="RESOURCE_LOCAL">
-        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
 
-        <class>latihan.entity.User</class> <!-- Your entities here -->
-        <class>latihan.entity.Ticket</class>
-
+    <persistence-unit name="myapp" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
-            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/appdb"/>
-            <property name="javax.persistence.jdbc.user" value="appuser"/>
-            <property name="javax.persistence.jdbc.password" value="apppass"/>
-
-            <!-- Hibernate-specific properties -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
-            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
+            <property name="hibernate.connection.username" value="appuser" />
+            <property name="hibernate.connection.password" value="apppass" />
+            <property name="hibernate.show_sql" value="true" />
+            <!-- data store in data/db under project folder -->
+            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/appdb" />
+            <!-- db is not persistent to disk
+            <property name="hibernate.connection.url" value="jdbc:hsqldb:mem:data/store" /> -->
+            <property name="hibernate.hbm2ddl.auto" value="update" />
+            <!-- drop table every time
+            <property name="hibernate.hbm2ddl.auto" value="create" /> -->
         </properties>
     </persistence-unit>
 </persistence>
