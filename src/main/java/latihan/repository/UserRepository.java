@@ -17,8 +17,8 @@ public class UserRepository {
     private Long sequence = 1L;
 
     public UserRepository(){
-        users.add(new User(sequence++, "Varrel", Role.USER, LocalDateTime.now()));
-        users.add(new User(sequence++, "Ikan", Role.AGENT, LocalDateTime.now()));
+        users.add(new User(sequence++, "Varrel", "USER", LocalDateTime.now()));
+        users.add(new User(sequence++, "Ikan", "AGENT", LocalDateTime.now()));
     }
 
     public static UserRepository getInstance() {
@@ -30,13 +30,13 @@ public class UserRepository {
 
     public List<UserListDto> findAll() {
         return users.stream().map(e->{
-            return new UserListDto(e.getId(), e.getName(), e.getRole());
+            return new UserListDto(e.getId(), e.getName(), Role.valueOf(e.getRole()));
         }).toList();
     }
 
     public List<UserListDto> getAgent() {
-        return users.stream().filter(e-> e.getRole().equals(Role.AGENT)).map(e->{
-            return new UserListDto(e.getId(), e.getName(), e.getRole());
+        return users.stream().filter(e-> e.getRole().equals("AGENT")).map(e->{
+            return new UserListDto(e.getId(), e.getName(), Role.valueOf(e.getRole()));
         }).toList();
     }
 

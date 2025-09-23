@@ -6,6 +6,8 @@
 	<version>1.0-SNAPSHOT</version>
 	<properties>
 		<zk.version>9.6.0</zk.version>
+        <hibernate.version>5.4.10.Final</hibernate.version>
+        <spring.version>5.2.4.RELEASE</spring.version>
 		<commons-io>2.6</commons-io>
 		<maven.build.timestamp.format>yyyy-MM-dd</maven.build.timestamp.format>
 		<packname>-${project.version}-FL-${maven.build.timestamp}</packname>
@@ -66,6 +68,48 @@
 			<artifactId>commons-io</artifactId>
 			<version>${commons-io}</version>
 		</dependency>
+
+<!--        -->
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+<!--        -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.3</version> <!-- Use the latest stable version -->
+        </dependency>
 	</dependencies>
 	<build>
 		<finalName>${project.artifactId}</finalName>

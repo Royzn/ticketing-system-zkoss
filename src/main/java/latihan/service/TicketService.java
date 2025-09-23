@@ -25,7 +25,7 @@ public class TicketService {
     public Ticket createTicket(String title, String description, String priority, Long assignedTo, String requester) {
         User u = userRepository.findById(assignedTo).orElse(null);
         if(u!= null){
-            Ticket ticket = new Ticket(null, title, description, Status.OPEN, Priority.valueOf(priority), u, requester, LocalDateTime.now());
+            Ticket ticket = new Ticket(null, title, description, Status.OPEN.toString(), Priority.valueOf(priority).toString(), u, requester, LocalDateTime.now());
             return repository.save(ticket);
         }
         return null;
@@ -37,8 +37,8 @@ public class TicketService {
         ticket.setUpdatedDate(LocalDateTime.now());
         ticket.setTitle(title);
         ticket.setDescription(description);
-        ticket.setStatus(Status.valueOf(status));
-        ticket.setPriority(Priority.valueOf(priority));
+        ticket.setStatus(Status.valueOf(status).toString());
+        ticket.setPriority(Priority.valueOf(priority).toString());
 
         User u = userRepository.findById(assignedTo).orElse(null);
         if(u!= null) ticket.setAssignedTo(u);
@@ -49,7 +49,7 @@ public class TicketService {
     public Ticket updateTicketStatus(Long ticketId, Status newStatus) {
         Ticket ticketToUpdate = getTicket(ticketId);
         if (ticketToUpdate != null) {
-            ticketToUpdate.setStatus(newStatus);
+            ticketToUpdate.setStatus(newStatus.toString());
             ticketToUpdate.setUpdatedDate(LocalDateTime.now());
             repository.save(ticketToUpdate);
         }

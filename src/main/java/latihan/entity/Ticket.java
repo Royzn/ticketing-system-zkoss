@@ -6,16 +6,16 @@ public class Ticket {
     private Long id;
     private String title;
     private String description;
-    private Status status;
-    private Priority priority;
+    private String status;
+    private String priority;
     private User assignedTo;
     private String requester;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
     private LocalDateTime deletedDate;
 
-    public Ticket(Long id, String title, String description, Status status,
-                  Priority priority, User assignedTo, String requester, LocalDateTime createdDate) {
+    public Ticket(Long id, String title, String description, String status,
+                  String priority, User assignedTo, String requester, LocalDateTime createdDate) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -40,11 +40,11 @@ public class Ticket {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public Status getStatus() { return status; }
-    public void setStatus(Status status) { this.status = status; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public Priority getPriority() { return priority; }
-    public void setPriority(Priority priority) { this.priority = priority; }
+    public String getPriority() { return priority; }
+    public void setPriority(String priority) { this.priority = priority; }
 
     public User getAssignedTo() { return assignedTo; }
     public void setAssignedTo(User assignedTo) { this.assignedTo = assignedTo; }

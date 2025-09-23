@@ -1,5 +1,6 @@
 package latihan.viewmodel;
 
+import latihan.entity.Role;
 import latihan.entity.RoleLabel;
 import latihan.entity.User;
 import latihan.service.UserService;
@@ -47,7 +48,7 @@ public class UserDetailViewModel {
         if (user != null) {
             this.userId = user.getId().toString();
             this.name = user.getName();
-            this.role = RoleLabel.fromStatus(user.getRole()).getLabel();
+            this.role = RoleLabel.fromStatus(Role.valueOf(user.getRole())).getLabel();
 
             LocalDateTime createdDate = user.getCreatedDate();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm", Locale.getDefault());
