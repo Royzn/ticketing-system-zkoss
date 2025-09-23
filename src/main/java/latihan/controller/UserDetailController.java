@@ -14,9 +14,7 @@ import org.zkoss.zul.Window;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 public class UserDetailController extends SelectorComposer<Component> {
     private final UserService userService = new UserService();

@@ -63,6 +63,15 @@ public class UserFormController extends SelectorComposer<Component> {
                 Executions.sendRedirect(targetUrl);
             });
         }
+
+        if(roleBox != null){
+            for (Role role : Role.values()) {
+                Comboitem item = new Comboitem();
+                item.setLabel(role.name());
+                item.setValue(role);
+                item.setParent(roleBox);
+            }
+        }
     }
 
     public void getUserData(){
