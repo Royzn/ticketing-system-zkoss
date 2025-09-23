@@ -38,6 +38,16 @@ public class TicketService {
         return repository.save(ticket);
     }
 
+    public Ticket updateTicketStatus(Long ticketId, Status newStatus) {
+        Ticket ticketToUpdate = getTicket(ticketId);
+        if (ticketToUpdate != null) {
+            ticketToUpdate.setStatus(newStatus);
+            ticketToUpdate.setUpdatedDate(LocalDateTime.now());
+            repository.save(ticketToUpdate);
+        }
+        return ticketToUpdate; // Mengembalikan objek yang sudah diupdate
+    }
+
     public void deleteTicket(Long id) {
         repository.delete(id);
     }

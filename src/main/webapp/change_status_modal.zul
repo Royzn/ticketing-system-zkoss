@@ -1,0 +1,22 @@
+<zk>
+    <window title="Change Ticket Status" border="normal" width="350px"
+            apply="org.zkoss.bind.BindComposer"
+            viewModel="@id('vm') @init('latihan.controller.ChangeStatusViewModel')">
+        <vlayout style="padding:20px;">
+            <label value="Select the new status for this ticket:"/>
+            <combobox model="@load(vm.statusOptions)"
+                      selectedItem="@bind(vm.selectedStatus)"
+                      readonly="true"
+                      width="100%">
+                <template name="model">
+                    <comboitem label="@load(vm.getStatusLabelText(each))"/>
+                </template>
+            </combobox>
+
+            <hlayout style="margin-top:20px;">
+                <button label="💾 Save Changes" onClick="@command('saveStatus')" sclass="btn-primary"/>
+                <button label="❌ Cancel" onClick="@command('closeModal')"/>
+            </hlayout>
+        </vlayout>
+    </window>
+</zk>

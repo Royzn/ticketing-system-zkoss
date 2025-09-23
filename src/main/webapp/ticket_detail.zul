@@ -26,9 +26,10 @@
                                 <label value="Description:" style="font-weight:bold;"/>
                                 <label value="@load(vm.ticket.description)" multiline="true"/>
                             </row>
+
                             <row>
                                 <label value="Status:" style="font-weight:bold;"/>
-                                <label value="@load(vm.statusLabel)" style="color:green; font-weight:bold;"/>
+                                <label value="@load(vm.statusLabel)" style="font-weight:bold;"/>
                             </row>
                             <row>
                                 <label value="Priority:" style="font-weight:bold;"/>
@@ -46,6 +47,10 @@
                                 <label value="Created Date:" style="font-weight:bold;"/>
                                 <label value="@load(vm.formattedCreatedDate)"/>
                             </row>
+                            <row>
+                                <label value="Last Updated:" style="font-weight:bold;"/>
+                                <label value="@load(vm.formattedUpdatedDate)"/>
+                            </row>
                         </rows>
                     </grid>
                 </groupbox>
@@ -58,6 +63,7 @@
                     <button label="✏ Edit" onClick="@command('editTicket')"
                             style="background:#f39c12; color:white; border-radius:6px;"/>
                     <button label="🔄 Change Status" onClick="@command('changeStatus')"
+                            disabled="@load(vm.changeStatusDisabled)"
                             style="background:#3498db; color:white; border-radius:6px;"/>
                     <button label="🗑 Delete" onClick="@command('deleteTicket')"
                             style="background:#e74c3c; color:white; border-radius:6px;"/>
