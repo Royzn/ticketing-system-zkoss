@@ -22,11 +22,10 @@ public class TicketService {
         return repository.findById(id).orElse(null);
     }
 
-    public Ticket createTicket(String title, String description, String status,
-                               String priority, Long assignedTo, String requester) {
+    public Ticket createTicket(String title, String description, String priority, Long assignedTo, String requester) {
         User u = userRepository.findById(assignedTo).orElse(null);
         if(u!= null){
-            Ticket ticket = new Ticket(null, title, description, Status.valueOf(status), Priority.valueOf(priority), u, requester, LocalDateTime.now());
+            Ticket ticket = new Ticket(null, title, description, Status.OPEN, Priority.valueOf(priority), u, requester, LocalDateTime.now());
             return repository.save(ticket);
         }
         return null;

@@ -90,4 +90,6 @@ public class UserDetailViewModel {
     public String getCreatedAt() {
         return createdAt;
     }
+
+    public User getUser(){return user;}
 }

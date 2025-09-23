@@ -36,7 +36,7 @@
             <groupbox mold="3d" width="100%" style="background:#ffffff; border-radius:10px;">
                 <caption label="📌 All Tickets" style="font-weight:bold; color:#2c3e50;"/>
                 <listbox model="@bind(vm.filteredTickets)"
-                         mold="paging" pageSize="5" width="100%">
+                         mold="paging" pageSize="5" width="100%" emptyMessage="No tickets found.">
                     <listhead>
                         <listheader label="ID" width="50px"/>
                         <listheader label="Title"/>
