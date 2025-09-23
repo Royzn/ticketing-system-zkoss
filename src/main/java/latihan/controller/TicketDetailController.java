@@ -1,9 +1,6 @@
 package latihan.controller;
 
-import latihan.entity.PriorityLabel;
-import latihan.entity.Status;
-import latihan.entity.StatusLabel;
-import latihan.entity.Ticket;
+import latihan.entity.*;
 import latihan.service.TicketService;
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.Command;
@@ -85,7 +82,7 @@ public class TicketDetailController {
             String message = "Are you sure you want to delete ticket #" + ticket.getId() + " (" + ticket.getTitle() + ")?";
             Messagebox.show(message, "Confirm Deletion", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION, event -> {
                 if (Messagebox.ON_OK.equals(event.getName())) {
-                    // service.deleteTicket(ticket.getId());
+                     service.deleteTicket(ticket.getId());
                     Executions.sendRedirect("tickets.zul");
                 }
             });
@@ -141,5 +138,10 @@ public class TicketDetailController {
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm");
         return ticket.getUpdatedDate().format(formatter);
+    }
+
+    public String getAssignedToName(User assignedTo) {
+        if (assignedTo == null) return "";
+        return assignedTo.getName();  // adjust type casting if needed
     }
 }

@@ -47,8 +47,13 @@
                 </row>
                 <row>
                     <label value="Assign To:" style="font-weight:bold; text-align:right;" width="120px"/>
-                    <textbox width="325px" placeholder="Support agent name"
-                             value="@bind(vm.currentTicket.assignedTo)"/>
+                    <combobox width="325px" placeholder="Select Assignee" readonly="true"
+                              model="@load(vm.agentOptions)"
+                              selectedItem="@bind(vm.selectedAgent)">
+                        <template name="model">
+                            <comboitem label="@load(each.name)" value="@load(each)"/>
+                        </template>
+                    </combobox>
                 </row>
                 <row>
                     <label value="Requester:" width="120px" style="font-weight:bold;"/>

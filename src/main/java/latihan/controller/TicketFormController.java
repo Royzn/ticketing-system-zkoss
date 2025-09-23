@@ -1,25 +1,32 @@
 package latihan.controller; // <-- DIUBAH DI SINI
 
+import latihan.dto.UserListDto;
 import latihan.entity.*;
 import latihan.service.TicketService;
+import latihan.service.UserService;
 import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class TicketFormController {
 
     private TicketService service = new TicketService();
+    private UserService uservice = new UserService();
     private Ticket currentTicket;
 
     private List<Status> statusOptions;
     private List<Priority> priorityOptions;
+    private List<UserListDto> agentOptions;
+    private UserListDto selectedAgent;
 
     @Init
     public void init(@QueryParam("id") String idParam) {
         statusOptions = Arrays.asList(Status.values());
         priorityOptions = Arrays.asList(Priority.values());
+        loadAgentList();
 
         if (idParam != null && !idParam.isEmpty()) {
             Long id = Long.parseLong(idParam);
@@ -41,6 +48,10 @@ public class TicketFormController {
         return pl != null ? pl.getLabel() : priority.name();
     }
 
+    public void loadAgentList(){
+        agentOptions = uservice.getAgent();
+    }
+
     @Command
     public void saveTicket() {
         if (currentTicket.getId() == null) {
@@ -49,7 +60,7 @@ public class TicketFormController {
                     currentTicket.getDescription(),
                     currentTicket.getStatus() != null ? currentTicket.getStatus().name() : null,
                     currentTicket.getPriority() != null ? currentTicket.getPriority().name() : null,
-                    currentTicket.getAssignedTo(),
+                    selectedAgent.getId(),
                     currentTicket.getRequester()
             );
         } else {
@@ -59,7 +70,7 @@ public class TicketFormController {
                     currentTicket.getDescription(),
                     currentTicket.getStatus() != null ? currentTicket.getStatus().name() : null,
                     currentTicket.getPriority() != null ? currentTicket.getPriority().name() : null,
-                    currentTicket.getAssignedTo(),
+                    selectedAgent.getId(),
                     currentTicket.getRequester()
             );
         }
@@ -71,4 +82,11 @@ public class TicketFormController {
     public void setCurrentTicket(Ticket currentTicket) { this.currentTicket = currentTicket; }
     public List<Status> getStatusOptions() { return statusOptions; }
     public List<Priority> getPriorityOptions() { return priorityOptions; }
+    public List<UserListDto> getAgentOptions() {
+        return agentOptions;
+    }
+    public UserListDto getSelectedAgent(){ return selectedAgent; }
+    public void setSelectedAgent(UserListDto selectedAgent) {
+        this.selectedAgent = selectedAgent;
+    }
 }

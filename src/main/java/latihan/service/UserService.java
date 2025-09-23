@@ -19,6 +19,10 @@ public class UserService {
         return repository.findById(id).orElse(null);
     }
 
+    public List<UserListDto> getAgent(){
+        return repository.getAgent();
+    }
+
     public void createUser(String name, String role) {
         User u = new User(null, name, Role.valueOf(role.toUpperCase()), LocalDateTime.now());
         repository.save(u);

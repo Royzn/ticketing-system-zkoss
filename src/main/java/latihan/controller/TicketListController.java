@@ -129,4 +129,10 @@ public class TicketListController {
     public String getPriorityLabel(String priority) {
         return PriorityLabel.fromPriority(Priority.valueOf(priority)).getLabel();
     }
+
+    public String getAssignedToName(User assignedTo) {
+        if (assignedTo == null) return "";
+        return assignedTo.getName();  // adjust type casting if needed
+    }
+
 }
