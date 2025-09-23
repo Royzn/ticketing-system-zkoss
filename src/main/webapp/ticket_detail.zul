@@ -1,7 +1,7 @@
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul" ?>
 
 <zk>
-    <window self="@define(content)" border="none">
+    <window self="@define(content)" border="none" apply="latihan.controller.TicketDetailController">
         <!-- Bungkus semua isi dengan div scrollable -->
         <div style="height:100%; overflow:auto; padding:20px;">
             <vlayout spacing="20px">
@@ -16,35 +16,35 @@
                         <rows>
                             <row>
                                 <label value="Ticket ID:" style="font-weight:bold; width:150px;"/>
-                                <label value="1"/>
+                                <label id="lblId"/>
                             </row>
                             <row>
                                 <label value="Title:" style="font-weight:bold;"/>
-                                <label value="Email not working"/>
+                                <label id="lblTitle"/>
                             </row>
                             <row>
                                 <label value="Description:" style="font-weight:bold;"/>
-                                <label value="User cannot send or receive emails since morning."/>
+                                <label id="lblDescription"/>
                             </row>
                             <row>
                                 <label value="Status:" style="font-weight:bold;"/>
-                                <label value="Open" style="color:green; font-weight:bold;"/>
+                                <label id="lblStatus" style="color:green; font-weight:bold;"/>
                             </row>
                             <row>
                                 <label value="Priority:" style="font-weight:bold;"/>
-                                <label value="High" style="color:#c0392b; font-weight:bold;"/>
+                                <label id="lblPriority" style="color:#c0392b; font-weight:bold;"/>
                             </row>
                             <row>
                                 <label value="Assigned To:" style="font-weight:bold;"/>
-                                <label value="Admin1"/>
+                                <label id="lblAssignedTo"/>
                             </row>
                             <row>
                                 <label value="Requester:" style="font-weight:bold;"/>
-                                <label value="UserA"/>
+                                <label id="lblRequester"/>
                             </row>
                             <row>
                                 <label value="Created Date:" style="font-weight:bold;"/>
-                                <label value="2025-09-21 09:30"/>
+                                <label id="lblCreatedDate"/>
                             </row>
                         </rows>
                     </grid>
@@ -52,7 +52,7 @@
 
                 <!-- Action Buttons -->
                 <hlayout spacing="10px">
-                    <button label="✏ Edit" href="ticket_form.zul"
+                    <button id="btnEdit" label="✏ Edit"
                             style="background:#f39c12; color:white; border-radius:6px;"/>
                     <button label="🔄 Change Status"
                             style="background:#3498db; color:white; border-radius:6px;"/>
@@ -60,17 +60,18 @@
                             style="background:#e74c3c; color:white; border-radius:6px;"/>
                 </hlayout>
 
+
                 <!-- Comments Section -->
-                <include src="comments.zul" />
-<!--                <groupbox mold="3d" width="100%" style="margin-top:20px; background:#ffffff; border-radius:10px;">-->
-<!--                    -->
-<!--                    &lt;!&ndash; Tambah Komentar &ndash;&gt;-->
-<!--                    <hlayout spacing="10px" style="margin-top:10px; padding:10px;">-->
-<!--                        <textbox width="500px" placeholder="Write a comment..."/>-->
-<!--                        <button label="➡ Send"-->
-<!--                                style="background:#2ecc71; color:white; border-radius:6px;"/>-->
-<!--                    </hlayout>-->
-<!--                </groupbox>-->
+                <!--                <include src="comments.zul" />-->
+                <!--                <groupbox mold="3d" width="100%" style="margin-top:20px; background:#ffffff; border-radius:10px;">-->
+                <!--                    -->
+                <!--                    &lt;!&ndash; Tambah Komentar &ndash;&gt;-->
+                <!--                    <hlayout spacing="10px" style="margin-top:10px; padding:10px;">-->
+                <!--                        <textbox width="500px" placeholder="Write a comment..."/>-->
+                <!--                        <button label="➡ Send"-->
+                <!--                                style="background:#2ecc71; color:white; border-radius:6px;"/>-->
+                <!--                    </hlayout>-->
+                <!--                </groupbox>-->
             </vlayout>
         </div>
     </window>
