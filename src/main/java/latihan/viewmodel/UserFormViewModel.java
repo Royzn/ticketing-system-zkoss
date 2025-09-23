@@ -134,7 +134,6 @@ public class UserFormViewModel {
 
     @NotifyChange("selectedRole")
     public void setSelectedRole(RoleOption selectedRole) {
-        System.out.println(selectedRole);
         this.selectedRole = selectedRole;
     }
 

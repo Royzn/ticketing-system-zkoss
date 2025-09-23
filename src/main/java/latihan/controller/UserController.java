@@ -1,5 +1,6 @@
 package latihan.controller;
 
+import latihan.dto.UserListDto;
 import latihan.entity.RoleLabel;
 import latihan.entity.Ticket;
 import latihan.entity.User;
@@ -32,9 +33,9 @@ public class UserController extends SelectorComposer<Component> {
         if (userList == null) return;
 
         userList.getItems().clear();
-        List<User> users = userService.getAllUsers();
+        List<UserListDto> users = userService.getAllUsers();
 
-        for (User u : users) {
+        for (UserListDto u : users) {
             Listitem item = new Listitem();
             item.appendChild(new Listcell(String.valueOf(u.getId())));
             item.appendChild(new Listcell(u.getName()));

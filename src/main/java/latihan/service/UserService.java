@@ -1,5 +1,6 @@
 package latihan.service;
 
+import latihan.dto.UserListDto;
 import latihan.entity.Role;
 import latihan.entity.User;
 import latihan.repository.UserRepository;
@@ -10,7 +11,7 @@ import java.util.List;
 public class UserService {
     private final UserRepository repository = UserRepository.getInstance();
 
-    public List<User> getAllUsers() {
+    public List<UserListDto> getAllUsers() {
         return repository.findAll();
     }
 
