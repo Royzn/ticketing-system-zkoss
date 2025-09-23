@@ -1,21 +1,30 @@
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul" ?>
 <zk>
-    <window self="@define(content)" apply="latihan.controller.UserController">
+    <window self="@define(content)" apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('latihan.viewmodel.UserListViewModel')">
         <vlayout spacing="20px" style="padding:20px;">
             <label value="👥 User Management"
                    style="font-weight:bold; font-size:22px; color:#2c3e50;"/>
 
-            <groupbox mold="3d" width="100%" style="background:#ffffff; border-radius:10px;">
-                <caption label="All Users" style="font-weight:bold; color:#2c3e50;"/>
-                <listbox id="userList" mold="paging" pageSize="5" width="700px">
-                    <listhead>
-                        <listheader label="ID" width="50px"/>
-                        <listheader label="Username"/>
-                        <listheader label="Role"/>
-                        <listheader label="Action" width="120px"/>
-                    </listhead>
-                </listbox>
-            </groupbox>
+            <listbox model="@load(vm.users)" width="100%">
+                <listhead>
+                    <listheader label="ID" />
+                    <listheader label="Name" />
+                    <listheader label="Role" />
+                    <listheader label="Actions" />
+                </listhead>
+
+                <template name="model" var="user">
+                    <listitem>
+                        <listcell label="@load(String.valueOf(user.id))" />
+                        <listcell label="@load(user.name)" />
+                        <listcell label="@load(vm.getRoleLabel(user))" />
+                        <listcell>
+                            <button label="View" style="background:#3498db; color:white; border-radius:6px;"
+                                    onClick="@command('viewUser', user=user)" />
+                        </listcell>
+                    </listitem>
+                </template>
+            </listbox>
 
             <button label="➕ Add User"
                     style="background:#2ecc71; color:white; border-radius:6px; width:150px;"
