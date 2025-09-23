@@ -5,7 +5,7 @@
             <label value="👥 User Management"
                    style="font-weight:bold; font-size:22px; color:#2c3e50;"/>
 
-            <listbox model="@load(vm.users)" width="100%">
+            <listbox model="@load(vm.users)" width="100%" emptyMessage="No Users found.">
                 <listhead>
                     <listheader label="ID" />
                     <listheader label="Name" />

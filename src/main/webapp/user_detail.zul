@@ -10,7 +10,7 @@
                        style="font-weight:bold; font-size:22px; color:#2c3e50;"/>
 
                 <!-- Info Ticket -->
-                <groupbox mold="3d" width="100%" style="background:#ffffff; border-radius:10px;">
+                <groupbox mold="3d" width="100%" style="background:#ffffff; border-radius:10px;" visible="@load(!empty vm.user)">
                     <caption label="User Information" style="font-weight:bold; color:#2c3e50;"/>
                     <grid width="700px" style="padding:15px;">
                         <rows>
@@ -34,6 +34,10 @@
                     </grid>
                 </groupbox>
 
+                <div visible="@load(empty vm.user)" style="padding:20px; text-align:center;">
+                    <label value="User not found." style="font-size:16px; color:red;"/>
+                </div>
+
                 <!-- Action Buttons -->
                 <hlayout spacing="10px">
                     <button label="⬅ Back"
@@ -42,8 +46,10 @@
                             style="background-color:#007bff; color:white; border-radius:6px;"/>
                     <button label="✏ Edit" onClick="@command('edit')"
                             tooltiptext="Update user data"
+                            visible="@load(!empty vm.user)"
                             style="background:#f39c12; color:white; border-radius:6px;"/>
                     <button label="🗑 Delete" onClick="@command('delete')"
+                            visible="@load(!empty vm.user)"
                             style="background:#e74c3c; color:white; border-radius:6px;" />
                 </hlayout>
             </vlayout>

@@ -17,20 +17,19 @@ public class TicketFormController {
     private UserService uservice = new UserService();
     private Ticket currentTicket;
 
-    private List<Status> statusOptions;
     private List<Priority> priorityOptions;
     private List<UserListDto> agentOptions;
     private UserListDto selectedAgent;
+    private Long id;
 
     @Init
     public void init(@QueryParam("id") String idParam) {
-        statusOptions = Arrays.asList(Status.values());
         priorityOptions = Arrays.asList(Priority.values());
         loadAgentList();
 
         if (idParam != null && !idParam.isEmpty()) {
-            Long id = Long.parseLong(idParam);
-            currentTicket = service.getTicket(id);
+            this.id = Long.parseLong(idParam);
+            currentTicket = service.getTicket(this.id);
         } else {
             currentTicket = new Ticket();
         }
@@ -50,6 +49,13 @@ public class TicketFormController {
 
     public void loadAgentList(){
         agentOptions = uservice.getAgent();
+        if(currentTicket != null){
+            for(UserListDto a: agentOptions){
+                if(a.getId().equals(currentTicket.getAssignedTo().getId())){
+                    this.selectedAgent = a;
+                }
+            }
+        }
     }
 
     @Command
@@ -58,7 +64,6 @@ public class TicketFormController {
             service.createTicket(
                     currentTicket.getTitle(),
                     currentTicket.getDescription(),
-                    currentTicket.getStatus() != null ? currentTicket.getStatus().name() : null,
                     currentTicket.getPriority() != null ? currentTicket.getPriority().name() : null,
                     selectedAgent.getId(),
                     currentTicket.getRequester()
@@ -80,7 +85,6 @@ public class TicketFormController {
     // --- Getter dan Setter (Wajib untuk Data Binding) ---
     public Ticket getCurrentTicket() { return currentTicket; }
     public void setCurrentTicket(Ticket currentTicket) { this.currentTicket = currentTicket; }
-    public List<Status> getStatusOptions() { return statusOptions; }
     public List<Priority> getPriorityOptions() { return priorityOptions; }
     public List<UserListDto> getAgentOptions() {
         return agentOptions;
@@ -89,4 +93,5 @@ public class TicketFormController {
     public void setSelectedAgent(UserListDto selectedAgent) {
         this.selectedAgent = selectedAgent;
     }
+    public Long getId(){return id;}
 }

@@ -36,16 +36,6 @@
                     </combobox>
                 </row>
                 <row>
-                    <label value="Status:" style="font-weight:bold; text-align:right;" width="120px"/>
-                    <combobox width="325px" placeholder="Select status" readonly="true"
-                              model="@load(vm.statusOptions)"
-                              selectedItem="@bind(vm.currentTicket.status)">
-                        <template name="model">
-                            <comboitem label="@load(vm.getStatusLabelText(each))" value="@load(each)"/>
-                        </template>
-                    </combobox>
-                </row>
-                <row>
                     <label value="Assign To:" style="font-weight:bold; text-align:right;" width="120px"/>
                     <combobox width="325px" placeholder="Select Assignee" readonly="true"
                               model="@load(vm.agentOptions)"
