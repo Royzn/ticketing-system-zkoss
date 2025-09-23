@@ -1,5 +1,6 @@
 package latihan.viewmodel;
 
+import latihan.dto.UserListDto;
 import latihan.entity.RoleLabel;
 import latihan.entity.User;
 import latihan.service.UserService;
@@ -13,7 +14,7 @@ public class UserListViewModel {
 
     private final UserService userService = new UserService();
 
-    private ListModelList<User> users;
+    private ListModelList<UserListDto> users;
 
     @Init
     public void init() {
@@ -21,24 +22,24 @@ public class UserListViewModel {
     }
 
     private void loadUsers() {
-        List<User> userList = userService.getAllUsers();
+        List<UserListDto> userList = userService.getAllUsers();
         users = new ListModelList<>(userList);
     }
 
     // Getter for data binding to the Listbox model
-    public ListModelList<User> getUsers() {
+    public ListModelList<UserListDto> getUsers() {
         return users;
     }
 
     // Command to navigate to user detail page
     @Command
     @NotifyChange("users")
-    public void viewUser(@BindingParam("user") User user) {
+    public void viewUser(@BindingParam("user") UserListDto user) {
         Executions.sendRedirect("user_detail.zul?id=" + user.getId());
     }
 
     // Helper method to get Role label for display
-    public String getRoleLabel(User user) {
+    public String getRoleLabel(UserListDto user) {
         return RoleLabel.fromStatus(user.getRole()).getLabel();
     }
 }

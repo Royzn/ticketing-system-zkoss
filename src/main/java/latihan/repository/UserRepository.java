@@ -1,5 +1,6 @@
 package latihan.repository;
 
+import latihan.dto.UserListDto;
 import latihan.entity.Role;
 import latihan.entity.Ticket;
 import latihan.entity.User;
@@ -27,8 +28,10 @@ public class UserRepository {
         return instance;
     }
 
-    public List<User> findAll() {
-        return users;
+    public List<UserListDto> findAll() {
+        return users.stream().map(e->{
+            return new UserListDto(e.getId(), e.getName(), e.getRole());
+        }).toList();
     }
 
     public Optional<User> findById(Long id) {
