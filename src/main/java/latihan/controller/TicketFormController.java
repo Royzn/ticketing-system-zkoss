@@ -20,16 +20,28 @@ public class TicketFormController {
     private List<Priority> priorityOptions;
     private List<UserListDto> agentOptions;
     private UserListDto selectedAgent;
+    private Priority selectedPriority;
     private Long id;
 
     @Init
     public void init(@QueryParam("id") String idParam) {
         priorityOptions = Arrays.asList(Priority.values());
         loadAgentList();
-
         if (idParam != null && !idParam.isEmpty()) {
             this.id = Long.parseLong(idParam);
             currentTicket = service.getTicket(this.id);
+            if(currentTicket != null){
+                for(UserListDto a: agentOptions){
+                    if(a.getId().equals(currentTicket.getAssignedTo().getId())){
+                        this.selectedAgent = a;
+                    }
+                }
+                for(Priority p: priorityOptions){
+                    if(p.name().equals(currentTicket.getPriority())){
+                        this.selectedPriority = p;
+                    }
+                }
+            }
         } else {
             currentTicket = new Ticket();
         }
@@ -49,13 +61,6 @@ public class TicketFormController {
 
     public void loadAgentList(){
         agentOptions = uservice.getAgent();
-        if(currentTicket != null){
-            for(UserListDto a: agentOptions){
-                if(a.getId().equals(currentTicket.getAssignedTo().getId())){
-                    this.selectedAgent = a;
-                }
-            }
-        }
     }
 
     @Command
@@ -64,7 +69,7 @@ public class TicketFormController {
             service.createTicket(
                     currentTicket.getTitle(),
                     currentTicket.getDescription(),
-                    currentTicket.getPriority() != null ? currentTicket.getPriority().name() : null,
+                    this.selectedPriority != null ? this.selectedPriority.toString() : null,
                     selectedAgent.getId(),
                     currentTicket.getRequester()
             );
@@ -73,8 +78,8 @@ public class TicketFormController {
                     currentTicket,
                     currentTicket.getTitle(),
                     currentTicket.getDescription(),
-                    currentTicket.getStatus() != null ? currentTicket.getStatus().name() : null,
-                    currentTicket.getPriority() != null ? currentTicket.getPriority().name() : null,
+                    currentTicket.getStatus() != null ? currentTicket.getStatus(): null,
+                    this.selectedPriority != null ? this.selectedPriority.toString() : null,
                     selectedAgent.getId(),
                     currentTicket.getRequester()
             );
@@ -92,6 +97,11 @@ public class TicketFormController {
     public UserListDto getSelectedAgent(){ return selectedAgent; }
     public void setSelectedAgent(UserListDto selectedAgent) {
         this.selectedAgent = selectedAgent;
+    }
+
+    public Priority getSelectedPriority() {return selectedPriority;}
+    public void setSelectedPriority(Priority priority){
+        this.selectedPriority = priority;
     }
     public Long getId(){return id;}
 }

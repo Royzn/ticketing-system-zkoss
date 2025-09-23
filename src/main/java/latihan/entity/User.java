@@ -1,13 +1,23 @@
 package latihan.entity;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "user")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private Role role;
 
-    public User(Long id, String name, Role role, LocalDateTime createdDate) {
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "role")
+    private String role;
+
+    public User(Long id, String name, String role, LocalDateTime createdDate) {
         this.id = id;
         this.name = name;
         this.role = role;
@@ -34,11 +44,11 @@ public class User {
         this.name = name;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 

@@ -43,12 +43,19 @@ public class UserFormViewModel {
     }
 
     @Init
-    public void init(@ExecutionArgParam("id") Long userId) {
-        this.id = userId;
+    public void init() {
         loadRoleOptions();
 
-        if (id != null) {
-            loadUserData();
+        String idParam = Executions.getCurrent().getParameter("id");
+        if (idParam != null) {
+            try {
+                this.id = Long.parseLong(idParam);
+                loadUserData();
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid id parameter: " + idParam);
+            }
+        } else {
+            System.out.println("No id parameter provided");
         }
     }
 
@@ -65,7 +72,7 @@ public class UserFormViewModel {
         if (user != null) {
             this.name = user.getName();
             for (RoleOption option : roleOptions) {
-                if (option.getValue().equals(user.getRole().name())) {
+                if (option.getValue().equals(user.getRole())) {
                     this.selectedRole = option;
                     break;
                 }

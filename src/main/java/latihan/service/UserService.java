@@ -24,12 +24,12 @@ public class UserService {
     }
 
     public void createUser(String name, String role) {
-        User u = new User(null, name, Role.valueOf(role.toUpperCase()), LocalDateTime.now());
+        User u = new User(null, name, role.toUpperCase(), LocalDateTime.now());
         repository.save(u);
     }
 
     public void updateUser(User user, String name, String role) {
-        user.setRole(Role.valueOf(role));
+        user.setRole(role);
         user.setName(name);
         user.setUpdatedDate(LocalDateTime.now());
         repository.save(user);

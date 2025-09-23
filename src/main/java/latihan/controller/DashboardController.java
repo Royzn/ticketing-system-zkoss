@@ -10,6 +10,7 @@ import org.zkoss.bind.annotation.Init;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class DashboardController {
@@ -41,14 +42,14 @@ public class DashboardController {
         }
 
         // 1. Hitung jumlah tiket berdasarkan Status
-        openCount = tickets.stream().filter(t -> t.getStatus() == Status.OPEN).count();
-        inProgressCount = tickets.stream().filter(t -> t.getStatus() == Status.IN_PROGRESS).count();
-        closedCount = tickets.stream().filter(t -> t.getStatus() == Status.CLOSED).count();
+        openCount = tickets.stream().filter(t -> Objects.equals(t.getStatus(), Status.OPEN.toString())).count();
+        inProgressCount = tickets.stream().filter(t -> Objects.equals(t.getStatus(), Status.IN_PROGRESS.toString())).count();
+        closedCount = tickets.stream().filter(t -> Objects.equals(t.getStatus(), Status.CLOSED.toString())).count();
 
         // 2. Hitung jumlah tiket berdasarkan Prioritas
-        lowCount = tickets.stream().filter(t -> t.getPriority() == Priority.LOW).count();
-        mediumCount = tickets.stream().filter(t -> t.getPriority() == Priority.MEDIUM).count();
-        highCount = tickets.stream().filter(t -> t.getPriority() == Priority.HIGH).count();
+        lowCount = tickets.stream().filter(t -> Objects.equals(t.getPriority(), Priority.LOW.toString())).count();
+        mediumCount = tickets.stream().filter(t -> Objects.equals(t.getPriority(), Priority.MEDIUM.toString())).count();
+        highCount = tickets.stream().filter(t -> Objects.equals(t.getPriority(), Priority.HIGH.toString())).count();
 
         // 3. Ambil 5 tiket terbaru untuk ditampilkan di grid
         recentTickets = tickets.stream()

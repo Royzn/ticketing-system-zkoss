@@ -76,9 +76,9 @@ public class TicketListController {
     public List<Ticket> getFilteredTickets() {
         return tickets.stream()
                 .filter(t -> selectedStatus.getValue().equals("All") // Jika null, berarti "All", loloskan semua
-                        || t.getStatus().toString().equals(selectedStatus.getValue()) ) // Bandingkan enum Status
+                        || t.getStatus().equals(selectedStatus.getValue()) ) // Bandingkan enum Status
                 .filter(t -> selectedPriority.getValue().equals("All") // Jika null, berarti "All", loloskan semua
-                        || t.getPriority().toString().equals(selectedPriority.getValue())) // Bandingkan enum Priority
+                        || t.getPriority().equals(selectedPriority.getValue())) // Bandingkan enum Priority
                 .collect(Collectors.toList());
     }
 

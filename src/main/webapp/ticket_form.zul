@@ -29,7 +29,7 @@
                     <label value="Priority:" style="font-weight:bold; text-align:right;" width="120px"/>
                     <combobox width="325px" placeholder="Select priority" readonly="true"
                               model="@load(vm.priorityOptions)"
-                              selectedItem="@bind(vm.currentTicket.priority)">
+                              selectedItem="@bind(vm.selectedPriority)">
                         <template name="model">
                             <comboitem label="@load(vm.getPriorityLabelText(each))" value="@load(each)"/>
                         </template>

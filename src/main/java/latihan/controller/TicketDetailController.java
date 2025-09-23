@@ -31,9 +31,9 @@ public class TicketDetailController {
     private Status getNextStatus() {
         if (ticket == null) return null;
         switch (ticket.getStatus()) {
-            case OPEN:
+            case "OPEN":
                 return Status.IN_PROGRESS;
-            case IN_PROGRESS:
+            case "IN_PROGRESS":
                 return Status.CLOSED;
             default:
                 return null; // Tidak ada transisi dari CLOSED atau status lain
@@ -51,7 +51,7 @@ public class TicketDetailController {
             return;
         }
 
-        String currentStatusLabel = getStatusLabelText(ticket.getStatus());
+        String currentStatusLabel = getStatusLabelText(Status.valueOf(ticket.getStatus()));
         String nextStatusLabel = getStatusLabelText(nextStatus);
         String message = "Are you sure you want to change status from '" + currentStatusLabel + "' to '" + nextStatusLabel + "'?";
 
@@ -100,19 +100,19 @@ public class TicketDetailController {
      * @return true jika status adalah CLOSED, false jika sebaliknya.
      */
     public boolean isChangeStatusDisabled() {
-        return ticket == null || ticket.getStatus() == Status.CLOSED;
+        return ticket == null || ticket.getStatus() == Status.CLOSED.toString();
     }
 
     // Getter lainnya tetap sama
     public String getStatusLabel() {
         if (ticket == null || ticket.getStatus() == null) return "N/A";
-        return getStatusLabelText(ticket.getStatus());
+        return getStatusLabelText(Status.valueOf(ticket.getStatus()));
     }
 
     public String getPriorityLabel() {
         if (ticket == null || ticket.getPriority() == null) return "N/A";
-        PriorityLabel pl = PriorityLabel.fromPriority(ticket.getPriority());
-        return pl != null ? pl.getLabel() : ticket.getPriority().name();
+        PriorityLabel pl = PriorityLabel.fromPriority(Priority.valueOf(ticket.getPriority()));
+        return pl != null ? pl.getLabel() : ticket.getPriority();
     }
 
     public String getFormattedCreatedDate() {
