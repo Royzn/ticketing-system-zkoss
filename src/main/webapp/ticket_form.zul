@@ -3,57 +3,66 @@
     <window title="📝 Create / Edit Ticket" border="normal" width="550px"
             style="border-radius:12px; background:#ffffff; box-shadow:0 2px 8px rgba(0,0,0,0.1);"
             self="@define(content)"
-            apply="latihan.controller.TicketFormController">
+            apply="org.zkoss.bind.BindComposer"
+            viewModel="@id('vm') @init('latihan.controller.TicketFormController')"> <vlayout spacing="25px" style="padding:5px;">
+        <label value="Fill in the ticket information below"
+               style="color:#7f8c8d; font-size:14px; margin-bottom:10px;"/>
 
-        <vlayout spacing="25px" style="padding:5px;">
+        <grid width="100%">
+            <columns>
+                <column width="120px"/>
+                <column width="*"/>
+            </columns>
+            <rows>
+                <row>
+                    <label value="Title:" style="font-weight:bold; text-align:right;" width="120px"/>
+                    <textbox width="325px" placeholder="Enter ticket title"
+                             value="@bind(vm.currentTicket.title)"/>
+                </row>
+                <row>
+                    <label value="Description:" style="font-weight:bold; text-align:right;" width="120px"/>
+                    <textbox multiline="true" rows="4" width="325px"
+                             placeholder="Describe the issue"
+                             value="@bind(vm.currentTicket.description)"/>
+                </row>
+                <row>
+                    <label value="Priority:" style="font-weight:bold; text-align:right;" width="120px"/>
+                    <combobox width="325px" placeholder="Select priority" readonly="true"
+                              model="@load(vm.priorityOptions)"
+                              selectedItem="@bind(vm.currentTicket.priority)">
+                    </combobox>
+                </row>
+                <row>
+                    <label value="Status:" style="font-weight:bold; text-align:right;" width="120px"/>
+                    <combobox width="325px" placeholder="Select status" readonly="true"
+                              model="@load(vm.statusOptions)"
+                              selectedItem="@bind(vm.currentTicket.status)">
+                        <template name="model">
+                            <comboitem label="@load(vm.getStatusLabelText(each))" value="@load(each)"/>
+                        </template>
+                    </combobox>
+                </row>
+                <row>
+                    <label value="Assign To:" style="font-weight:bold; text-align:right;" width="120px"/>
+                    <textbox width="325px" placeholder="Support agent name"
+                             value="@bind(vm.currentTicket.assignedTo)"/>
+                </row>
+                <row>
+                    <label value="Requester:" width="120px" style="font-weight:bold;"/>
+                    <textbox width="325px" placeholder="Requester name"
+                             value="@bind(vm.currentTicket.requester)"/>
+                </row>
+            </rows>
+        </grid>
 
-            <label value="Fill in the ticket information below"
-                   style="color:#7f8c8d; font-size:14px; margin-bottom:10px;"/>
-
-            <grid width="100%">
-                <columns>
-                    <column width="120px"/>
-                    <column width="*"/>
-                </columns>
-                <rows>
-                    <row>
-                        <label value="Title:" style="font-weight:bold; text-align:right;" width="120px"/>
-                        <textbox id="titleBox" width="325px" placeholder="Enter ticket title"/>
-                    </row>
-                    <row>
-                        <label value="Description:" style="font-weight:bold; text-align:right;" width="120px"/>
-                        <textbox id="descBox" multiline="true" rows="4" width="325px"
-                                 placeholder="Describe the issue"/>
-                    </row>
-                    <row>
-                        <label value="Priority:" style="font-weight:bold; text-align:right;" width="120px"/>
-                        <combobox width="325px" placeholder="Select priority" id="priorityBox" readonly="true">
-                        </combobox>
-                    </row>
-                    <row>
-                        <label value="Status:" style="font-weight:bold; text-align:right;" width="120px"/>
-                        <combobox width="325px" placeholder="Select status" id="statusBox" readonly="true">
-                        </combobox>
-                    </row>
-                    <row>
-                        <label value="Assign To:" style="font-weight:bold; text-align:right;" width="120px"/>
-                        <textbox width="325px" placeholder="Support agent name" id="assignedToBox"/>
-                    </row>
-                    <row>
-                        <label value="Requester:" width="120px" style="font-weight:bold;"/>
-                        <textbox width="325px" placeholder="Requester name" id="requesterBox"/>
-                    </row>
-                </rows>
-            </grid>
-
-            <hlayout spacing="15px" style="margin-top:15px; justify-content:center;">
-                <button id="saveBtn" label="💾 Save"
-                        style="background:#2ecc71; color:white; font-weight:bold; border:none;
+        <hlayout spacing="15px" style="margin-top:15px; justify-content:center;">
+            <button label="💾 Save" onClick="@command('saveTicket')"
+                    style="background:#2ecc71; color:white; font-weight:bold; border:none;
                                padding:8px 20px; border-radius:6px;"/>
-                <button label="❌ Cancel" href="tickets.zul"
-                        style="background:#e74c3c; color:white; font-weight:bold; border:none;
+            <button label="❌ Cancel" href="tickets.zul"
+                    style="background:#e74c3c; color:white; font-weight:bold; border:none;
                                padding:8px 20px; border-radius:6px;"/>
-            </hlayout>
-        </vlayout>
+        </hlayout>
+    </vlayout>
     </window>
 </zk>

@@ -1,62 +1,65 @@
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul" ?>
-
 <zk>
-    <window self="@define(content)" border="none" apply="latihan.controller.TicketDetailController">
-        <!-- Bungkus semua isi dengan div scrollable -->
+    <window self="@define(content)" border="none"
+            apply="org.zkoss.bind.BindComposer"
+            viewModel="@id('vm') @init('latihan.controller.TicketDetailController')">
+
         <div style="height:100%; overflow:auto; padding:20px;">
             <vlayout spacing="20px">
-                <!-- Judul -->
                 <label value="🎟 Ticket Detail"
                        style="font-weight:bold; font-size:22px; color:#2c3e50;"/>
 
-                <!-- Info Ticket -->
-                <groupbox mold="3d" width="100%" style="background:#ffffff; border-radius:10px;">
+                <groupbox mold="3d" width="100%" style="background:#ffffff; border-radius:10px;"
+                          visible="@load(not empty vm.ticket)">
                     <caption label="Ticket Information" style="font-weight:bold; color:#2c3e50;"/>
                     <grid width="700px" style="padding:15px;">
                         <rows>
                             <row>
                                 <label value="Ticket ID:" style="font-weight:bold; width:150px;"/>
-                                <label id="lblId"/>
+                                <label value="@load(vm.ticket.id)"/>
                             </row>
                             <row>
                                 <label value="Title:" style="font-weight:bold;"/>
-                                <label id="lblTitle"/>
+                                <label value="@load(vm.ticket.title)"/>
                             </row>
                             <row>
                                 <label value="Description:" style="font-weight:bold;"/>
-                                <label id="lblDescription"/>
+                                <label value="@load(vm.ticket.description)" multiline="true"/>
                             </row>
                             <row>
                                 <label value="Status:" style="font-weight:bold;"/>
-                                <label id="lblStatus" style="color:green; font-weight:bold;"/>
+                                <label value="@load(vm.statusLabel)" style="color:green; font-weight:bold;"/>
                             </row>
                             <row>
                                 <label value="Priority:" style="font-weight:bold;"/>
-                                <label id="lblPriority" style="color:#c0392b; font-weight:bold;"/>
+                                <label value="@load(vm.priorityLabel)" style="color:#c0392b; font-weight:bold;"/>
                             </row>
                             <row>
                                 <label value="Assigned To:" style="font-weight:bold;"/>
-                                <label id="lblAssignedTo"/>
+                                <label value="@load(vm.ticket.assignedTo)"/>
                             </row>
                             <row>
                                 <label value="Requester:" style="font-weight:bold;"/>
-                                <label id="lblRequester"/>
+                                <label value="@load(vm.ticket.requester)"/>
                             </row>
                             <row>
                                 <label value="Created Date:" style="font-weight:bold;"/>
-                                <label id="lblCreatedDate"/>
+                                <label value="@load(vm.formattedCreatedDate)"/>
                             </row>
                         </rows>
                     </grid>
                 </groupbox>
 
-                <!-- Action Buttons -->
+                <div visible="@load(empty vm.ticket)" style="padding:20px; text-align:center;">
+                    <label value="Ticket not found." style="font-size:16px; color:red;"/>
+                </div>
+
                 <hlayout spacing="10px">
-                    <button id="btnEdit" label="✏ Edit"
+                    <button label="✏ Edit" onClick="@command('editTicket')"
                             style="background:#f39c12; color:white; border-radius:6px;"/>
-                    <button label="🔄 Change Status"
+                    <button label="🔄 Change Status" onClick="@command('changeStatus')"
                             style="background:#3498db; color:white; border-radius:6px;"/>
-                    <button label="🗑 Delete"
+                    <button label="🗑 Delete" onClick="@command('deleteTicket')"
                             style="background:#e74c3c; color:white; border-radius:6px;"/>
                 </hlayout>
 
