@@ -42,7 +42,7 @@
         <borderlayout width="100%" height="100%">
 
             <!-- Sidebar -->
-            <west border="none" collapsible="true" splittable="true">
+            <west border="none">
                 <vlayout sclass="sidebar" spacing="10px">
                     <label value="📋 Menu" style="font-size:18px; font-weight:bold;" />
 
