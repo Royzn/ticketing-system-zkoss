@@ -24,8 +24,10 @@ public class UserFormViewModel {
 
     private String name;
     private RoleOption selectedRole;
+    private String oldUsername;
     private String username;
     private String password;
+    private String savedPassword;
     private String errorMsg;
 
     private List<RoleOption> roleOptions;
@@ -86,6 +88,9 @@ public class UserFormViewModel {
                     break;
                 }
             }
+            this.username = user.getUsername();
+            this.savedPassword = user.getPasswordHash();
+            this.oldUsername = user.getUsername();
         }
     }
 
@@ -110,8 +115,8 @@ public class UserFormViewModel {
             return true;
         }
 
-        if (password == null || password.trim().isEmpty()) {
-            errorMsg = "Role is required.";
+        if ((password == null || password.trim().isEmpty()) && savedPassword.isEmpty()) {
+            errorMsg = "Password is required.";
             Clients.showNotification(errorMsg, "error", null, "top_center", 3000);
             return true;
         }
@@ -137,7 +142,7 @@ public class UserFormViewModel {
         if (isInvalidForm()) return;
 
         String roleValue = selectedRole.getValue();
-        service.updateUser(user, name.trim(), roleValue);
+        service.updateUser(user, name.trim(), roleValue, username, password, oldUsername);
 
         Executions.sendRedirect("users.zul");
     }

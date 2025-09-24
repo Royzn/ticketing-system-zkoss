@@ -28,10 +28,11 @@ public class UserDetailViewModel {
     private String userId;
     private String name;
     private String role;
+    private String username;
     private String createdAt;
 
     @Init
-    @NotifyChange({"userId", "name", "role", "createdAt"})
+    @NotifyChange({"userId", "name", "role", "username", "createdAt"})
     public void init() {
         userService = (UserService) SpringUtil.getBean("userService");
 
@@ -52,11 +53,11 @@ public class UserDetailViewModel {
         if (id == null) return;
 
         this.user = userService.getUserById(id);
-        System.out.println(this.user);
         if (user != null) {
             this.userId = user.getId().toString();
             this.name = user.getName();
             this.role = RoleLabel.fromStatus(Role.valueOf(user.getRole())).getLabel();
+            this.username = user.getUsername();
 
             LocalDateTime createdDate = user.getCreatedDate();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm", Locale.getDefault());
@@ -104,4 +105,8 @@ public class UserDetailViewModel {
     }
 
     public User getUser(){return user;}
+
+    public String getUsername() {
+        return username;
+    }
 }

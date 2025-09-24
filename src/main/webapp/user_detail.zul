@@ -23,6 +23,10 @@
                                 <label value="@load(vm.name)"/>
                             </row>
                             <row>
+                                <label value="Username:" style="font-weight:bold;"/>
+                                <label value="@load(vm.username)"/>
+                            </row>
+                            <row>
                                 <label value="Role:" style="font-weight:bold;"/>
                                 <label value="@load(vm.role)"/>
                             </row>

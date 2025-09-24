@@ -31,6 +31,14 @@
                             </template>
                         </combobox>
                     </row>
+                    <row>
+                        <label value="Username:" style="font-weight:bold; text-align:right;" width="120px"/>
+                        <textbox value="@bind(vm.username)" width="325px" placeholder="Enter Username"/>
+                    </row>
+                    <row>
+                        <label value="Password:" style="font-weight:bold; text-align:right;" width="120px"/>
+                        <textbox value="@bind(vm.password)" width="325px" placeholder="Enter Password"/>
+                    </row>
                 </rows>
             </grid>
 
