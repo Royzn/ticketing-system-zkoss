@@ -6,59 +6,77 @@ import latihan.entity.Ticket;
 import latihan.entity.User;
 import latihan.repository.TicketRepository;
 import latihan.repository.UserRepository;
+import latihan.repository.impl.TicketRepositoryImpl;
+import latihan.repository.impl.UserRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class TicketService {
-    private final TicketRepository repository = TicketRepository.getInstance();
-    private final UserRepository userRepository = UserRepository.getInstance();
+
+    private final TicketRepository ticketRepository = new TicketRepositoryImpl();
+    private final UserRepository userRepository = new UserRepositoryImpl();
 
     public List<Ticket> getAllTickets() {
-        return repository.findAll();
+        return ticketRepository.findAll();
     }
 
     public Ticket getTicket(Long id) {
-        return repository.findById(id).orElse(null);
+        return ticketRepository.findById(id).orElse(null);
     }
 
     public Ticket createTicket(String title, String description, String priority, Long assignedTo, String requester) {
-        User u = userRepository.findById(assignedTo).orElse(null);
-        if(u!= null){
-            Ticket ticket = new Ticket(null, title, description, Status.OPEN.toString(), Priority.valueOf(priority).toString(), u, requester, LocalDateTime.now());
-            return repository.save(ticket);
+        User user = userRepository.findById(assignedTo).orElse(null);
+        if (user == null) {
+            return null;
         }
-        return null;
+
+        Ticket ticket = new Ticket();
+        ticket.setTitle(title);
+        ticket.setDescription(description);
+        ticket.setPriority(priority); // assumed string value like "HIGH"
+        ticket.setStatus(Status.OPEN.name()); // set default status
+        ticket.setAssignedTo(user);
+        ticket.setRequester(requester);
+        ticket.setCreatedDate(LocalDateTime.now());
+        ticket.setUpdatedDate(LocalDateTime.now());
+
+        return ticketRepository.save(ticket);
     }
 
     public Ticket updateTicket(Ticket ticket, String title, String description, String status,
                                String priority, Long assignedTo, String requester) {
 
-        ticket.setUpdatedDate(LocalDateTime.now());
+        User user = userRepository.findById(assignedTo).orElse(null);
+        if (user == null) {
+            return null;
+        }
+
         ticket.setTitle(title);
         ticket.setDescription(description);
-        ticket.setStatus(Status.valueOf(status).toString());
-        ticket.setPriority(Priority.valueOf(priority).toString());
-
-        User u = userRepository.findById(assignedTo).orElse(null);
-        if(u!= null) ticket.setAssignedTo(u);
+        ticket.setStatus(status); // already validated as Status string
+        ticket.setPriority(priority);
+        ticket.setAssignedTo(user);
         ticket.setRequester(requester);
-        return repository.save(ticket);
+        ticket.setUpdatedDate(LocalDateTime.now());
+
+        return ticketRepository.save(ticket);
     }
 
     public Ticket updateTicketStatus(Long ticketId, Status newStatus) {
-        Ticket ticketToUpdate = getTicket(ticketId);
-        if (ticketToUpdate != null) {
-            ticketToUpdate.setStatus(newStatus.toString());
-            ticketToUpdate.setUpdatedDate(LocalDateTime.now());
-            repository.save(ticketToUpdate);
+        Ticket ticket = getTicket(ticketId);
+        if (ticket == null) {
+            return null;
         }
-        return ticketToUpdate; // Mengembalikan objek yang sudah diupdate
+
+        ticket.setStatus(newStatus.name());
+        ticket.setUpdatedDate(LocalDateTime.now());
+        return ticketRepository.save(ticket);
     }
 
     public void deleteTicket(Long id) {
-        repository.delete(id);
+        ticketRepository.delete(id);
     }
-
-
 }
