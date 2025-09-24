@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<zk>
+<zk xmlns:h="native">
     <style>
         .login-textbox {
         box-sizing: border-box;
@@ -14,6 +14,7 @@
              style="display:flex; justify-content:center; align-items:center; background:#f4f6f9;">
 
         <window title="🔑 Login" border="normal" width="420px"
+                closable="false"
                 style="border-radius:12px; background:#ffffff; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
 
             <vlayout spacing="20px" style="padding:25px;">
@@ -24,29 +25,36 @@
                 <label value="Please login to continue"
                        style="color:#7f8c8d; font-size:14px;"/>
 
-                <!-- Username -->
-                <hlayout width="100%">
-                    <label value="Username:" width="100px" style="font-weight:bold;"/>
-                    <textbox hflex="1" sclass="login-textbox" placeholder="Enter username"/>
-                </hlayout>
+                <!-- Native HTML form -->
+                <h:form action="${pageContext.request.contextPath}/login.zul" method="POST">
+                    <grid width="100%">
+                        <rows>
+                            <row>
+                                <label value="Username:" width="100px" style="font-weight:bold;"/>
+                                <textbox name="username" hflex="1" sclass="login-textbox"
+                                         placeholder="Enter username"/>
+                            </row>
+                            <row>
+                                <label value="Password:" width="100px" style="font-weight:bold;"/>
+                                <textbox name="password" type="password" hflex="1" sclass="login-textbox"
+                                         placeholder="Enter password"/>
+                            </row>
+                            <row>
+                                <cell colspan="2">
+                                    <button type="submit" label="Login"
+                                            style="width:100%; background:#2ecc71; color:white; font-weight:bold;
+                                                   border:none; padding:10px; border-radius:6px;"/>
+                                </cell>
+                            </row>
+                        </rows>
+                    </grid>
+                </h:form>
 
-                <!-- Password -->
-                <hlayout width="100%">
-                    <label value="Password:" width="100px" style="font-weight:bold;"/>
-                    <textbox type="password" hflex="1" sclass="login-textbox" placeholder="Enter password"/>
-                </hlayout>
-
-                <!-- Error Placeholder -->
+                <!-- Error message -->
                 <label value="Invalid username or password"
-                       style="color:red; font-weight:bold;"
-                       visible="false"/>
+                       style="color: red; font-weight:bold; text-align:center;"
+                       visible="${param.error != null}"/>
 
-                <!-- Buttons -->
-                <hlayout spacing="15px" style="justify-content:center; margin-top:10px;">
-                    <button label="Login"
-                            style="background:#2ecc71; color:white; font-weight:bold; border:none;
-                                   padding:8px 20px; border-radius:6px;"/>
-                </hlayout>
             </vlayout>
         </window>
     </vlayout>
