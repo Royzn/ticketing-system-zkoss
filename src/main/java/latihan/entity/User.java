@@ -24,6 +24,10 @@ public class User {
         this.createdDate = createdDate;
     }
 
+    public User() {
+        // JPA needs this
+    }
+
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
     private LocalDateTime deletedDate;
