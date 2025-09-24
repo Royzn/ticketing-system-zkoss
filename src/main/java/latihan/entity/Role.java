@@ -1,6 +1,7 @@
 package latihan.entity;
 
 public enum Role {
-    USER,
-    AGENT
+    ROLE_USER,
+    ROLE_AGENT,
+    ROLE_ADMIN
 }

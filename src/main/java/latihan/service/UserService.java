@@ -5,6 +5,7 @@ import latihan.entity.Role;
 import latihan.entity.User;
 import latihan.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,12 @@ public class UserService {
 
     @Autowired
     UserRepository repository;
+
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public List<UserListDto> getAllUsers() {
         return repository.findAll()
@@ -35,8 +42,8 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public void createUser(String name, String role) {
-        User u = new User(null, name, role.toUpperCase(), LocalDateTime.now());
+    public void createUser(String name, String role, String username, String password) {
+        User u = new User(null, name, role.toUpperCase(), LocalDateTime.now(), username, passwordEncoder.encode(password));
         repository.save(u);
     }
 
