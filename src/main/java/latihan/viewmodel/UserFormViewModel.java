@@ -6,6 +6,7 @@ import latihan.entity.User;
 import latihan.service.UserService;
 import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.util.Clients;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,12 +82,32 @@ public class UserFormViewModel {
     }
 
     @Command
+    // === VALIDASI ===
+    private boolean isInvalidForm() {
+        if (name == null || name.trim().isEmpty()) {
+            errorMsg = "Name is required.";
+            Clients.showNotification(errorMsg, "error", null, "top_center", 3000);
+            return true;
+        }
+
+        if (selectedRole == null || selectedRole.getValue() == null) {
+            errorMsg = "Role is required.";
+            Clients.showNotification(errorMsg, "error", null, "top_center", 3000);
+            return true;
+        }
+
+        errorMsg = null;
+        return false;
+    }
+
+    @Command
     @NotifyChange("errorMsg")
     public void save() {
         if (isInvalidForm()) return;
-        String roleValue = selectedRole != null ? selectedRole.getValue() : null;
 
+        String roleValue = selectedRole.getValue();
         service.createUser(name.trim(), roleValue);
+
         Executions.sendRedirect("users.zul");
     }
 
@@ -94,9 +115,10 @@ public class UserFormViewModel {
     @NotifyChange("errorMsg")
     public void update() {
         if (isInvalidForm()) return;
-        String roleValue = selectedRole != null ? selectedRole.getValue() : null;
 
+        String roleValue = selectedRole.getValue();
         service.updateUser(user, name.trim(), roleValue);
+
         Executions.sendRedirect("users.zul");
     }
 
@@ -107,21 +129,6 @@ public class UserFormViewModel {
         } else {
             Executions.sendRedirect("users.zul");
         }
-    }
-
-    private boolean isInvalidForm() {
-        if (name == null || name.trim().isEmpty()) {
-            errorMsg = "Name is required.";
-            return true;
-        }
-
-        if (selectedRole == null || selectedRole.getValue() == null) {
-            errorMsg = "Role is required.";
-            return true;
-        }
-
-        errorMsg = null;
-        return false;
     }
 
     // === Getters and Setters for ZUL Binding ===

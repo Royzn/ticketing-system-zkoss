@@ -1,4 +1,4 @@
-package latihan.controller;
+package latihan.viewmodel;
 
 import latihan.entity.Priority;
 import latihan.entity.PriorityLabel;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class DashboardController {
+public class DashboardViewModel {
 
     private final TicketService service = new TicketService();
 

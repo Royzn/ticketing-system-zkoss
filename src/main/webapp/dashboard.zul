@@ -2,7 +2,7 @@
 <zk>
     <window self="@define(content)"
             apply="org.zkoss.bind.BindComposer"
-            viewModel="@id('vm') @init('latihan.controller.DashboardController')">
+            viewModel="@id('vm') @init('latihan.viewmodel.DashboardViewModel')">
         <vlayout spacing="20px" style="padding:20px;">
 
             <label value="📊 Dashboard Ticketing System"

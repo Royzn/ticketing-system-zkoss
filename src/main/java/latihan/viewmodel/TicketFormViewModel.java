@@ -1,4 +1,4 @@
-package latihan.controller; // <-- DIUBAH DI SINI
+package latihan.viewmodel; // <-- DIUBAH DI SINI
 
 import latihan.dto.UserListDto;
 import latihan.entity.*;
@@ -6,12 +6,12 @@ import latihan.service.TicketService;
 import latihan.service.UserService;
 import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.util.Clients;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TicketFormController {
+public class TicketFormViewModel {
 
     private TicketService service = new TicketService();
     private UserService uservice = new UserService();
@@ -22,6 +22,7 @@ public class TicketFormController {
     private UserListDto selectedAgent;
     private Priority selectedPriority;
     private Long id;
+    private String errorMessage;
 
     @Init
     public void init(@QueryParam("id") String idParam) {
@@ -47,6 +48,27 @@ public class TicketFormController {
         }
     }
 
+    // --- VALIDASI ---
+    private boolean validateForm() {
+        if (currentTicket.getTitle() == null || currentTicket.getTitle().trim().isEmpty()) {
+            errorMessage = "Title wajib diisi.";
+            return false;
+        }
+        if (currentTicket.getDescription() == null || currentTicket.getDescription().trim().isEmpty()) {
+            errorMessage = "Description wajib diisi.";
+            return false;
+        }
+        if (selectedPriority == null) {
+            errorMessage = "Priority wajib dipilih.";
+            return false;
+        }
+        if (selectedAgent == null) {
+            errorMessage = "Agent wajib dipilih.";
+            return false;
+        }
+        return true;
+    }
+
     public String getStatusLabelText(Status status) {
         if (status == null) return "";
         StatusLabel sl = StatusLabel.fromStatus(status);
@@ -65,6 +87,11 @@ public class TicketFormController {
 
     @Command
     public void saveTicket() {
+        if (!validateForm()) {
+            // Bisa tampilkan notifikasi popup ke user
+            Clients.showNotification(errorMessage, "error", null, "top_center", 3000);
+            return;
+        }
         if (currentTicket.getId() == null) {
             service.createTicket(
                     currentTicket.getTitle(),
@@ -97,6 +124,14 @@ public class TicketFormController {
     public UserListDto getSelectedAgent(){ return selectedAgent; }
     public void setSelectedAgent(UserListDto selectedAgent) {
         this.selectedAgent = selectedAgent;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     public Priority getSelectedPriority() {return selectedPriority;}
