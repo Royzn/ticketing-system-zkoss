@@ -1,23 +1,24 @@
 package latihan.service;
 
-import latihan.entity.Priority;
 import latihan.entity.Status;
 import latihan.entity.Ticket;
 import latihan.entity.User;
 import latihan.repository.TicketRepository;
 import latihan.repository.UserRepository;
-import latihan.repository.impl.TicketRepositoryImpl;
-import latihan.repository.impl.UserRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public class TicketService {
 
-    private final TicketRepository ticketRepository = new TicketRepositoryImpl();
-    private final UserRepository userRepository = new UserRepositoryImpl();
+    @Autowired
+    TicketRepository ticketRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     public List<Ticket> getAllTickets() {
         return ticketRepository.findAll();
@@ -76,7 +77,7 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-    public void deleteTicket(Long id) {
-        ticketRepository.delete(id);
+    public void deleteTicket(Ticket ticket) {
+        ticketRepository.delete(ticket);
     }
 }

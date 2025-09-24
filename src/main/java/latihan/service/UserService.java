@@ -4,16 +4,18 @@ import latihan.dto.UserListDto;
 import latihan.entity.Role;
 import latihan.entity.User;
 import latihan.repository.UserRepository;
-import latihan.repository.impl.UserRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class UserService {
 
-    // Use the JPA-based implementation
-    private final UserRepository repository = new UserRepositoryImpl();
+    @Autowired
+    UserRepository repository;
 
     public List<UserListDto> getAllUsers() {
         return repository.findAll()
@@ -45,7 +47,7 @@ public class UserService {
         repository.save(user);
     }
 
-    public void deleteUser(Long id) {
-        repository.delete(id);
+    public void deleteUser(User u) {
+        repository.delete(u);
     }
 }

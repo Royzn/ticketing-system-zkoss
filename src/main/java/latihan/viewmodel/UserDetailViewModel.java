@@ -4,17 +4,23 @@ import latihan.entity.Role;
 import latihan.entity.RoleLabel;
 import latihan.entity.User;
 import latihan.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zkplus.spring.SpringUtil;
 import org.zkoss.zul.Window;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
+@Component
 public class UserDetailViewModel {
 
-    private final UserService userService = new UserService();
+    private UserService userService;
 
     private Long id;
     private User user;
@@ -27,6 +33,8 @@ public class UserDetailViewModel {
     @Init
     @NotifyChange({"userId", "name", "role", "createdAt"})
     public void init() {
+        userService = (UserService) SpringUtil.getBean("userService");
+
         String idParam = Executions.getCurrent().getParameter("id");
         if (idParam != null) {
             try {
@@ -63,11 +71,14 @@ public class UserDetailViewModel {
 
     @Command
     public void delete() {
-        var args = new java.util.HashMap<String, Object>();
+        final Map<String, Object> args = new HashMap<>();
         args.put("confirmMessage", "Are you sure you want to delete user \"" + name + "\"?");
-        args.put("onConfirm", (Runnable) () -> {
-            userService.deleteUser(id);
-            Executions.sendRedirect("users.zul");
+        args.put("onConfirm", new Runnable() {
+            @Override
+            public void run() {
+                userService.deleteUser(user);
+                Executions.sendRedirect("users.zul");
+            }
         });
 
         Window confirmWin = (Window) Executions.createComponents("/confirm_win.zul", null, args);

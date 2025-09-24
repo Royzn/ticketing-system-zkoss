@@ -1,14 +1,8 @@
 package latihan.repository;
 
 import latihan.entity.Ticket;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
-public interface TicketRepository {
-    List<Ticket> findAll();
-    Optional<Ticket> findById(Long id);
-    Ticket save(Ticket ticket);
-    void delete(Long id);
 }

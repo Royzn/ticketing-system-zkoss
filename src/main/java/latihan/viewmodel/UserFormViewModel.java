@@ -4,16 +4,21 @@ import latihan.entity.Role;
 import latihan.entity.RoleLabel;
 import latihan.entity.User;
 import latihan.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zkplus.spring.SpringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class UserFormViewModel {
 
-    private final UserService service = new UserService();
+
+    private UserService service;
 
     private Long id;
     private User user;
@@ -45,6 +50,8 @@ public class UserFormViewModel {
 
     @Init
     public void init() {
+        service = (UserService) SpringUtil.getBean("userService");
+
         loadRoleOptions();
 
         String idParam = Executions.getCurrent().getParameter("id");

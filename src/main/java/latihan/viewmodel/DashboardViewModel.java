@@ -6,16 +6,20 @@ import latihan.entity.Status;
 import latihan.entity.StatusLabel;
 import latihan.entity.Ticket;
 import latihan.service.TicketService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.zkoss.bind.annotation.Init;
+import org.zkoss.zkplus.spring.SpringUtil;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Component
 public class DashboardViewModel {
 
-    private final TicketService service = new TicketService();
+    private TicketService service;
 
     // Properti untuk menyimpan hasil perhitungan
     private long openCount;
@@ -30,6 +34,7 @@ public class DashboardViewModel {
 
     @Init
     public void init() {
+        service = (TicketService) SpringUtil.getBean("ticketService");
         // Panggil metode untuk memuat dan memproses semua data
         loadDashboardData();
     }

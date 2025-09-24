@@ -2,16 +2,20 @@ package latihan.viewmodel;
 
 import latihan.entity.*;
 import latihan.service.TicketService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zkplus.spring.SpringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class TicketListViewModel {
 
-    private TicketService service = new TicketService();
+    private TicketService service;
     private List<Ticket> tickets;
 
     // --- Perubahan Tipe Data ---
@@ -24,6 +28,8 @@ public class TicketListViewModel {
 
     @Init
     public void init() {
+        service = (TicketService) SpringUtil.getBean("ticketService");
+
         tickets = service.getAllTickets();
 
         // --- Mengisi opsi langsung dari Enum ---

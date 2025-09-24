@@ -4,20 +4,25 @@ import latihan.dto.UserListDto;
 import latihan.entity.RoleLabel;
 import latihan.entity.User;
 import latihan.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zkplus.spring.SpringUtil;
 import org.zkoss.zul.ListModelList;
 
 import java.util.List;
 
+@Component
 public class UserListViewModel {
 
-    private final UserService userService = new UserService();
+    private UserService userService;
 
     private ListModelList<UserListDto> users;
 
     @Init
     public void init() {
+        userService = (UserService) SpringUtil.getBean("userService");
         loadUsers();
     }
 

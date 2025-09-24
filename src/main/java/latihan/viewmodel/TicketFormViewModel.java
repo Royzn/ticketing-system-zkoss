@@ -4,17 +4,23 @@ import latihan.dto.UserListDto;
 import latihan.entity.*;
 import latihan.service.TicketService;
 import latihan.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.util.Clients;
+import org.zkoss.zkplus.spring.SpringUtil;
 
 import java.util.Arrays;
 import java.util.List;
 
+@Component
 public class TicketFormViewModel {
 
-    private TicketService service = new TicketService();
-    private UserService uservice = new UserService();
+
+    private TicketService service;
+
+    private UserService uservice;
     private Ticket currentTicket;
 
     private List<Priority> priorityOptions;
@@ -26,6 +32,9 @@ public class TicketFormViewModel {
 
     @Init
     public void init(@QueryParam("id") String idParam) {
+        service = (TicketService) SpringUtil.getBean("ticketService");
+        uservice = (UserService) SpringUtil.getBean("userService");
+
         priorityOptions = Arrays.asList(Priority.values());
         loadAgentList();
         if (idParam != null && !idParam.isEmpty()) {
