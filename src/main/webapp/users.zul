@@ -9,6 +9,7 @@
                 <listhead>
                     <listheader label="ID" />
                     <listheader label="Name" />
+                    <listheader label="Username" />
                     <listheader label="Role" />
                     <listheader label="Actions" />
                 </listhead>
@@ -17,6 +18,7 @@
                     <listitem>
                         <listcell label="@load(String.valueOf(user.id))" />
                         <listcell label="@load(user.name)" />
+                        <listcell label="@load(user.username)" />
                         <listcell label="@load(vm.getRoleLabel(user))" />
                         <listcell>
                             <button label="View" style="background:#3498db; color:white; border-radius:6px;"

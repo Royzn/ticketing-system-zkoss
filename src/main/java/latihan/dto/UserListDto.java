@@ -6,11 +6,13 @@ public class UserListDto {
     private Long id;
     private String name;
     private Role role;
+    private String username;
 
-    public UserListDto(Long id, String name, Role role) {
+    public UserListDto(Long id, String name, Role role, String username) {
         this.id = id;
         this.name = name;
         this.role = role;
+        this.username = username;
     }
 
     public Long getId() {
@@ -35,5 +37,13 @@ public class UserListDto {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
