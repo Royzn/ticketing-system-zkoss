@@ -1,7 +1,7 @@
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul" ?>
 <zk>
     <window self="@define(content)"
-            viewModel="@id('vm') @init('latihan.controller.TicketListController')">
+            viewModel="@id('vm') @init('latihan.viewmodel.TicketListViewModel')">
 
         <vlayout spacing="20px" style="padding:20px;">
             <label value="🎫 Ticket List"

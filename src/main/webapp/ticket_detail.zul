@@ -2,7 +2,7 @@
 <zk>
     <window self="@define(content)" border="none"
             apply="org.zkoss.bind.BindComposer"
-            viewModel="@id('vm') @init('latihan.controller.TicketDetailController')">
+            viewModel="@id('vm') @init('latihan.viewmodel.TicketDetailViewModel')">
 
         <div style="height:100%; overflow:auto; padding:20px;">
             <vlayout spacing="20px">

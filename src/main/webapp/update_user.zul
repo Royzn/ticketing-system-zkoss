@@ -34,8 +34,6 @@
                 </rows>
             </grid>
 
-            <label value="@load(vm.errorMsg)" style="color: red" visible="@load(not empty vm.errorMsg)"/>
-
             <!-- Action Buttons -->
             <hlayout spacing="15px" style="margin-top:15px; justify-content:center;">
                 <button label="💾 Update"

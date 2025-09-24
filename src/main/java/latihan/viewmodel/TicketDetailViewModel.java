@@ -1,4 +1,4 @@
-package latihan.controller;
+package latihan.viewmodel;
 
 import latihan.entity.*;
 import latihan.service.TicketService;
@@ -11,7 +11,7 @@ import org.zkoss.zul.Messagebox;
 
 import java.time.format.DateTimeFormatter;
 
-public class TicketDetailController {
+public class TicketDetailViewModel {
 
     private TicketService service = new TicketService();
     private Ticket ticket;

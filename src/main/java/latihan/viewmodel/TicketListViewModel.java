@@ -1,17 +1,15 @@
-package latihan.controller;
+package latihan.viewmodel;
 
 import latihan.entity.*;
 import latihan.service.TicketService;
-import latihan.viewmodel.UserFormViewModel;
 import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TicketListController {
+public class TicketListViewModel {
 
     private TicketService service = new TicketService();
     private List<Ticket> tickets;
@@ -39,19 +37,19 @@ public class TicketListController {
 
     private void loadStatusOptions() {
         statusOptions = new ArrayList<>();
-        statusOptions.add(new TicketListController.Option("All", "All"));
+        statusOptions.add(new TicketListViewModel.Option("All", "All"));
         for (Status s : Status.values()) {
             StatusLabel statusLabel = StatusLabel.fromStatus(s);
-            statusOptions.add(new TicketListController.Option(s.name(), statusLabel.getLabel()));
+            statusOptions.add(new TicketListViewModel.Option(s.name(), statusLabel.getLabel()));
         }
     }
 
     private void loadPriorityOptions() {
         priorityOptions = new ArrayList<>();
-        priorityOptions.add(new TicketListController.Option("All", "All"));
+        priorityOptions.add(new TicketListViewModel.Option("All", "All"));
         for (Priority p : Priority.values()) {
             PriorityLabel priorityLabel = PriorityLabel.fromPriority(p);
-            priorityOptions.add(new TicketListController.Option(p.name(), priorityLabel.getLabel()));
+            priorityOptions.add(new TicketListViewModel.Option(p.name(), priorityLabel.getLabel()));
         }
     }
 
