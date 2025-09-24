@@ -1,5 +1,6 @@
 package latihan;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.zk.ui.Executions;
@@ -59,4 +60,13 @@ public class TemplateViewModel {
         // redirect ke halaman login
         Executions.sendRedirect("login.zul");
     }
+
+    public boolean isAdmin() {
+        return SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getAuthorities()
+                .stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+    }
+
 }

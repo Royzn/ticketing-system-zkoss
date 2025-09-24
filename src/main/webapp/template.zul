@@ -37,16 +37,24 @@
     height: 100%;
     overflow: auto;
     }
+    a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    }
+
 </style>
 
     <window apply="org.zkoss.bind.BindComposer"
             viewModel="@id('tvm')@init('latihan.TemplateViewModel')"
             border="none"
-            width="100%" height="100%">
+            width="100%" height="100%"
+            style="background-color:#f0f2f5;">
 
         <borderlayout width="100%" height="100%">
 
-            <west border="none" width="200px">
+            <west border="none">
                 <vlayout sclass="sidebar" spacing="10px" height="100%">
                     <label value="📋 Menu" style="font-size:18px; font-weight:bold; margin-bottom:10px;" />
 
@@ -62,10 +70,13 @@
                         <n:i sclass="z-icon-pencil-square-o" />
                         <label value="Create Ticket"/>
                     </a>
-                    <a href="users.zul" sclass="@load(tvm.usersClass)">
+                    <a href="users.zul"
+                       sclass="@load(tvm.usersClass)"
+                       visible="@load(tvm.isAdmin())">
                         <n:i sclass="z-icon-users" />
                         <label value="Users"/>
                     </a>
+
 
                     <div vflex="1"></div>
 
