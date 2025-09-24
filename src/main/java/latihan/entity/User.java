@@ -17,10 +17,18 @@ public class User {
     @Column(name = "role")
     private String role;
 
-    public User(Long id, String name, String role, LocalDateTime createdDate) {
+    @Column(nullable = false, unique = true, length = 100)
+    private String username;
+
+    @Column(nullable = false, length = 255)
+    private String passwordHash;
+
+    public User(Long id, String name, String role, LocalDateTime createdDate, String username, String passwordHash) {
         this.id = id;
         this.name = name;
         this.role = role;
+        this.passwordHash = passwordHash;
+        this.username = username;
         this.createdDate = createdDate;
     }
 
@@ -78,5 +86,21 @@ public class User {
 
     public void setDeletedDate(LocalDateTime deletedDate) {
         this.deletedDate = deletedDate;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 }

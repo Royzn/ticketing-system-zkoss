@@ -17,14 +17,15 @@ import java.util.List;
 @Component
 public class UserFormViewModel {
 
-
     private UserService service;
 
     private Long id;
     private User user;
 
     private String name;
-    private RoleOption selectedRole;  // Role enum name as string, e.g. "ADMIN"
+    private RoleOption selectedRole;
+    private String username;
+    private String password;
     private String errorMsg;
 
     private List<RoleOption> roleOptions;
@@ -103,6 +104,18 @@ public class UserFormViewModel {
             return true;
         }
 
+        if (username == null || username.trim().isEmpty()) {
+            errorMsg = "Username is required.";
+            Clients.showNotification(errorMsg, "error", null, "top_center", 3000);
+            return true;
+        }
+
+        if (password == null || password.trim().isEmpty()) {
+            errorMsg = "Role is required.";
+            Clients.showNotification(errorMsg, "error", null, "top_center", 3000);
+            return true;
+        }
+
         errorMsg = null;
         return false;
     }
@@ -113,7 +126,7 @@ public class UserFormViewModel {
         if (isInvalidForm()) return;
 
         String roleValue = selectedRole.getValue();
-        service.createUser(name.trim(), roleValue);
+        service.createUser(name.trim(), roleValue, username, password);
 
         Executions.sendRedirect("users.zul");
     }
@@ -168,5 +181,21 @@ public class UserFormViewModel {
 
     public boolean isNew() {
         return id == null;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

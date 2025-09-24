@@ -20,8 +20,9 @@ public class Ticket {
     @Column(name = "priority")
     private String priority;
     @ManyToOne
-    @JoinColumn(name = "assigned_to_id")
+    @JoinColumn(name = "assigned_to_id", foreignKey = @ForeignKey(name = "fk_ticket_user", foreignKeyDefinition = "FOREIGN KEY (assigned_to_id) REFERENCES users(id) ON DELETE CASCADE"))
     private User assignedTo;
+
     @Column(name = "requester")
     private String requester;
     private LocalDateTime createdDate;

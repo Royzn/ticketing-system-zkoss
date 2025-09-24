@@ -1,8 +1,9 @@
 package latihan.entity;
 
 public enum RoleLabel {
-    USER(Role.USER, "User"),
-    AGENT(Role.AGENT, "Agent");
+    USER(Role.ROLE_USER, "User"),
+    AGENT(Role.ROLE_AGENT, "Agent"),
+    ADMIN(Role.ROLE_ADMIN, "Admin");
 
     private final Role role;
     private final String label;
