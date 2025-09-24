@@ -8,6 +8,11 @@
         border-radius: 6px;
         padding: 8px;
         }
+
+        .z-row .z-row-inner, .z-row .z-cell{
+        border-top: none;
+        }
+
     </style>
 
     <vlayout width="100%" height="100%"
@@ -17,7 +22,7 @@
                 closable="false"
                 style="border-radius:12px; background:#ffffff; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
 
-            <vlayout spacing="20px" style="padding:25px;">
+            <vlayout spacing="20px">
 
                 <!-- Header -->
                 <label value="Welcome Back!"
@@ -27,15 +32,15 @@
 
                 <!-- Native HTML form -->
                 <h:form action="${pageContext.request.contextPath}/login.zul" method="POST">
-                    <grid width="100%">
+                    <grid width="100%" style="border: none">
                         <rows>
                             <row>
-                                <label value="Username:" width="100px" style="font-weight:bold;"/>
+                                <label value="Username:" style="font-weight:bold;"/>
                                 <textbox name="username" hflex="1" sclass="login-textbox"
                                          placeholder="Enter username"/>
                             </row>
                             <row>
-                                <label value="Password:" width="100px" style="font-weight:bold;"/>
+                                <label value="Password:" style="font-weight:bold;"/>
                                 <textbox name="password" type="password" hflex="1" sclass="login-textbox"
                                          placeholder="Enter password"/>
                             </row>

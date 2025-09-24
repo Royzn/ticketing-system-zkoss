@@ -213,9 +213,12 @@
 	</mime-mapping>
 
 	<welcome-file-list>
-		<welcome-file>index.zul</welcome-file>
-		<welcome-file>index.zhtml</welcome-file>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.htm</welcome-file>
+		<welcome-file>login.zul</welcome-file>
 	</welcome-file-list>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/not_found.html</location>
+    </error-page>
+
 </web-app>
