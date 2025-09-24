@@ -2,22 +2,27 @@ package latihan.viewmodel;
 
 import latihan.entity.*;
 import latihan.service.TicketService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.QueryParam;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zkplus.spring.SpringUtil;
 import org.zkoss.zul.Messagebox;
 
 import java.time.format.DateTimeFormatter;
 
+@Component
 public class TicketDetailViewModel {
 
-    private TicketService service = new TicketService();
+    private TicketService service;
     private Ticket ticket;
 
     @Init
     public void init(@QueryParam("id") String idParam) {
+        service = (TicketService) SpringUtil.getBean("ticketService");
         if (idParam != null && !idParam.isEmpty()) {
             Long id = Long.parseLong(idParam);
             ticket = service.getTicket(id);
@@ -82,7 +87,7 @@ public class TicketDetailViewModel {
             String message = "Are you sure you want to delete ticket #" + ticket.getId() + " (" + ticket.getTitle() + ")?";
             Messagebox.show(message, "Confirm Deletion", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION, event -> {
                 if (Messagebox.ON_OK.equals(event.getName())) {
-                     service.deleteTicket(ticket.getId());
+                     service.deleteTicket(ticket);
                     Executions.sendRedirect("tickets.zul");
                 }
             });

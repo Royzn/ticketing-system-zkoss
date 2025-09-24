@@ -1,15 +1,14 @@
 package latihan.repository;
 
-import latihan.dto.UserListDto;
 import latihan.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface UserRepository {
-    List<User> findAll();
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    // Custom method to get users where role = 'AGENT'
+    @Query("SELECT u FROM User u WHERE u.role = 'AGENT'")
     List<User> getAgents();
-    Optional<User> findById(Long id);
-    void save(User user);
-    void delete(Long id);
 }

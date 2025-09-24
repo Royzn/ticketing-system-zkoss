@@ -9,5 +9,7 @@
 		<value>latihan</value>
 	</preference>
 	-->
-	
+    <listener>
+        <listener-class>org.zkoss.spring.SpringWebContextListener</listener-class>
+    </listener>
 </zk>
