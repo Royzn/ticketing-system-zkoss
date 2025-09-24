@@ -1,9 +1,10 @@
 package latihan;
 
+import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.zk.ui.Executions;
 
-public class TemplateViewModel{
+public class TemplateViewModel {
 
     private boolean isDashboard = false;
     private boolean isTickets = false;
@@ -47,5 +48,15 @@ public class TemplateViewModel{
 
     public String getUsersClass() {
         return isUsers ? "menu-link active" : "menu-link";
+    }
+
+    // Tambahan: Command untuk logout
+    @Command
+    public void logout() {
+        // hapus session user
+        Executions.getCurrent().getSession().invalidate();
+
+        // redirect ke halaman login
+        Executions.sendRedirect("login.zul");
     }
 }

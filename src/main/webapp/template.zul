@@ -1,38 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<zk>
-    <style>
-        .menu-link {
-        display: block;
-        padding: 10px 15px;
-        margin-bottom: 5px;
-        color: #333;
-        text-decoration: none;
-        font-weight: 500;
-        border-radius: 5px;
-        }
+<zk xmlns:n="native"> <style>
+    .menu-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
-        .menu-link:hover {
-        background-color: #e2e6ea;
-        }
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+    }
 
-        .menu-link.active {
-        background-color: #007bff;
-        color: white;
-        }
+    .menu-link:hover {
+    background-color: #e2e6ea;
+    }
 
-        .sidebar {
-        background-color: #f8f9fa;
-        height: 100%;
-        padding: 20px;
-        }
+    .menu-link.active {
+    background-color: #007bff;
+    color: white;
+    }
 
-        .content {
-        padding: 25px;
-        background: #ffffff;
-        height: 100%;
-        overflow: auto;
-        }
-    </style>
+    /* CSS lain tetap sama */
+    .sidebar {
+    background-color: #f8f9fa;
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    }
+    .content {
+    padding: 25px;
+    background: #ffffff;
+    height: 100%;
+    overflow: auto;
+    }
+</style>
 
     <window apply="org.zkoss.bind.BindComposer"
             viewModel="@id('tvm')@init('latihan.TemplateViewModel')"
@@ -41,22 +46,38 @@
 
         <borderlayout width="100%" height="100%">
 
-            <!-- Sidebar -->
-            <west border="none">
-                <vlayout sclass="sidebar" spacing="10px">
-                    <label value="📋 Menu" style="font-size:18px; font-weight:bold;" />
+            <west border="none" width="200px">
+                <vlayout sclass="sidebar" spacing="10px" height="100%">
+                    <label value="📋 Menu" style="font-size:18px; font-weight:bold; margin-bottom:10px;" />
 
-                    <a href="dashboard.zul" sclass="@load(tvm.dashboardClass)">🏠 Dashboard</a>
-                    <a href="tickets.zul" sclass="@load(tvm.ticketsClass)">🎫 Tickets</a>
-                    <a href="ticket_form.zul" sclass="@load(tvm.formClass)">📝 Create Ticket</a>
-                    <a href="users.zul" sclass="@load(tvm.usersClass)">👥 Users</a>
+                    <a href="dashboard.zul" sclass="@load(tvm.dashboardClass)">
+                        <n:i sclass="z-icon-home" />
+                        <label value="Dashboard"/>
+                    </a>
+                    <a href="tickets.zul" sclass="@load(tvm.ticketsClass)">
+                        <n:i sclass="z-icon-ticket" />
+                        <label value="Tickets"/>
+                    </a>
+                    <a href="ticket_form.zul" sclass="@load(tvm.formClass)">
+                        <n:i sclass="z-icon-pencil-square-o" />
+                        <label value="Create Ticket"/>
+                    </a>
+                    <a href="users.zul" sclass="@load(tvm.usersClass)">
+                        <n:i sclass="z-icon-users" />
+                        <label value="Users"/>
+                    </a>
+
+                    <div vflex="1"></div>
+
+                    <button label="🚪 Logout"
+                            href="/logout"
+                            style="background:#e74c3c; color:white; font-weight:bold;
+                       border:none; padding:10px 20px; border-radius:6px;"/>
                 </vlayout>
             </west>
 
-            <!-- Main Content -->
             <center border="none">
                 <div sclass="content" self="@insert(content)">
-                    <!-- Page content loads here -->
                 </div>
             </center>
 
