@@ -1,5 +1,5 @@
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul" ?>
-<zk>
+<zk xmlns:h="native">
     <window self="@define(content)"
             apply="org.zkoss.bind.BindComposer"
             viewModel="@id('vm') @init('latihan.viewmodel.DashboardViewModel')">
@@ -8,26 +8,24 @@
             <label value="📊 Dashboard Ticketing System"
                    style="font-weight:bold; font-size:22px; color:#2c3e50;"/>
 
+            <!-- Charts -->
             <hbox spacing="20px">
-                <groupbox title="Tickets by Status" width="250px" mold="3d"
+                <groupbox title="Tickets by Status" width="350px" mold="3d"
                           style="background:#ffffff; border-radius:10px;">
                     <vlayout spacing="5px" style="padding:10px;">
-                        <label style="color:green; font-weight:bold;" value="@load(vm.openCountLabel)"/>
-                        <label style="color:orange; font-weight:bold;" value="@load(vm.inProgressCountLabel)"/>
-                        <label style="color:red; font-weight:bold;" value="@load(vm.closedCountLabel)"/>
+                        <h:canvas id="statusChart" width="300" height="300"></h:canvas>
                     </vlayout>
                 </groupbox>
 
-                <groupbox title="Tickets by Priority" width="250px" mold="3d"
+                <groupbox title="Tickets by Priority" width="350px" mold="3d"
                           style="background:#ffffff; border-radius:10px;">
                     <vlayout spacing="5px" style="padding:10px;">
-                        <label style="color:green; font-weight:bold;" value="@load(vm.lowCountLabel)"/>
-                        <label style="color:orange; font-weight:bold;" value="@load(vm.mediumCountLabel)"/>
-                        <label style="color:#c0392b; font-weight:bold;" value="@load(vm.highCountLabel)"/>
+                        <h:canvas id="priorityChart" width="300" height="300"></h:canvas>
                     </vlayout>
                 </groupbox>
             </hbox>
 
+            <!-- 📌 Recent Tickets -->
             <groupbox title="📌 Recent Tickets" mold="3d" width="100%"
                       style="background:#ffffff; border-radius:10px;">
                 <grid model="@load(vm.recentTickets)" emptyMessage="No recent tickets found.">
@@ -48,5 +46,61 @@
                 </grid>
             </groupbox>
         </vlayout>
+
+        <!-- Chart.js CDN -->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <!-- Script render chart -->
+        <script type="text/javascript">
+            zk.afterMount(function () {
+            if (typeof Chart !== "undefined") {
+            // Status Chart
+            const ctx1 = document.getElementById('statusChart').getContext('2d');
+            new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+            labels: ['OPEN', 'IN_PROGRESS', 'CLOSED'],
+            datasets: [{
+            data: [${vm.openCount}, ${vm.inProgressCount}, ${vm.closedCount}],
+            backgroundColor: ['#3498db', '#f1c40f', '#2ecc71'],
+            borderColor: ['#2980b9', '#d4ac0d', '#27ae60'],
+            borderWidth: 1
+            }]
+            },
+            options: {
+            responsive: true,
+            plugins: {
+            legend: { position: 'bottom' }
+            }
+            }
+            });
+
+            // Priority Chart
+            const ctx2 = document.getElementById('priorityChart').getContext('2d');
+            new Chart(ctx2, {
+            type: 'bar',
+            data: {
+            labels: ['LOW', 'MEDIUM', 'HIGH'],
+            datasets: [{
+            label: 'Tickets',
+            data: [${vm.lowCount}, ${vm.mediumCount}, ${vm.highCount}],
+            backgroundColor: ['#2ecc71', '#f39c12', '#e74c3c']
+            }]
+            },
+            options: {
+            responsive: true,
+            plugins: {
+            legend: { display: false }
+            },
+            scales: {
+            y: { beginAtZero: true }
+            }
+            }
+            });
+            } else {
+            console.error("Chart.js gagal diload!");
+            }
+            });
+        </script>
     </window>
 </zk>
