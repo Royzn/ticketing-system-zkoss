@@ -6,7 +6,6 @@ import latihan.entity.Status;
 import latihan.entity.StatusLabel;
 import latihan.entity.Ticket;
 import latihan.service.TicketService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.zkplus.spring.SpringUtil;
@@ -35,7 +34,6 @@ public class DashboardViewModel {
     @Init
     public void init() {
         service = (TicketService) SpringUtil.getBean("ticketService");
-        // Panggil metode untuk memuat dan memproses semua data
         loadDashboardData();
     }
 
@@ -46,26 +44,26 @@ public class DashboardViewModel {
             return;
         }
 
-        // 1. Hitung jumlah tiket berdasarkan Status
+        // Hitung jumlah tiket berdasarkan Status
         openCount = tickets.stream().filter(t -> Objects.equals(t.getStatus(), Status.OPEN.toString())).count();
         inProgressCount = tickets.stream().filter(t -> Objects.equals(t.getStatus(), Status.IN_PROGRESS.toString())).count();
         closedCount = tickets.stream().filter(t -> Objects.equals(t.getStatus(), Status.CLOSED.toString())).count();
 
-        // 2. Hitung jumlah tiket berdasarkan Prioritas
+        // Hitung jumlah tiket berdasarkan Prioritas
         lowCount = tickets.stream().filter(t -> Objects.equals(t.getPriority(), Priority.LOW.toString())).count();
         mediumCount = tickets.stream().filter(t -> Objects.equals(t.getPriority(), Priority.MEDIUM.toString())).count();
         highCount = tickets.stream().filter(t -> Objects.equals(t.getPriority(), Priority.HIGH.toString())).count();
 
-        // 3. Ambil 5 tiket terbaru untuk ditampilkan di grid
+        // Ambil 5 tiket terbaru
+        // Ambil 5 tiket terbaru berdasarkan ID (besar → kecil)
         recentTickets = tickets.stream()
-                .sorted((t1, t2) -> t2.getCreatedDate().compareTo(t1.getCreatedDate())) // Urutkan berdasarkan tanggal terbaru
-                .limit(5) // Ambil 5 tiket teratas
+                .sorted((t1, t2) -> Long.compare(t2.getId(), t1.getId()))
+                .limit(5)
                 .collect(Collectors.toList());
+
     }
 
-    // --- Getters untuk Label Teks (Computed Properties) ---
-    // Cara ini lebih bersih daripada menggabungkan String di file ZUL.
-
+    // --- Getters untuk Label ---
     public String getOpenCountLabel() { return "Open: " + openCount; }
     public String getInProgressCountLabel() { return "In Progress: " + inProgressCount; }
     public String getClosedCountLabel() { return "Closed: " + closedCount; }
@@ -78,7 +76,7 @@ public class DashboardViewModel {
         return recentTickets;
     }
 
-    // --- Helper Methods untuk mendapatkan label yang bagus (digunakan di ZUL) ---
+    // --- Helper Methods untuk label bagus ---
     public String getStatusLabelText(Status status) {
         if (status == null) return "N/A";
         StatusLabel sl = StatusLabel.fromStatus(status);
@@ -90,4 +88,13 @@ public class DashboardViewModel {
         PriorityLabel pl = PriorityLabel.fromPriority(priority);
         return pl != null ? pl.getLabel() : priority.name();
     }
+
+    // --- Getter untuk Chart.js ---
+    public long getOpenCount() { return openCount; }
+    public long getInProgressCount() { return inProgressCount; }
+    public long getClosedCount() { return closedCount; }
+
+    public long getLowCount() { return lowCount; }
+    public long getMediumCount() { return mediumCount; }
+    public long getHighCount() { return highCount; }
 }

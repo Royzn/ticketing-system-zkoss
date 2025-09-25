@@ -4,6 +4,7 @@
             viewModel="@id('vm') @init('latihan.viewmodel.TicketListViewModel')">
 
         <vlayout spacing="20px" style="padding:20px;">
+
             <label value="🎫 Ticket List"
                    style="font-weight:bold; font-size:22px; color:#2c3e50;"/>
 
