@@ -1,14 +1,14 @@
 package latihan.dto;
 
-import latihan.entity.Role;
+import latihan.entity.RoleEntity;
 
 public class UserListDto {
     private Long id;
     private String name;
-    private Role role;
+    private RoleEntity role;
     private String username;
 
-    public UserListDto(Long id, String name, Role role, String username) {
+    public UserListDto(Long id, String name, RoleEntity role, String username) {
         this.id = id;
         this.name = name;
         this.role = role;
@@ -31,11 +31,11 @@ public class UserListDto {
         this.name = name;
     }
 
-    public Role getRole() {
+    public RoleEntity getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(RoleEntity role) {
         this.role = role;
     }
 

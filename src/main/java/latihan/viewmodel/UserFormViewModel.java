@@ -1,10 +1,8 @@
 package latihan.viewmodel;
 
-import latihan.entity.Role;
-import latihan.entity.RoleLabel;
+import latihan.entity.RoleEntity;
 import latihan.entity.User;
 import latihan.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
@@ -34,15 +32,15 @@ public class UserFormViewModel {
 
     // Class to hold role options for dropdown
     public static class RoleOption {
-        private final String value;
+        private final Long value;
         private final String label;
 
-        public RoleOption(String value, String label) {
+        public RoleOption(Long value, String label) {
             this.value = value;
             this.label = label;
         }
 
-        public String getValue() {
+        public Long getValue() {
             return value;
         }
 
@@ -72,9 +70,10 @@ public class UserFormViewModel {
 
     private void loadRoleOptions() {
         roleOptions = new ArrayList<>();
-        for (Role r : Role.values()) {
-            RoleLabel roleLabel = RoleLabel.fromStatus(r);
-            roleOptions.add(new RoleOption(r.name(), roleLabel.getLabel()));
+        List<RoleEntity> roleList = service.getAllRoles();
+
+        for(RoleEntity r : roleList){
+            roleOptions.add(new RoleOption(r.getId(), r.getLabel()));
         }
     }
 
@@ -83,7 +82,7 @@ public class UserFormViewModel {
         if (user != null) {
             this.name = user.getName();
             for (RoleOption option : roleOptions) {
-                if (option.getValue().equals(user.getRole())) {
+                if (option.getValue().equals(user.getRole().getId())) {
                     this.selectedRole = option;
                     break;
                 }
@@ -130,7 +129,7 @@ public class UserFormViewModel {
     public void save() {
         if (isInvalidForm()) return;
 
-        String roleValue = selectedRole.getValue();
+        Long roleValue = selectedRole.getValue();
         service.createUser(name.trim(), roleValue, username, password);
 
         Executions.sendRedirect("users.zul");
@@ -141,7 +140,7 @@ public class UserFormViewModel {
     public void update() {
         if (isInvalidForm()) return;
 
-        String roleValue = selectedRole.getValue();
+        Long roleValue = selectedRole.getValue();
         service.updateUser(user, name.trim(), roleValue, username, password, oldUsername);
 
         Executions.sendRedirect("users.zul");

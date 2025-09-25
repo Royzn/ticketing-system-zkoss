@@ -1,10 +1,7 @@
 package latihan.viewmodel;
 
-import latihan.entity.Role;
-import latihan.entity.RoleLabel;
 import latihan.entity.User;
 import latihan.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
@@ -56,7 +53,7 @@ public class UserDetailViewModel {
         if (user != null) {
             this.userId = user.getId().toString();
             this.name = user.getName();
-            this.role = RoleLabel.fromStatus(Role.valueOf(user.getRole())).getLabel();
+            this.role = user.getRole().getLabel();
             this.username = user.getUsername();
 
             LocalDateTime createdDate = user.getCreatedDate();

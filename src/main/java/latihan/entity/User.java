@@ -14,8 +14,9 @@ public class User {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "role")
-    private String role;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private RoleEntity role;
 
     @Column(nullable = false, unique = true, length = 100)
     private String username;
@@ -23,29 +24,29 @@ public class User {
     @Column(nullable = false, length = 255)
     private String passwordHash;
 
-    public User(Long id, String name, String role, LocalDateTime createdDate, String username, String passwordHash) {
-        this.id = id;
-        this.name = name;
-        this.role = role;
-        this.passwordHash = passwordHash;
-        this.username = username;
-        this.createdDate = createdDate;
-    }
-
-    public User() {
-        // JPA needs this
-    }
-
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
     private LocalDateTime deletedDate;
 
-    public Long getId() {
-        return id;
+    // Constructors, getters, setters
+
+    public User() {}
+
+    public User(Long id, String name, RoleEntity role, LocalDateTime createdDate, String username, String passwordHash) {
+        this.id = id;
+        this.name = name;
+        this.role = role;
+        this.createdDate = createdDate;
+        this.username = username;
+        this.passwordHash = passwordHash;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public RoleEntity getRole() {
+        return role;
+    }
+
+    public void setRole(RoleEntity role) {
+        this.role = role;
     }
 
     public String getName() {
@@ -56,12 +57,20 @@ public class User {
         this.name = name;
     }
 
-    public String getRole() {
-        return role;
+    public String getUsername() {
+        return username;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public LocalDateTime getCreatedDate() {
@@ -88,19 +97,11 @@ public class User {
         this.deletedDate = deletedDate;
     }
 
-    public String getUsername() {
-        return username;
+    public Long getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setId(Long id) {
+        this.id = id;
     }
 }
