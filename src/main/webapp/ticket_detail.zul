@@ -29,15 +29,15 @@
 
                             <row>
                                 <label value="Status:" style="font-weight:bold;"/>
-                                <label value="@load(vm.statusLabel)" style="font-weight:bold;"/>
+                                <label value="@load(vm.ticket.status.label)" style="font-weight:bold;"/>
                             </row>
                             <row>
                                 <label value="Priority:" style="font-weight:bold;"/>
-                                <label value="@load(vm.priorityLabel)" style="color:#c0392b; font-weight:bold;"/>
+                                <label value="@load(vm.ticket.priority.label)" style="color:#c0392b; font-weight:bold;"/>
                             </row>
                             <row>
                                 <label value="Assigned To:" style="font-weight:bold;"/>
-                                <label value="@load(vm.getAssignedToName(vm.ticket.assignedTo))"/>
+                                <label value="@load(vm.ticket.assignedTo.name)"/>
                             </row>
                             <row>
                                 <label value="Requester:" style="font-weight:bold;"/>

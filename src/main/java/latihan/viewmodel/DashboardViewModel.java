@@ -1,9 +1,6 @@
 package latihan.viewmodel;
 
-import latihan.entity.Priority;
-import latihan.entity.PriorityLabel;
-import latihan.entity.Status;
-import latihan.entity.StatusLabel;
+import latihan.dto.CountDto;
 import latihan.entity.Ticket;
 import latihan.service.TicketService;
 import org.springframework.stereotype.Component;
@@ -38,29 +35,17 @@ public class DashboardViewModel {
     }
 
     private void loadDashboardData() {
-        List<Ticket> tickets = service.getAllTickets();
-        if (tickets == null || tickets.isEmpty()) {
-            recentTickets = Collections.emptyList();
-            return;
-        }
 
-        // Hitung jumlah tiket berdasarkan Status
-        openCount = tickets.stream().filter(t -> Objects.equals(t.getStatus(), Status.OPEN.toString())).count();
-        inProgressCount = tickets.stream().filter(t -> Objects.equals(t.getStatus(), Status.IN_PROGRESS.toString())).count();
-        closedCount = tickets.stream().filter(t -> Objects.equals(t.getStatus(), Status.CLOSED.toString())).count();
+        CountDto data = service.getDashboardStats();
 
-        // Hitung jumlah tiket berdasarkan Prioritas
-        lowCount = tickets.stream().filter(t -> Objects.equals(t.getPriority(), Priority.LOW.toString())).count();
-        mediumCount = tickets.stream().filter(t -> Objects.equals(t.getPriority(), Priority.MEDIUM.toString())).count();
-        highCount = tickets.stream().filter(t -> Objects.equals(t.getPriority(), Priority.HIGH.toString())).count();
+        openCount = data.getOpenCount();
+        inProgressCount = data.getInProgressCount();
+        closedCount = data.getClosedCount();
+        lowCount = data.getLowCount();
+        mediumCount = data.getMediumCount();
+        highCount = data.getHighCount();
 
-        // Ambil 5 tiket terbaru
-        // Ambil 5 tiket terbaru berdasarkan ID (besar → kecil)
-        recentTickets = tickets.stream()
-                .sorted((t1, t2) -> Long.compare(t2.getId(), t1.getId()))
-                .limit(5)
-                .collect(Collectors.toList());
-
+        recentTickets = service.getFiveMostRecentTickets();
     }
 
     // --- Getters untuk Label ---
@@ -76,18 +61,6 @@ public class DashboardViewModel {
         return recentTickets;
     }
 
-    // --- Helper Methods untuk label bagus ---
-    public String getStatusLabelText(Status status) {
-        if (status == null) return "N/A";
-        StatusLabel sl = StatusLabel.fromStatus(status);
-        return sl != null ? sl.getLabel() : status.name();
-    }
-
-    public String getPriorityLabelText(Priority priority) {
-        if (priority == null) return "N/A";
-        PriorityLabel pl = PriorityLabel.fromPriority(priority);
-        return pl != null ? pl.getLabel() : priority.name();
-    }
 
     // --- Getter untuk Chart.js ---
     public long getOpenCount() { return openCount; }

@@ -30,45 +30,26 @@ public class TicketDetailViewModel {
     }
 
     /**
-     * Menentukan status berikutnya berdasarkan status saat ini.
-     * @return Status berikutnya, atau null jika tidak ada transisi.
-     */
-    private Status getNextStatus() {
-        if (ticket == null) return null;
-        switch (ticket.getStatus()) {
-            case "OPEN":
-                return Status.IN_PROGRESS;
-            case "IN_PROGRESS":
-                return Status.CLOSED;
-            default:
-                return null; // Tidak ada transisi dari CLOSED atau status lain
-        }
-    }
-
-    /**
      * Command ini dipanggil saat tombol "Change Status" diklik.
      * Ini akan menampilkan popup konfirmasi.
      */
     @Command
     public void changeStatus() {
-        Status nextStatus = getNextStatus();
+        StatusEntity nextStatus = service.getNextStatus(ticket.getStatus());
         if (nextStatus == null) {
             return;
         }
 
-        String currentStatusLabel = getStatusLabelText(Status.valueOf(ticket.getStatus()));
-        String nextStatusLabel = getStatusLabelText(nextStatus);
+        String currentStatusLabel = ticket.getStatus().getLabel();
+        String nextStatusLabel = nextStatus.getLabel();
         String message = "Are you sure you want to change status from '" + currentStatusLabel + "' to '" + nextStatusLabel + "'?";
 
         Messagebox.show(message, "Confirm Status Change", Messagebox.OK | Messagebox.CANCEL, Messagebox.QUESTION, event -> {
             if (Messagebox.ON_OK.equals(event.getName())) {
-                // ================== LOGIKA YANG DIUBAH ==================
-                // Panggil service dan ganti objek ticket lokal dengan versi terbaru dari database
                 this.ticket = service.updateTicketStatus(ticket.getId(), nextStatus);
 
                 // Beri tahu ZK untuk me-refresh semua properti di halaman
                 BindUtils.postNotifyChange(null, null, this, "*");
-                // =========================================================
             }
         });
     }
@@ -105,20 +86,9 @@ public class TicketDetailViewModel {
      * @return true jika status adalah CLOSED, false jika sebaliknya.
      */
     public boolean isChangeStatusDisabled() {
-        return ticket == null || ticket.getStatus() == Status.CLOSED.toString();
+        return ticket == null || ticket.getStatus().getLabel().equals("CLOSED");
     }
 
-    // Getter lainnya tetap sama
-    public String getStatusLabel() {
-        if (ticket == null || ticket.getStatus() == null) return "N/A";
-        return getStatusLabelText(Status.valueOf(ticket.getStatus()));
-    }
-
-    public String getPriorityLabel() {
-        if (ticket == null || ticket.getPriority() == null) return "N/A";
-        PriorityLabel pl = PriorityLabel.fromPriority(Priority.valueOf(ticket.getPriority()));
-        return pl != null ? pl.getLabel() : ticket.getPriority();
-    }
 
     public String getFormattedCreatedDate() {
         if (ticket == null || ticket.getCreatedDate() == null) return "";
@@ -126,12 +96,6 @@ public class TicketDetailViewModel {
         return ticket.getCreatedDate().format(formatter);
     }
 
-    // Helper untuk mendapatkan label status
-    public String getStatusLabelText(Status status) {
-        if (status == null) return "";
-        StatusLabel sl = StatusLabel.fromStatus(status);
-        return sl != null ? sl.getLabel() : status.name();
-    }
 
     /**
      * Getter "computed property" untuk memformat tanggal pembaruan tiket.

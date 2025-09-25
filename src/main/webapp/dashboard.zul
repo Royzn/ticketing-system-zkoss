@@ -39,8 +39,8 @@
                         <row>
                             <label value="@load(each.id)"/>
                             <label value="@load(each.title)"/>
-                            <label value="@load(vm.getStatusLabelText(each.status))"/>
-                            <label value="@load(vm.getPriorityLabelText(each.priority))"/>
+                            <label value="@load(each.status.label)"/>
+                            <label value="@load(each.priority.label)"/>
                         </row>
                     </template>
                 </grid>
@@ -59,7 +59,7 @@
             new Chart(ctx1, {
             type: 'doughnut',
             data: {
-            labels: ['OPEN', 'IN_PROGRESS', 'CLOSED'],
+            labels: ['Open', 'In Progress', 'Closed'],
             datasets: [{
             data: [${vm.openCount}, ${vm.inProgressCount}, ${vm.closedCount}],
             backgroundColor: ['#3498db', '#f1c40f', '#2ecc71'],
@@ -80,7 +80,7 @@
             new Chart(ctx2, {
             type: 'bar',
             data: {
-            labels: ['LOW', 'MEDIUM', 'HIGH'],
+            labels: ['Low', 'Medium', 'High'],
             datasets: [{
             label: 'Tickets',
             data: [${vm.lowCount}, ${vm.mediumCount}, ${vm.highCount}],
