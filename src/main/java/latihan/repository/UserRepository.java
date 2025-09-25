@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     // Custom method to get users where role = 'AGENT'
-    @Query("SELECT u FROM User u WHERE u.role = 'ROLE_AGENT'")
+    @Query("SELECT u FROM User u WHERE u.role.name = 'ROLE_AGENT'")
     List<User> getAgents();
 
     Optional<User> findByUsername(String username);

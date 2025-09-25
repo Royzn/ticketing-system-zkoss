@@ -24,8 +24,7 @@ public class UserDetailService implements UserDetailsService {
             User user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-            // Since user has only one role (e.g., as a String or Role object)
-            GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
+            GrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().getName());
             return new org.springframework.security.core.userdetails.User(
                     user.getUsername(),
                     user.getPasswordHash(),

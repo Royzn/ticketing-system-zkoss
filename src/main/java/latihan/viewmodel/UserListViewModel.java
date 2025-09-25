@@ -1,10 +1,7 @@
 package latihan.viewmodel;
 
 import latihan.dto.UserListDto;
-import latihan.entity.RoleLabel;
-import latihan.entity.User;
 import latihan.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.zkoss.bind.annotation.*;
 import org.zkoss.zk.ui.Executions;
@@ -45,6 +42,6 @@ public class UserListViewModel {
 
     // Helper method to get Role label for display
     public String getRoleLabel(UserListDto user) {
-        return RoleLabel.fromStatus(user.getRole()).getLabel();
+        return user.getRole().getLabel();
     }
 }
