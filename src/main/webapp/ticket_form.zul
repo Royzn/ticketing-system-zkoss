@@ -31,7 +31,7 @@
                               model="@load(vm.priorityOptions)"
                               selectedItem="@bind(vm.selectedPriority)">
                         <template name="model">
-                            <comboitem label="@load(vm.getPriorityLabelText(each))" value="@load(each)"/>
+                            <comboitem label="@load(each.label)" value="@load(each.value)"/>
                         </template>
                     </combobox>
                 </row>

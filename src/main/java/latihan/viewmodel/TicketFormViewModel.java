@@ -11,6 +11,7 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zkplus.spring.SpringUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,10 +24,10 @@ public class TicketFormViewModel {
     private UserService uservice;
     private Ticket currentTicket;
 
-    private List<Priority> priorityOptions;
+    private List<Option> priorityOptions;
     private List<UserListDto> agentOptions;
     private UserListDto selectedAgent;
-    private Priority selectedPriority;
+    private Option selectedPriority;
     private Long id;
     private String errorMessage;
 
@@ -35,7 +36,7 @@ public class TicketFormViewModel {
         service = (TicketService) SpringUtil.getBean("ticketService");
         uservice = (UserService) SpringUtil.getBean("userService");
 
-        priorityOptions = Arrays.asList(Priority.values());
+        loadPriorityList();
         loadAgentList();
         if (idParam != null && !idParam.isEmpty()) {
             this.id = Long.parseLong(idParam);
@@ -46,14 +47,41 @@ public class TicketFormViewModel {
                         this.selectedAgent = a;
                     }
                 }
-                for(Priority p: priorityOptions){
-                    if(p.name().equals(currentTicket.getPriority())){
+                for(Option p: priorityOptions){
+                    if(p.value.equals(currentTicket.getPriority().getId())){
                         this.selectedPriority = p;
                     }
                 }
             }
         } else {
             currentTicket = new Ticket();
+        }
+    }
+
+    public void loadPriorityList(){
+        priorityOptions = new ArrayList<>();
+
+        List<PriorityEntity> priorityEntityList = service.getAllPriority();
+        for(PriorityEntity p: priorityEntityList){
+            priorityOptions.add(new Option(p.getId(), p.getLabel()));
+        }
+    }
+
+    public static class Option {
+        private final Long value;
+        private final String label;
+
+        public Option(Long value, String label) {
+            this.value = value;
+            this.label = label;
+        }
+
+        public Long getValue() {
+            return value;
+        }
+
+        public String getLabel() {
+            return label;
         }
     }
 
@@ -78,17 +106,6 @@ public class TicketFormViewModel {
         return true;
     }
 
-    public String getStatusLabelText(Status status) {
-        if (status == null) return "";
-        StatusLabel sl = StatusLabel.fromStatus(status);
-        return sl != null ? sl.getLabel() : status.name();
-    }
-
-    public String getPriorityLabelText(Priority priority){
-        if(priority == null) return "";
-        PriorityLabel pl = PriorityLabel.fromPriority(priority);
-        return pl != null ? pl.getLabel() : priority.name();
-    }
 
     public void loadAgentList(){
         agentOptions = uservice.getAgent();
@@ -105,7 +122,7 @@ public class TicketFormViewModel {
             service.createTicket(
                     currentTicket.getTitle(),
                     currentTicket.getDescription(),
-                    this.selectedPriority != null ? this.selectedPriority.toString() : null,
+                    this.selectedPriority != null ? this.selectedPriority.getValue() : null,
                     selectedAgent.getId(),
                     currentTicket.getRequester()
             );
@@ -114,8 +131,8 @@ public class TicketFormViewModel {
                     currentTicket,
                     currentTicket.getTitle(),
                     currentTicket.getDescription(),
-                    currentTicket.getStatus() != null ? currentTicket.getStatus(): null,
-                    this.selectedPriority != null ? this.selectedPriority.toString() : null,
+                    currentTicket.getStatus() != null ? currentTicket.getStatus().getId(): null,
+                    this.selectedPriority != null ? this.selectedPriority.getValue() : null,
                     selectedAgent.getId(),
                     currentTicket.getRequester()
             );
@@ -126,7 +143,7 @@ public class TicketFormViewModel {
     // --- Getter dan Setter (Wajib untuk Data Binding) ---
     public Ticket getCurrentTicket() { return currentTicket; }
     public void setCurrentTicket(Ticket currentTicket) { this.currentTicket = currentTicket; }
-    public List<Priority> getPriorityOptions() { return priorityOptions; }
+    public List<Option> getPriorityOptions() { return priorityOptions; }
     public List<UserListDto> getAgentOptions() {
         return agentOptions;
     }
@@ -143,8 +160,8 @@ public class TicketFormViewModel {
         this.errorMessage = errorMessage;
     }
 
-    public Priority getSelectedPriority() {return selectedPriority;}
-    public void setSelectedPriority(Priority priority){
+    public Option getSelectedPriority() {return selectedPriority;}
+    public void setSelectedPriority(Option priority){
         this.selectedPriority = priority;
     }
     public Long getId(){return id;}

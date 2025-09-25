@@ -15,10 +15,15 @@ public class Ticket {
     private String title;
     @Column(name = "description")
     private String description;
-    @Column(name = "status")
-    private String status;
-    @Column(name = "priority")
-    private String priority;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private StatusEntity status;
+
+    @ManyToOne
+    @JoinColumn(name = "priority_id")
+    private PriorityEntity priority;
+
     @ManyToOne
     @JoinColumn(name = "assigned_to_id", foreignKey = @ForeignKey(name = "fk_ticket_user", foreignKeyDefinition = "FOREIGN KEY (assigned_to_id) REFERENCES users(id) ON DELETE CASCADE"))
     private User assignedTo;
@@ -29,8 +34,8 @@ public class Ticket {
     private LocalDateTime updatedDate;
     private LocalDateTime deletedDate;
 
-    public Ticket(Long id, String title, String description, String status,
-                  String priority, User assignedTo, String requester, LocalDateTime createdDate) {
+    public Ticket(Long id, String title, String description, StatusEntity status,
+                  PriorityEntity priority, User assignedTo, String requester, LocalDateTime createdDate) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -55,11 +60,11 @@ public class Ticket {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public StatusEntity getStatus() { return status; }
+    public void setStatus(StatusEntity status) { this.status = status; }
 
-    public String getPriority() { return priority; }
-    public void setPriority(String priority) { this.priority = priority; }
+    public PriorityEntity getPriority() { return priority; }
+    public void setPriority(PriorityEntity priority) { this.priority = priority; }
 
     public User getAssignedTo() { return assignedTo; }
     public void setAssignedTo(User assignedTo) { this.assignedTo = assignedTo; }

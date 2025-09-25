@@ -32,43 +32,41 @@ public class TicketListViewModel {
 
         tickets = service.getAllTickets();
 
-        // --- Mengisi opsi langsung dari Enum ---
         loadStatusOptions();
         loadPriorityOptions();
 
-        // Nilai awal filter adalah null (artinya "All")
         selectedStatus = statusOptions.get(0);
         selectedPriority = priorityOptions.get(0);
     }
 
     private void loadStatusOptions() {
         statusOptions = new ArrayList<>();
-        statusOptions.add(new TicketListViewModel.Option("All", "All"));
-        for (Status s : Status.values()) {
-            StatusLabel statusLabel = StatusLabel.fromStatus(s);
-            statusOptions.add(new TicketListViewModel.Option(s.name(), statusLabel.getLabel()));
+        statusOptions.add(new TicketListViewModel.Option(0L, "All"));
+        List<StatusEntity> statusEntityList = service.getAllStatus();
+        for (StatusEntity s : statusEntityList) {
+            statusOptions.add(new TicketListViewModel.Option(s.getId(), s.getLabel()));
         }
     }
 
     private void loadPriorityOptions() {
         priorityOptions = new ArrayList<>();
-        priorityOptions.add(new TicketListViewModel.Option("All", "All"));
-        for (Priority p : Priority.values()) {
-            PriorityLabel priorityLabel = PriorityLabel.fromPriority(p);
-            priorityOptions.add(new TicketListViewModel.Option(p.name(), priorityLabel.getLabel()));
+        priorityOptions.add(new TicketListViewModel.Option(0L, "All"));
+        List<PriorityEntity> priorityEntityList = service.getAllPriority();
+        for (PriorityEntity p : priorityEntityList) {
+            priorityOptions.add(new TicketListViewModel.Option(p.getId(), p.getLabel()));
         }
     }
 
     public static class Option {
-        private final String value;
+        private final Long value;
         private final String label;
 
-        public Option(String value, String label) {
+        public Option(Long value, String label) {
             this.value = value;
             this.label = label;
         }
 
-        public String getValue() {
+        public Long getValue() {
             return value;
         }
 
@@ -79,10 +77,10 @@ public class TicketListViewModel {
 
     public List<Ticket> getFilteredTickets() {
         return tickets.stream()
-                .filter(t -> selectedStatus.getValue().equals("All") // Jika null, berarti "All", loloskan semua
-                        || t.getStatus().equals(selectedStatus.getValue()) ) // Bandingkan enum Status
-                .filter(t -> selectedPriority.getValue().equals("All") // Jika null, berarti "All", loloskan semua
-                        || t.getPriority().equals(selectedPriority.getValue())) // Bandingkan enum Priority
+                .filter(t -> selectedStatus.getValue().equals(0L)
+                        || t.getStatus().getId().equals(selectedStatus.getValue()))
+                .filter(t -> selectedPriority.getValue().equals(0L)
+                        || t.getPriority().getId().equals(selectedPriority.getValue()))
                 .collect(Collectors.toList());
     }
 
@@ -124,19 +122,6 @@ public class TicketListViewModel {
     @Command
     public void viewTicket(@BindingParam("id") Long id) {
         Executions.sendRedirect("ticket_detail.zul?id=" + id);
-    }
-
-    public String getStatusLabel(String status) {
-        return StatusLabel.fromStatus(Status.valueOf(status)).getLabel();
-    }
-
-    public String getPriorityLabel(String priority) {
-        return PriorityLabel.fromPriority(Priority.valueOf(priority)).getLabel();
-    }
-
-    public String getAssignedToName(User assignedTo) {
-        if (assignedTo == null) return "";
-        return assignedTo.getName();  // adjust type casting if needed
     }
 
 }

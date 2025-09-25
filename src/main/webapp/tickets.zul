@@ -51,9 +51,9 @@
                         <listitem>
                             <listcell label="@load(t.id)"/>
                             <listcell label="@load(t.title)"/>
-                            <listcell label="@load(vm.getStatusLabel(t.status))"/>
-                            <listcell label="@load(vm.getPriorityLabel(t.priority))"/>
-                            <listcell label="@load(vm.getAssignedToName(t.assignedTo))"/>
+                            <listcell label="@load(t.status.label)"/>
+                            <listcell label="@load(t.priority.label)"/>
+                            <listcell label="@load(t.assignedTo.name)"/>
                             <listcell>
                                 <button label="🔍 View"
                                         onClick="@command('viewTicket', id=t.id)"

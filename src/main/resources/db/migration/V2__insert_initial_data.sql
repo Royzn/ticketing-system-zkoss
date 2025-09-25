@@ -4,6 +4,18 @@ INSERT INTO roles (name, label) VALUES
   ('ROLE_USER', 'User'),
   ('ROLE_AGENT', 'Agent');
 
+-- Insert default statuses
+INSERT INTO statuses (name, label) VALUES
+   ('OPEN', 'Open'),
+   ('IN_PROGRESS', 'In Progress'),
+   ('CLOSED', 'Closed');
+
+-- Insert default priorities
+INSERT INTO priority (name, label) VALUES
+    ('LOW', 'Low'),
+    ('MEDIUM', 'Medium'),
+    ('HIGH', 'High');
+
 -- Admin User
 INSERT INTO users (name, role_id, username, passwordhash, createddate)
 VALUES (
@@ -36,26 +48,26 @@ VALUES (
 
 -- initial tickets
 INSERT INTO tickets (
-  title, description, status, priority, assigned_to_id, requester, createddate
+  title, description, status_id, priority_id, assigned_to_id, requester, createddate
 )
 VALUES (
   'Cannot login',
   'User reports that they cannot login to the system.',
-  'OPEN',
-  'HIGH',
+  (SELECT id FROM statuses WHERE name = 'OPEN'),
+  (SELECT id FROM priority WHERE name = 'HIGH'),
   (SELECT id FROM users WHERE username = 'agent'),
   'johndoe',
   NOW()
 );
 
 INSERT INTO tickets (
-  title, description, status, priority, assigned_to_id, requester, createddate
+  title, description, status_id, priority_id, assigned_to_id, requester, createddate
 )
 VALUES (
   'Feature request: Dark mode',
   'User requested dark mode for the dashboard UI.',
-  'OPEN',
-  'LOW',
+  (SELECT id FROM statuses WHERE name = 'OPEN'),
+  (SELECT id FROM priority WHERE name = 'LOW'),
   (SELECT id FROM users WHERE username = 'agent'),
   'johndoe',
   NOW()
