@@ -3,7 +3,7 @@ package latihan.service;
 import latihan.dto.UserListDto;
 import latihan.entity.RoleEntity;
 import latihan.entity.User;
-import latihan.exception.UsernameAlreadyExistsException;
+import latihan.exception.AlertException;
 import latihan.repository.RoleRepository;
 import latihan.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +49,11 @@ public class UserService {
 
     public void createUser(String name, Long roleId, String username, String password) {
         if (repository.existsByUsername(username)) {
-            throw new UsernameAlreadyExistsException("Username is already taken");
+            throw new AlertException("Username is already taken");
         }
 
         RoleEntity role = roleRepository.findById(roleId).orElse(null);
-        if(role == null) throw new UsernameAlreadyExistsException("Role Not Found");
+        if(role == null) throw new AlertException("Role Not Found");
 
         User u = new User(null, name, role, LocalDateTime.now(), username, passwordEncoder.encode(password));
         repository.save(u);
@@ -61,11 +61,11 @@ public class UserService {
 
     public void updateUser(User user, String name, Long roleId, String username, String password, String oldUsername) {
         if (repository.existsByUsername(username) && !oldUsername.equals(username)) {
-            throw new UsernameAlreadyExistsException("Username is already taken");
+            throw new AlertException("Username is already taken");
         }
 
         RoleEntity role = roleRepository.findById(roleId).orElse(null);
-        if(role == null) throw new UsernameAlreadyExistsException("Role Not Found");
+        if(role == null) throw new AlertException("Role Not Found");
 
         user.setName(name);
         user.setRole(role);

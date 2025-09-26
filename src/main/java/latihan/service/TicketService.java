@@ -2,7 +2,7 @@ package latihan.service;
 
 import latihan.dto.CountDto;
 import latihan.entity.*;
-import latihan.exception.UsernameAlreadyExistsException;
+import latihan.exception.AlertException;
 import latihan.repository.PriorityRepository;
 import latihan.repository.StatusRepository;
 import latihan.repository.TicketRepository;
@@ -43,10 +43,10 @@ public class TicketService {
         }
 
         PriorityEntity priority = priorityRepository.findById(priorityId).orElse(null);
-        if(priority == null) throw new UsernameAlreadyExistsException("Priority Invalid");
+        if(priority == null) throw new AlertException("Priority Invalid");
 
         StatusEntity status = statusRepository.findByName("OPEN").orElse(null);
-        if(status == null) throw new UsernameAlreadyExistsException("Status Invalid");
+        if(status == null) throw new AlertException("Status Invalid");
 
         Ticket ticket = new Ticket();
         ticket.setTitle(title);
@@ -70,10 +70,10 @@ public class TicketService {
         }
 
         PriorityEntity priority = priorityRepository.findById(priorityId).orElse(null);
-        if(priority == null) throw new UsernameAlreadyExistsException("Priority Invalid");
+        if(priority == null) throw new AlertException("Priority Invalid");
 
         StatusEntity status = statusRepository.findById(statusId).orElse(null);
-        if(status == null) throw new UsernameAlreadyExistsException("Status Invalid");
+        if(status == null) throw new AlertException("Status Invalid");
 
         ticket.setTitle(title);
         ticket.setDescription(description);
@@ -146,6 +146,6 @@ public class TicketService {
     }
 
     public List<Ticket> getFiveMostRecentTickets() {
-        return ticketRepository.findTop5ByOrderByCreatedDateDesc();
+        return ticketRepository.findTop5ByOrderByIdDesc();
     }
 }

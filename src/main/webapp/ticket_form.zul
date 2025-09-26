@@ -1,5 +1,12 @@
 <?init class="org.zkoss.zk.ui.util.Composition" arg0="template.zul" ?>
 <zk>
+    <style>
+        .z-grid .z-row,
+        .z-grid .z-row .z-cell {
+        border: none !important;
+        }
+    </style>
+
     <window title="📝 Create / Edit Ticket" border="normal" width="550px"
             style="border-radius:12px; background:#ffffff; box-shadow:0 2px 8px rgba(0,0,0,0.1);"
             self="@define(content)"

@@ -12,4 +12,10 @@
     <listener>
         <listener-class>org.zkoss.spring.SpringWebContextListener</listener-class>
     </listener>
+
+    <library-property>
+        <name>org.zkoss.theme.preferred</name>
+        <value>fiftemplate</value>
+    </library-property>
+
 </zk>

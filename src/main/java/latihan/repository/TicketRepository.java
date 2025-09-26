@@ -9,5 +9,5 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     long countByStatus_Name(String statusName);
     long countByPriority_Name(String priorityName);
 
-    List<Ticket> findTop5ByOrderByCreatedDateDesc();
+    List<Ticket> findTop5ByOrderByIdDesc();
 }

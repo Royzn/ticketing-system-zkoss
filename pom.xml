@@ -147,6 +147,12 @@
             <version>5.2.4</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.fif</groupId>
+            <artifactId>fiftemplate</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>${project.artifactId}</finalName>
